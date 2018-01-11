@@ -208,7 +208,7 @@ def PlotAnnotatedImage_Words(img, words, color = 'red', show = True):
         text_y = word.bounding_box.Center()[1]
 
         angle = word.bounding_box.LongAxisAngle()
-        plt.text(text_x, text_y, words[ix].string, size = 18, ha = 'left', va = 'center', rotation = -angle*180./np.pi, color = 'red', fontweight = 'bold')
+        plt.text(text_x, text_y, word.string, size = 18, ha = 'left', va = 'center', rotation = -angle*180./np.pi, color = 'red', fontweight = 'bold')
 
     if show:
         plt.show()
