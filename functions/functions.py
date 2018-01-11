@@ -162,13 +162,13 @@ def GoogleBoundingPolyToVertices(bounding_poly):
 
     return vertices
 
-def PlotAnnotatedImage(img, words):
+def PlotBoxedImage(img, words):
     if type(words) == 'text_annotations':
-        PlotAnnotatedImage_GoogleCloudVision()
+        PlotBoxedImage_GoogleCloudVision()
     elif type(words) == '__main__.Words':
-        PlotAnnotatedImage_Words()
+        PlotBoxedImage_Words()
 
-def PlotAnnotatedImage_Words(img, words, color = 'red', show = True):
+def PlotBoxedImage_Words(img, words, color = 'red', show = True):
     '''
     Plots an image alongside all of the bounding boxes found by the GoogleCloudVision
     document_text_detection() function
@@ -187,6 +187,28 @@ def PlotAnnotatedImage_Words(img, words, color = 'red', show = True):
         plt.plot([bb.xs[3], bb.xs[0]], [bb.ys[3], bb.ys[0]], lw = 3, c = color)
 
     plt.imshow(img, cmap = 'gray')
+
+    if show:
+        plt.show()
+
+def PlotAnnotatedImage_Words(img, words, color = 'red', show = True):
+    '''
+    Plots the boxed words, but also labels them
+    '''
+    PlotBoxedImage_Words(img, words, color = color, show = False)
+
+    for word in words:
+        bounding_box = word.bounding_box
+        x0 = (word.bounding_box.xs[0] + word.bounding_box.xs[1])/2.
+        x1 = (word.bounding_box.xs[1] + word.bounding_box.xs[2])/2.
+        x2 = (word.bounding_box.xs[2] + word.bounding_box.xs[3])/2.
+        x3 = (word.bounding_box.xs[3] + word.bounding_box.xs[0])/2.
+
+        text_x = np.max(np.array([x0,x1,x2,x3]))
+        text_y = word.bounding_box.Center()[1]
+
+        angle = word.bounding_box.LongAxisAngle()
+        plt.text(text_x, text_y, words[ix].string, size = 18, ha = 'left', va = 'center', rotation = -angle*180./np.pi, color = 'red', fontweight = 'bold')
 
     if show:
         plt.show()
