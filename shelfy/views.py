@@ -3,6 +3,7 @@ from shelfy import app
 import flask
 import os
 from werkzeug.utils import secure_filename
+import shelfy.functions
 
 
 views = flask.Blueprint('views', __name__)
@@ -11,8 +12,40 @@ def allowed_file(file_name):
     return True
 
 
-@views.route('/submissions/', methods=['GET'])
-def
+def get_submissions_files():
+
+    path = '/home/prestonh/Desktop/Programming/datasci/insight/projects/shelfy/shelfy/static/uploads'
+
+
+    files = os.listdir(path)
+    return files
+
+
+
+@views.route('/uploads/<filename>', methods=['GET'])
+def result(filename):
+
+    # Get file names in submissions folder
+    stored_filenames = get_submissions_files()
+
+    print('filename', filename)
+    print('stored filenames')
+    for stored_filename in stored_filenames:
+        print(stored_filename)
+        if filename in stored_filename:
+            matching_file = stored_filename
+
+    # Calculate result
+
+
+
+
+    print('image file')
+    print('/home/prestonh/Desktop/Programming/datasci/insight/projects/shelfy/shelfy/uploads/' + matching_file)
+
+
+
+    return flask.render_template('submission.html', image_file = '/static/uploads/' + matching_file)
 
 
 @views.route('/', methods=['GET', 'POST'])
@@ -51,7 +84,7 @@ def index():
         if file and allowed_file(file.filename):
 
             file.save('./uploads/' + secure_filename(file.filename))
-            return flask.redirect('/uploads/' + filename)
+            return flask.redirect('/uploads/' + file.filename.split('.')[0])
 
 
     '''

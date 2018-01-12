@@ -1,5 +1,122 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import bs4
+
+
+
+
+def GetSpines(words):
+
+
+    for i, special_word in enumerate(words):
+        matches = []
+        # Check if word has already been matched
+        if i in matched_words:
+            continue
+
+        for j, word in enumerate(words):
+
+
+
+            # Don't match a word with itself
+            if i == j:
+                continue
+
+            # Check if word has already been matched
+            if j in matched_words:
+                continue
+
+            x, y = word.bounding_box.Center()
+            xc, yc = special_word.bounding_box.ImageToBoundingBoxCoordinateTransformation(x, y)
+            theta = np.abs(word.bounding_box.VerticalAxisAngle() - special_word.bounding_box.VerticalAxisAngle())%(np.pi/2.)
+            xcs.append(xc)
+            ycs.append(yc)
+            thetas.append(theta)
+
+
+            #print(word.string)
+            #print(xc, yc, theta)
+
+            # If the difference in y value is below tolerance, append to the list of matches
+            if np.abs(yc) < yc_tolerance and np.abs(theta) < theta_tolerance:
+                if i not in matched_words:
+                    matched_words.append(i)
+                matched_words.append(j)
+                matches.append(j)
+
+        spines.append(functions.Spine([special_word] + [words[match] for match in matches]))
+
+
+    return spines
+
+
+
+def GetGoogleSearchLink(search_query):
+    return 'https://www.google.com/search?q='+search_query
+
+def GetBookInfo(search_query):
+    link = GetAmazonLinkFromGoogleSearch(search_query)
+    return GetTitleFromAmazon(link)
+
+
+def GetAmazonLinkFromGoogleSearch(search_query):
+
+    # Perform google search
+    link = GetGoogleSearchLink(search_query)
+
+    ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
+
+    response = requests.get(link, headers=ua)
+    content = response.content
+
+    # Parse for amazon link
+    soup = BeautifulSoup(content, 'html.parser')
+    for link in soup.find_all('a'):
+        url = link.get('href')
+        if 'amazon' in str(url):
+            return url
+
+def GetTitleFromAmazon(url):
+    ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
+    response = requests.get(url, headers=ua)
+    content = response.content
+
+    # Parse for amazon link
+    soup = BeautifulSoup(content, 'html.parser')
+
+
+
+    # Title
+    title = soup.find_all(id='productTitle')[0].contents[0]
+
+
+
+
+    # Author
+    author = soup.find_all(class_ = 'a-link-normal contributorNameID')[0].contents[0]
+
+
+
+
+
+
+    # ISBN-13
+    isbn_13 = soup.find_all(class_ = 'a-size-base a-color-base')[0].contents
+
+
+
+
+
+
+    # ISBN-10
+    isbn_10 = soup.find_all(class_ = 'a-size-base a-color-base')[1].contents
+
+
+
+
+
+
+    return title, author
 
 
 
