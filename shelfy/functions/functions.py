@@ -7,7 +7,7 @@ import bs4
 
 def GetSpines(words):
 
-
+    matched_words = []
     for i, special_word in enumerate(words):
         matches = []
         # Check if word has already been matched
