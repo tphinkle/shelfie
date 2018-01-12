@@ -23,7 +23,7 @@ def get_submissions_files():
 
 
 @views.route('/uploads/<filename>', methods=['GET'])
-def result(filename):
+def uploads(filename):
 
     # Get file names in submissions folder
     stored_filenames = get_submissions_files()
@@ -57,25 +57,24 @@ def index():
 
 
     if method == 'POST':
-        print('wtf')
-        # check if the post request has the file part
+
+
+        # No file found in the POST submission
         if 'file' not in flask.request.files:
-            print('flask.request.files', flask.request.files)
-            #flash('No file part')
             return flask.redirect(flask.request.url)
 
 
 
+        # File was found
         file = flask.request.files['file']
 
-        # if user does not select file, browser also
-        # submit a empty part without filename
-        print('file name', file.filename)
+        # No file name submitted
         if file.filename == '':
             print('no file')
-            #flask.Flask.flash('No selected file')
             return flask.redirect(request.url)
+
+        # File was found, and is an allowable file type
         if file and allowed_file(file.filename):
 
-            file.save('./uploads/' + secure_filename(file.filename))
+            file.save(shelfy.SHELFY_BASE_PATH + '/static/uploads/' + secure_filename(file.filename))
             return flask.redirect('/uploads/' + file.filename.split('.')[0])
