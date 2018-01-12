@@ -53,7 +53,7 @@ def GetSpines(words):
                 matched_words.append(j)
                 matches.append(j)
 
-        spines.append(functions.Spine([special_word] + [words[match] for match in matches]))
+        spines.append(Spine([special_word] + [words[match] for match in matches]))
 
 
     return spines
