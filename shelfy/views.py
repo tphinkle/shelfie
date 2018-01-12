@@ -4,7 +4,7 @@ import flask
 import os
 from werkzeug.utils import secure_filename
 import shelfy
-import shelfy.functions
+import functions
 
 
 views = flask.Blueprint('views', __name__)
