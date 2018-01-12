@@ -35,7 +35,7 @@ def uploads(filename):
             matching_file = stored_filename
 
     # Calculate result
-    functions.FullProcessImage(matching_file)
+    img = shelfy.functions.FullProcessImage(matching_file)
 
 
 
