@@ -7,6 +7,8 @@ import bs4
 
 def GetSpines(words):
 
+    spines = []
+
     xcs = []
     ycs = []
     thetas = []
