@@ -7,6 +7,13 @@ import bs4
 
 def GetSpines(words):
 
+    xcs = []
+    ycs = []
+    thetas = []
+
+    yc_tolerance = 100
+    theta_tolerance = 1000
+
     matched_words = []
     for i, special_word in enumerate(words):
         matches = []
