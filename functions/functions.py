@@ -112,7 +112,7 @@ class BoundingBox(object):
         long_axis_angle = self.LongAxisAngle()
         short_axis_angle = self.ShortAxisAngle()
 
-        if np.abs(long_axis_angle)%(np.pi/2.) > np.abs(short_axis_angle)%(np.pi/2.):
+        if np.abs(np.sin(long_axis_angle)) > np.abs(np.sin(short_axis_angle)):
             return long_axis_angle
         else:
             return short_axis_angle
