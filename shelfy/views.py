@@ -34,11 +34,10 @@ def uploads(filename):
         if filename in stored_filename:
             matching_file = stored_filename
 
-    print('shelfy functions:')
-    print(dir(functions))
+
 
     # Calculate result
-    img = functions.FullProcessImage(matching_file)
+    img = functions.FullProcessImage(shelfy.SHELFY_BASE_PATH + '/static/uploads/' + matching_file)
 
 
 
