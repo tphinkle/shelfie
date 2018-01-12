@@ -20,7 +20,7 @@ def FullProcessImage(img_path):
 
     # Loads the image into memory
     with io.open(img_file, 'rb') as img_path:
-        content = image_file.read()
+        content = image_path.read()
     img_bin = types.Image(content=content)
 
 
