@@ -8,6 +8,10 @@ from google.cloud.vision import types
 
 
 def FullProcessImage(img_path):
+
+
+
+
     # Instantiates a client
     client = vision.ImageAnnotatorClient()
 
