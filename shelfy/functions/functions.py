@@ -39,7 +39,7 @@ def FullProcessImage(img_path):
 
 
 
-def GetSpinesFromTokens(words):
+def GetSpinesFromWords(words):
     '''
     Matches words that belong on the same spine into a 'Spine' object
     '''
