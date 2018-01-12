@@ -2,10 +2,42 @@ import numpy as np
 import matplotlib.pyplot as plt
 import bs4
 
+# Imports the Google Cloud client library
+from google.cloud import vision
+from google.cloud.vision import types
+
+
+def FullProcessImage(img_path):
+    # Instantiates a client
+    client = vision.ImageAnnotatorClient()
 
 
 
-def GetSpines(words):
+    # Loads the image into memory
+    with io.open(img_file, 'rb') as img_path:
+        content = image_file.read()
+    img_bin = types.Image(content=content)
+
+
+
+    # Ask for response; get response annotations
+    response = client.document_text_detection(image=img_bin)
+    texts = response.text_annotations
+
+    words = [Word.FromGoogleText(text) for text in texts[1:]]
+
+    spines = GetSpinesFromWords(words)
+
+    for spine in spines:
+        print(GetBookInfo(book_info))
+
+
+
+
+def GetSpinesFromTokens(words):
+    '''
+    Matches words that belong on the same spine into a 'Spine' object
+    '''
 
     spines = []
 
@@ -24,8 +56,6 @@ def GetSpines(words):
             continue
 
         for j, word in enumerate(words):
-
-
 
             # Don't match a word with itself
             if i == j:
@@ -59,11 +89,18 @@ def GetSpines(words):
     return spines
 
 
-
 def GetGoogleSearchLink(search_query):
+    '''
+    Formats a string to be in the proper url for a google search
+    '''
+
     return 'https://www.google.com/search?q='+search_query
 
 def GetBookInfo(search_query):
+    '''
+    Grabs the Amazon link for a given search query and then scrapes the Amazon link for the book title
+    '''
+
     link = GetAmazonLinkFromGoogleSearch(search_query)
     return GetTitleFromAmazon(link)
 
