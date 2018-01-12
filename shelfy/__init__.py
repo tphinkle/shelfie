@@ -6,7 +6,9 @@ from werkzeug.utils import secure_filename    # Needed for image upload
 
 # Flask location
 
-SHELFY_BASE_PATH = ['/' + ele for ele in os.path.realpath(__file__).split('/')[:-1]]    # <-- total hack
+
+# Total hack to get the base path
+SHELFY_BASE_PATH = os.path.dirname(__file__)
 print('SHELFY BASE PATH', SHELFY_BASE_PATH)
 
 
