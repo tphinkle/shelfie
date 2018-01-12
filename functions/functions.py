@@ -66,7 +66,8 @@ class BoundingBox(object):
         (x-axis, or along the spine usually), and the short-axis (y-axis, lateral to spine direction usually)
         This takes coordinates
         '''
-        long_axis_angle = self.LongAxisAngle()
+        #long_axis_angle = self.LongAxisAngle()
+        long_axis_angle = self.VerticalAxisAngle()
         xc, yc = self.Center()
 
         xp = np.cos(long_axis_angle)*(x-xc) + np.sin(long_axis_angle)*(y-yc)
