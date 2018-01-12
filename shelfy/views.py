@@ -3,6 +3,7 @@ from shelfy import app
 import flask
 import os
 from werkzeug.utils import secure_filename
+import shelfy
 import shelfy.functions
 
 
@@ -14,8 +15,7 @@ def allowed_file(file_name):
 
 def get_submissions_files():
 
-    path = '/home/prestonh/Desktop/Programming/datasci/insight/projects/shelfy/shelfy/static/uploads'
-
+    path = shelfy.SHELFY_BASE_PATH + '/static/uploads'
 
     files = os.listdir(path)
     return files
@@ -28,20 +28,14 @@ def result(filename):
     # Get file names in submissions folder
     stored_filenames = get_submissions_files()
 
-    print('filename', filename)
-    print('stored filenames')
+
     for stored_filename in stored_filenames:
         print(stored_filename)
         if filename in stored_filename:
             matching_file = stored_filename
 
     # Calculate result
-
-
-
-
-    print('image file')
-    print('/home/prestonh/Desktop/Programming/datasci/insight/projects/shelfy/shelfy/uploads/' + matching_file)
+    functions.FullProcessImage(matching_file)
 
 
 
@@ -85,14 +79,3 @@ def index():
 
             file.save('./uploads/' + secure_filename(file.filename))
             return flask.redirect('/uploads/' + file.filename.split('.')[0])
-
-
-    '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post enctype=multipart/form-data>
-      <p><input type=file name=file>
-         <input type=submit value=Upload>
-    </form>
-    '''
