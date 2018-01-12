@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+
+{% block head %}
+<title> shelfy </title>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+{% block body %}
+
+  <div class="container-fluid bg-1 text-center">
+
+
+
+    <h1>shelfy</h1>
+
+    <!--
+    <form method="POST" enctype = "multipart/form-data">
+
+        <label for="exampleFormControlFile1">Example file input</label>
+        <input type="file" class="form-control-file" id="select_file">
+        <button type="submit" class="btn btn-primary" value="submit">Submit</button>
+
+    </form>
+  -->
+
+      <form method = "POST" enctype = "multipart/form-data">
+         <input type = "file" name = "file" />
+         <input type = "submit"/>
+      </form>
+
+
+  </div>
+
+
+{% endblock %}

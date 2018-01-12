@@ -1,0 +1,8 @@
+shelfy/__init__.py
+shelfy/shelfy.py
+shelfy/views.py
+shelfy.egg-info/PKG-INFO
+shelfy.egg-info/SOURCES.txt
+shelfy.egg-info/dependency_links.txt
+shelfy.egg-info/requires.txt
+shelfy.egg-info/top_level.txt
