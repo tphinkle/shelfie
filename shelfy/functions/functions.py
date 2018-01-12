@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import bs4
+import io
 
 # Imports the Google Cloud client library
 from google.cloud import vision

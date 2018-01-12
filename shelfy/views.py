@@ -2,7 +2,6 @@ from shelfy import app
 
 import flask
 import os
-import io
 from werkzeug.utils import secure_filename
 import shelfy
 from shelfy.functions import functions
