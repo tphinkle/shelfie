@@ -116,7 +116,15 @@ def GetTitleFromAmazon(url):
 
 
     # Title
-    title = soup.find_all(id='productTitle')[0].contents[0]
+    # (ebook)
+
+    ebook_title = soup.find_all(id = 'ebooksProductTitle')[0].contents[0]
+    book_title = soup.find_all(id = 'productTitle')[0].contents[0]
+
+    if ebook_title == []:
+        title = book_title
+    else:
+        title = ebook_title
 
 
 
