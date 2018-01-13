@@ -427,6 +427,6 @@ def FullProcessImage(img_path):
     spines = GetSpinesFromWords(words)
 
     for spine in spines:
-        link = GetAmazonLinkFromGoogleSearch(search_query)
+        link = GetAmazonLinkFromGoogleSearch(spine.words)
         title = GetTitleFromAmazon(link)
         print(title)
