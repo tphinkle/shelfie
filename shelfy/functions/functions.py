@@ -4,8 +4,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import requests
-import bs4
-from bs4.beautifulsoup import BeautifulSoup
+from bs4 import BeautifulSoup
+import time
+import requests
 
 from google.cloud import vision
 from google.cloud.vision import types
