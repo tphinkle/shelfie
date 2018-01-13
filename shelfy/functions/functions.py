@@ -429,7 +429,7 @@ def FullProcessImage(img_path):
     for spine in spines:
         search_query = ''
         for word in spine.words:
-            search_query += word + ' '
+            search_query += word.string + ' '
         link = GetAmazonLinkFromGoogleSearch(search_query)
         title = GetTitleFromAmazon(link)
         print(title)
