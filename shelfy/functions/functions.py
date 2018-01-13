@@ -1,9 +1,11 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import bs4
 import io
 
-# Imports the Google Cloud client library
+import numpy as np
+import matplotlib.pyplot as plt
+
+import requests
+import bs4
+
 from google.cloud import vision
 from google.cloud.vision import types
 
