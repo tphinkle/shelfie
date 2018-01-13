@@ -94,7 +94,7 @@ def GetAmazonLinkFromGoogleSearch(search_query):
     link = GetGoogleSearchLink(search_query)
 
     ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
-
+    print('link = ', link)
     response = requests.get(link, headers=ua)
     content = response.content
 
