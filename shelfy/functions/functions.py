@@ -8,33 +8,7 @@ from google.cloud import vision
 from google.cloud.vision import types
 
 
-def FullProcessImage(img_path):
 
-
-
-
-    # Instantiates a client
-    client = vision.ImageAnnotatorClient()
-
-
-
-    # Loads the image into memory
-    with io.open(img_path, 'rb') as img_file:
-        content = img_file.read()
-    img_bin = types.Image(content=content)
-
-
-
-    # Ask for response; get response annotations
-    response = client.document_text_detection(image=img_bin)
-    texts = response.text_annotations
-
-    words = [Word.FromGoogleText(text) for text in texts[1:]]
-
-    spines = GetSpinesFromWords(words)
-
-    for spine in spines:
-        print(GetBookInfo(book_info))
 
 
 
@@ -420,3 +394,39 @@ def PlotAnnotatedImage_GoogleCloudVision(img, texts):
     plt.imshow(img, cmap = 'gray')
 
     plt.show()
+
+
+def FullProcessImage(img_path):
+
+    '''
+    Puts an image through the entire pipeline
+    - Instantiates the google vision client
+    '''
+
+
+
+
+    # Instantiates a client
+    client = vision.ImageAnnotatorClient()
+
+
+
+    # Loads the image into memory
+    with io.open(img_path, 'rb') as img_file:
+        content = img_file.read()
+    img_bin = types.Image(content=content)
+
+
+
+    # Ask for response; get response annotations
+    response = client.document_text_detection(image=img_bin)
+    texts = response.text_annotations
+
+    words = [Word.FromGoogleText(text) for text in texts[1:]]
+
+    spines = GetSpinesFromWords(words)
+
+    for spine in spines:
+        print(GetBookInfo(book_info))
+        link = GetAmazonLinkFromGoogleSearch(search_query)
+        title = GetTitleFromAmazon(link)
