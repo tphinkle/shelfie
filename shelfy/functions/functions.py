@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 
 import requests
 import bs4
+from bs4.beautifulsoup import BeautifulSoup
 
 from google.cloud import vision
 from google.cloud.vision import types
