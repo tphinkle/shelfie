@@ -77,7 +77,7 @@ def GetGoogleSearchLink(search_query):
     Formats a string to be in the proper url for a google search
     '''
 
-    return 'https://www.google.com/search?q='+search_query
+    return 'https://www.google.com/search?q='+search_query.replace(' ', '+')
 
 def GetBookInfo(search_query):
     '''
