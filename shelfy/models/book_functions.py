@@ -145,7 +145,7 @@ class Word(object):
         '''
 
         string = google_text.description
-        bounding_box = BoundingBox.FromGoogleBoundingPoly(google_text.bounding_poly)
+        bounding_box = BoundingBox.from_google_bounding_poly(google_text.bounding_poly)
 
         return Word(string, bounding_box)
 
@@ -333,8 +333,6 @@ def get_spines_from_words(words):
             thetas.append(theta)
 
 
-            #print(word.string)
-            #print(xc, yc, theta)
 
             # If the difference in y value is below tolerance, append to the list of matches
             if np.abs(yc) < yc_tolerance and np.abs(theta) < theta_tolerance:

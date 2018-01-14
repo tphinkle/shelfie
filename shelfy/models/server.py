@@ -66,7 +66,6 @@ def create_new_submission(file):
     # Save the image to the newly created folder
     file_name = file.filename
     file_extension = file_name.split('.')[-1]
-    print('FILE NAME AND EXTENSION', file.filename, file.filename.split('.')[-1])
     file.save(directory + '/raw_img/raw_img' + '.' + file_extension)
 
 
@@ -82,19 +81,16 @@ def get_raw_image_path_from_submission_id(submission_id):
     # Get the directory of the raw_file file for the submission_id
     file_directory = shelfy.SHELFY_BASE_PATH + '/static/submissions/' + submission_id + '/raw_img'
 
-    print('FILE_DIRECTORY', file_directory)
 
     # get file path
     file_name = [file_name for file_name in os.listdir(file_directory) \
      if os.path.isfile(os.path.join(file_directory, file_name))][0]
 
-    print('FILE_NAME', file_name)
 
 
 
     file_path = file_directory + '/' + file_name
 
-    print('FILE PATH!:', file_path)
 
     return file_path
 
