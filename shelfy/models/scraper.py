@@ -15,7 +15,7 @@ from google.cloud.vision import types
 
 
 # Shelfy
-from shelfy.models import book
+from shelfy.models import book_functions
 
 
 def full_pipeline(img_path):
