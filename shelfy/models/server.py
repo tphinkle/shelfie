@@ -102,8 +102,10 @@ def get_pickle_directory_from_submission_id(submission_id):
     '''
 
     # Get the directory of the raw_file file for the submission_id
-    file_directory = shelfy.SHELFY_BASE_PATH + '/submissions/' + submission_id + '/books'
+    pickle_directory = shelfy.SHELFY_BASE_PATH + '/submissions/' + submission_id + '/books'
 
+
+    return pickle_directory
 
 
 def pickle_save_books(books, submission_id):
