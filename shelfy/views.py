@@ -9,35 +9,20 @@ from shelfy.functions import functions
 
 views = flask.Blueprint('views', __name__)
 
-def allowed_file(file_name):
-    return True
-
-
-def get_submissions_files():
-
-    path = shelfy.SHELFY_BASE_PATH + '/static/uploads'
-
-    files = os.listdir(path)
-    return files
 
 
 
 @views.route('/uploads/<filename>', methods=['GET'])
 def uploads(filename):
 
-    # Get file names in submissions folder
-    stored_filenames = get_submissions_files()
+
+    filepath = shelfy.SHELFY_BASE_PATH + '/static/uploads/' + filename
 
 
-    for stored_filename in stored_filenames:
-        print(stored_filename)
-        if filename in stored_filename:
-            matching_file = stored_filename
+    # Create and save all annotated images
 
-
-
-    # Calculate result
-    img = functions.FullProcessImage(shelfy.SHELFY_BASE_PATH + '/static/uploads/' + matching_file)
+    # Get all books objects
+    books = functions.FullProcessImage(shelfy.SHELFY_BASE_PATH + '/static/uploads/' + matching_file)
 
 
 
@@ -46,6 +31,14 @@ def uploads(filename):
 
 @views.route('/', methods=['GET', 'POST'])
 def index():
+    '''
+    The index; a simple interface for allowing a user to submit an image
+    to query
+    methods:
+        GET: The main page, has a 'submit image' button
+        POST: After the submit/query/request button is hit, the file will be saved
+        to the server and the user will be redirected to the uploads page
+    '''
 
     # Get method type
     method = flask.request.method
@@ -78,5 +71,6 @@ def index():
         # File was found, and is an allowable file type
         if file and allowed_file(file.filename):
 
-            file.save(shelfy.SHELFY_BASE_PATH + '/static/uploads/' + secure_filename(file.filename))
+            # Create a new submission folder for the submission
+            server.create_new_submission(file)
             return flask.redirect('/uploads/' + file.filename.split('.')[0])

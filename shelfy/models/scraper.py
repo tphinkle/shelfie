@@ -9,11 +9,11 @@ from bs4 import BeautifulSoup
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Scrapy
-import scrapy.book
+# Shelfy
+import shelfy.book
 
 
-def FullPipeline(filepath):
+def full_pipeline(filepath):
     '''
     Given a filepath, performs the full processing pipeline,
     from loading the image to returning all Book objects found in the image
@@ -41,10 +41,10 @@ def FullPipeline(filepath):
     texts = response.text_annotations
 
     # Create word objects from the google word objects
-    words = [Word.FromGoogleText(text) for text in texts[1:]]
+    words = [Word.from_google_text(text) for text in texts[1:]]
 
     # Group the words into spines
-    spines = GetSpinesFromWords(words)
+    spines = get_spines_from_words(words)
 
     # Run the scraping pipeline for each spine
     books = []
@@ -55,7 +55,7 @@ def FullPipeline(filepath):
         search_query = spine.sentence
 
         # Process query
-        book_info = GetBookInfo(search_query)
+        book_info = get_book_info(search_query)
 
         # Create and store the new book object
         book = Book(book_info, spine)
@@ -70,24 +70,24 @@ def FullPipeline(filepath):
 
 
 
-def GetGoogleSearchURLFromQuery(search_query):
+def get_google_search_url_from_query(search_query):
     '''
     Formats a string to be in the proper url for a google search
     '''
 
     return 'https://www.google.com/search?q='+search_query.replace(' ', '+').replace('-','')
 
-def GetBookInfo(search_query):
+def get_book_info(search_query):
     '''
     Grabs the Amazon link for a given search query and then scrapes the Amazon link for the book title
     '''
-    search_url = GetGoogleSearchURLFromQuery(search_query)
-    link = GetAmazonURLFromGoogleSearch(search_url)
-    title = GetInfoFromAmazon(link)
+    search_url = get_google_search_url_from_query(search_query)
+    link = get_amazon_url_from_google_search(search_url)
+    title = get_info_from_amazon(link)
     return title
 
 
-def GetAmazonURLFromGoogleSearch(search_url):
+def get_amazon_url_from_google_search(search_url):
     '''
     Two-part functions;
     first, uses `requests' module to perform the google search at search_url
@@ -113,7 +113,7 @@ def GetAmazonURLFromGoogleSearch(search_url):
 
 
 
-def GetInfoFromAmazon(url):
+def get_info_from_amazon(url):
     '''
     Given a url to an amazon page, will scrape that page for as much information
     as possible about the book; returns the information in `dict' format.
@@ -151,7 +151,7 @@ def GetInfoFromAmazon(url):
 
 
 
-def GetTitleFromAmazonSoup(soup):
+def get_title_from_amazon_soup(soup):
     '''
     Scrapes soup created from an amazon page for the book's
     title
@@ -173,7 +173,7 @@ def GetTitleFromAmazonSoup(soup):
     return title
 
 
-def GetAuthorsFromAmazonSoup(soup):
+def get_authors_from_amazon_soup(soup):
     '''
     Scrapes soup created from an amazon page for the book's
     authors
@@ -190,7 +190,7 @@ def GetAuthorsFromAmazonSoup(soup):
     return ''
 
 
-def GetEditionFromAmazonSoup(soup):
+def get_edition_from_amazon_soup(soup):
     '''
     Scrapes soup created from an amazon page for the book's
     edition
@@ -200,7 +200,7 @@ def GetEditionFromAmazonSoup(soup):
     return ''
 
 
-def GetISBN10FromAmazonSoup(soup):
+def get_isbn10_from_amazon_soup(soup):
     '''
     Scrapes soup created from an amazon page for the book's
     isbn-10 number
@@ -217,7 +217,7 @@ def GetISBN10FromAmazonSoup(soup):
     return ''
 
 
-def GetISBN13FromAmazonSoup(soup):
+def get_isbn13_from_amazon_soup(soup):
     '''
     Scrapes soup created from an amazon page for the book's
     isbn-13 number

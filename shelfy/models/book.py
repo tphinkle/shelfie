@@ -20,7 +20,8 @@ class BoundingBox(object):
         self.xs = xs
         self.ys = ys
 
-    def Center(self):
+    @Property
+    def center(self):
         '''
         Returns the center of the bounding box object
         '''
@@ -30,38 +31,38 @@ class BoundingBox(object):
         return xc, yc
 
 
-    def ImageToBoundingBoxCoordinateTransformation(self, x, y):
+    def image_to_bounding_box_coordinate_transformation(self, x, y):
         '''
         The coordinate frame of the bounding box is defined by its center (the origin), the long-axis
         (x-axis, or along the spine usually), and the short-axis (y-axis, lateral to spine direction usually)
         This takes coordinates
         '''
-        #long_axis_angle = self.LongAxisAngle()
-        long_axis_angle = self.VerticalAxisAngle()
-        xc, yc = self.Center()
+        long_axis_angle = self.vertical_axis_angle
+        xc, yc = self.center
 
         xp = np.cos(long_axis_angle)*(x-xc) + np.sin(long_axis_angle)*(y-yc)
         yp = -np.sin(long_axis_angle)*(x-xc) + np.cos(long_axis_angle)*(y-yc)
 
         return (xp, yp)
 
-    def FitLine(self):
+    def fit_line(self):
         '''
         Gets the line in the form y=mx+b (returns slope and y-intercept) of the bounding box object.
         Does this by finding the long axis angle and center
         Returned as a tuple
         '''
 
-        center = self.Center()
+        center = self.center
         x = center[0]
         y = center[1]
 
-        m = np.tan(self.LongAxisAngle())
+        m = np.tan(self.long_axis_angle)
         b = y-m*x
 
         return (m, b)
 
-    def LongAxisAngle(self):
+    @property
+    def long_axis_angle(self):
         '''
         Returns the long axis angle of the bounding box object
         '''
@@ -75,7 +76,8 @@ class BoundingBox(object):
         else:
             return np.arctan2(self.ys[2]-self.ys[1], self.xs[2]-self.xs[1])
 
-    def VerticalAxisAngle(self):
+    @property
+    def vertical_axis_angle(self):
         '''
         Returns ShortAxisAngle or LongAxisAngle; whichever happens to align vertically with the image
         '''
@@ -89,8 +91,8 @@ class BoundingBox(object):
             return short_axis_angle
 
 
-
-    def ShortAxisAngle(self):
+    @property
+    def short_axis_angle(self):
         '''
         Returns the short axis of the bounding box object
         '''
@@ -106,7 +108,7 @@ class BoundingBox(object):
 
 
 
-    def FromGoogleBoundingPoly(bounding_poly):
+    def from_google_bounding_poly(bounding_poly):
         '''
         Factory function for creating a vertex from a bounding poly
         args:
@@ -135,7 +137,7 @@ class Word(object):
         self.string = string
         self.bounding_box = bounding_box
 
-    def FromGoogleText(google_text):
+    def from_google_text(google_text):
         '''
         Converts a google text_annotation into a simpler Word format
         args:
@@ -187,7 +189,16 @@ class Book(object):
         self.spine = spine
 
 
-def PlotBoxedImage_Words(img, words, color = 'red', show = True):
+    @property
+    def similarity(self):
+        return 0
+
+
+
+
+
+
+def plot_boxed_image_words(img, words, color = 'red', show = True):
     '''
     Plots an image alongside all of the bounding boxes found by the GoogleCloudVision
     document_text_detection() function
@@ -210,7 +221,7 @@ def PlotBoxedImage_Words(img, words, color = 'red', show = True):
     if show:
         plt.show()
 
-def PlotAnnotatedImage_Words(img, words, color = 'red', show = True):
+def plot_annotated_image_words(img, words, color = 'red', show = True):
     '''
     Plots the boxed words, but also labels them
     '''
@@ -233,7 +244,7 @@ def PlotAnnotatedImage_Words(img, words, color = 'red', show = True):
         plt.show()
 
 
-def SaveSpines(spines, file_path):
+def save_spines(spines, file_path):
     '''
     Save the words along each spine to the specified file path.
     '''
@@ -244,7 +255,7 @@ def SaveSpines(spines, file_path):
 
 
 
-def PlotAnnotatedImage_GoogleCloudVision(img, texts):
+def plot_annotated_image_google(img, texts):
     '''
     Plots an image alongside all of the bounding boxes found by the GoogleCloudVision
     document_text_detection() function
@@ -269,7 +280,7 @@ def PlotAnnotatedImage_GoogleCloudVision(img, texts):
 
 
 
-def GetSpinesFromWords(words):
+def get_spines_from_words(words):
     '''
     Matches words that belong on the same spine into a 'Spine' object
     Algorithm explanation:
