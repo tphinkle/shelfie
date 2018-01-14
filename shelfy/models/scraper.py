@@ -103,7 +103,7 @@ def get_amazon_url_from_google_search(search_url):
 
     # Perform the search and get the HTML
     ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
-    response = requests.get(url, headers=ua)
+    response = requests.get(search_url, headers=ua)
     content = response.content
 
     # Parse HTML content for amazon link; return first amazon url

@@ -7,10 +7,8 @@ from werkzeug.utils import secure_filename    # Needed for image upload
 # Flask location
 
 
-# Total hack to get the base path
+# Base path for project
 SHELFY_BASE_PATH = os.path.dirname(__file__)
-print('SHELFY BASE PATH', SHELFY_BASE_PATH)
-
 
 
 
