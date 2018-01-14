@@ -20,7 +20,7 @@ class BoundingBox(object):
         self.xs = xs
         self.ys = ys
 
-    @Property
+    @property
     def center(self):
         '''
         Returns the center of the bounding box object
