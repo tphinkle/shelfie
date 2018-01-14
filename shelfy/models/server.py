@@ -34,7 +34,7 @@ def generate_unique_id_incremental():
         return '000000000'
 
     # Submissions exist; find the latest submission and increment
-    submission_ids = [int(submission) for submission in submissions]
+    submission_ids = [int(submission_id) for submission_id in submission_ids]
     submission_ids.sort()
     last_submission_id = submission_ids[-1]
     new_submission_id = str(last_submission_id + 1).zfill(9)
