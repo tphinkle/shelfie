@@ -92,7 +92,7 @@ def get_raw_image_path_from_submission_id(submission_id):
 
 
 
-    file_path = file_directory + file_name
+    file_path = file_directory + '/' + file_name
 
     print('FILE PATH!:', file_path)
 

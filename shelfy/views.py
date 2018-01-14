@@ -43,7 +43,6 @@ def index():
 
 
     if method == 'GET':
-        print('get')
         return flask.render_template('index.html')
 
 
@@ -62,7 +61,6 @@ def index():
 
         # No file name submitted
         if file.filename == '':
-            print('no file')
             return flask.redirect(request.url)
 
         # File was found, and is an allowable file type
@@ -73,6 +71,8 @@ def index():
 
             # Process the file and filename
             file_path = server.get_raw_image_path_from_submission_id(submission_id)
+
+
 
             # Process the image
             books = scraper.full_pipeline(file_path)
