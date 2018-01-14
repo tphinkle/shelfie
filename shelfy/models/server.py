@@ -65,6 +65,7 @@ def create_new_submission(file):
 
     # Save the image to the newly created folder
     file_extension = file.name.split('.')[-1]
+    print('FILE NAME AND EXTENSION', file.name, file.name.split('.')[-1])
     file.save(directory + '/raw_img/raw_img' + '.' + file_extension)
 
 
