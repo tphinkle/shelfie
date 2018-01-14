@@ -46,10 +46,10 @@ def full_pipeline(img_path):
     texts = response.text_annotations
 
     # Create word objects from the google word objects
-    words = [book.Word.from_google_text(text) for text in texts[1:]]
+    words = [book_functions.Word.from_google_text(text) for text in texts[1:]]
 
     # Group the words into spines
-    spines = book.get_spines_from_words(words)
+    spines = book_functions.get_spines_from_words(words)
 
     # Run the scraping pipeline for each spine
     books = []
@@ -63,7 +63,7 @@ def full_pipeline(img_path):
         book_info = get_book_info(search_query)
 
         # Create and store the new book object
-        book = book.Book(book_info, spine)
+        book = book_functions.Book(book_info, spine)
         books.append(book)
 
 
