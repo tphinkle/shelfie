@@ -78,7 +78,7 @@ def get_raw_image_path_from_submission_id(submission_id):
     '''
 
     # Get the directory of the raw_file file for the submission_id
-    file_directory = shelfy.SHELFY_BASE_PATH + '/submissions/' + submission_id + '/raw_img'
+    file_directory = shelfy.SHELFY_BASE_PATH + '/static/submissions/' + submission_id + '/raw_img'
 
     # get file path
     file_path = [file_name for file_name in os.listdir(file_directory) \
