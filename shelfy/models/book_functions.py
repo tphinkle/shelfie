@@ -82,8 +82,8 @@ class BoundingBox(object):
         Returns ShortAxisAngle or LongAxisAngle; whichever happens to align vertically with the image
         '''
 
-        long_axis_angle = self.LongAxisAngle()
-        short_axis_angle = self.ShortAxisAngle()
+        long_axis_angle = self.long_axis_angle
+        short_axis_angle = self.short_axis_angle
 
         if np.abs(np.sin(long_axis_angle)) > np.abs(np.sin(short_axis_angle)):
             return long_axis_angle
@@ -162,7 +162,7 @@ class Spine(object):
 
 
         # Store the ordered words
-        ys = np.array([word.bounding_box.Center()[1] for word in words])
+        ys = np.array([word.bounding_box.center[1] for word in words])
         ordered_words = [words[i] for i in np.argsort(ys)]
         self.words = ordered_words
 
@@ -235,9 +235,9 @@ def plot_annotated_image_words(img, words, color = 'red', show = True):
         x3 = (word.bounding_box.xs[3] + word.bounding_box.xs[0])/2.
 
         text_x = np.max(np.array([x0,x1,x2,x3]))
-        text_y = word.bounding_box.Center()[1]
+        text_y = word.bounding_box.center[1]
 
-        angle = word.bounding_box.LongAxisAngle()
+        angle = word.bounding_box.long_axis_angle
         plt.text(text_x, text_y, word.string, size = 18, ha = 'left', va = 'center', rotation = -angle*180./np.pi, color = 'red', fontweight = 'bold')
 
     if show:
@@ -325,9 +325,9 @@ def get_spines_from_words(words):
             if j in matched_words:
                 continue
 
-            x, y = word.bounding_box.Center()
+            x, y = word.bounding_box.center
             xc, yc = special_word.bounding_box.ImageToBoundingBoxCoordinateTransformation(x, y)
-            theta = np.abs(word.bounding_box.VerticalAxisAngle() - special_word.bounding_box.VerticalAxisAngle())%(np.pi/2.)
+            theta = np.abs(word.bounding_box.vertical_axis_angle - special_word.bounding_box.vertical_axis_angle)%(np.pi/2.)
             xcs.append(xc)
             ycs.append(yc)
             thetas.append(theta)
