@@ -18,9 +18,9 @@ from google.cloud.vision import types
 from shelfy.models import book
 
 
-def full_pipeline(filepath):
+def full_pipeline(img_path):
     '''
-    Given a filepath, performs the full processing pipeline,
+    Given a path to an img (img_path), performs the full processing pipeline,
     from loading the image to returning all Book objects found in the image
     Steps:
         1. Load the image
