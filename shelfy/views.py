@@ -4,7 +4,7 @@ import flask
 import os
 from werkzeug.utils import secure_filename
 import shelfy
-from shelfy.functions import functions
+from shelfy.models import book, scraper, server
 
 
 views = flask.Blueprint('views', __name__)
@@ -12,21 +12,18 @@ views = flask.Blueprint('views', __name__)
 
 
 
-@views.route('/uploads/<filename>', methods=['GET'])
-def uploads(filename):
-
-
-    filepath = shelfy.SHELFY_BASE_PATH + '/static/uploads/' + filename
-
-
-    # Create and save all annotated images
-
-    # Get all books objects
-    books = functions.FullProcessImage(shelfy.SHELFY_BASE_PATH + '/static/uploads/' + matching_file)
+@views.route('/uploads/<submission_id>', methods=['GET'])
+def uploads(submission_id):
 
 
 
-    return flask.render_template('submission.html', image_file = '/static/uploads/' + matching_file)
+
+    raw_img_file_path = server.get_raw_image_path_from_submission_id(submission_id):
+
+
+
+
+    return flask.render_template('submission.html', image_file = raw_img_file_path)
 
 
 @views.route('/', methods=['GET', 'POST'])
@@ -69,8 +66,28 @@ def index():
             return flask.redirect(request.url)
 
         # File was found, and is an allowable file type
-        if file and allowed_file(file.filename):
+        if file:
 
             # Create a new submission folder for the submission
-            server.create_new_submission(file)
-            return flask.redirect('/uploads/' + file.filename.split('.')[0])
+            submission_id = server.create_new_submission(file)
+
+            # Process the file and filename
+            file_path = server.get_raw_image_from_submission(submission_id)
+
+            # Process the image
+            books = scraper.full_pipeline(file_path)
+
+
+            # Pickle and save the books
+            server.pickle_save_books(books, submission_id)
+
+            # Save the annotated images
+
+
+
+
+
+
+
+
+            return flask.redirect('/uploads/' + submission_id)
