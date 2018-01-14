@@ -128,7 +128,7 @@ def GetTitleFromAmazon(url):
 
 
 
-
+    '''
     # Author
     author = soup.find_all(class_ = 'a-link-normal contributorNameID')[0].contents[0]
 
@@ -147,7 +147,7 @@ def GetTitleFromAmazon(url):
 
     # ISBN-10
     isbn_10 = soup.find_all(class_ = 'a-size-base a-color-base')[1].contents
-
+    '''
 
 
 
@@ -433,6 +433,7 @@ def FullProcessImage(img_path):
     # Ask for response; get response annotations
     response = client.document_text_detection(image=img_bin)
     texts = response.text_annotations
+
 
     words = [Word.FromGoogleText(text) for text in texts[1:]]
 
