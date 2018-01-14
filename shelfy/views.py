@@ -72,7 +72,7 @@ def index():
             submission_id = server.create_new_submission(file)
 
             # Process the file and filename
-            file_path = server.get_raw_image_from_submission(submission_id)
+            file_path = server.get_raw_image_path_from_submission_id(submission_id)
 
             # Process the image
             books = scraper.full_pipeline(file_path)
