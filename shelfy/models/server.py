@@ -82,7 +82,7 @@ def get_raw_image_path_from_submission_id(submission_id):
 
     # get file path
     file_path = [file_name for file_name in os.listdir(file_directory) \
-     if os.path.isfile(join(file_directory, file_name))][0]
+     if os.path.isfile(os.path.join(file_directory, file_name))][0]
 
     return file_path
 
