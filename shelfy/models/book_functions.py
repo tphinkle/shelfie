@@ -267,7 +267,7 @@ def plot_annotated_image_google(img, texts):
 
 
     for text in texts:
-        bb = BoundingBox.FromGoogleBoundingPoly(text.bounding_poly)
+        bb = BoundingBox.from_google_bounding_poly(text.bounding_poly)
         plt.plot([bb.xs[0], bb.xs[1]], [bb.ys[0], bb.ys[1]], lw = 3, c = 'r')
         plt.plot([bb.xs[1], bb.xs[2]], [bb.ys[1], bb.ys[2]], lw = 3, c = 'r')
         plt.plot([bb.xs[2], bb.xs[3]], [bb.ys[2], bb.ys[3]], lw = 3, c = 'r')
@@ -326,7 +326,7 @@ def get_spines_from_words(words):
                 continue
 
             x, y = word.bounding_box.center
-            xc, yc = special_word.bounding_box.ImageToBoundingBoxCoordinateTransformation(x, y)
+            xc, yc = special_word.bounding_box.image_to_bounding_box_coordinate_transformation(x, y)
             theta = np.abs(word.bounding_box.vertical_axis_angle - special_word.bounding_box.vertical_axis_angle)%(np.pi/2.)
             xcs.append(xc)
             ycs.append(yc)
