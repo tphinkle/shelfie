@@ -26,7 +26,7 @@ def generate_unique_id_incremental():
     '''
 
     # Get all folder names
-    submissions_path = shelfy.SHELFY_BASE_PATH + '/submissions'
+    submissions_path = shelfy.SHELFY_BASE_PATH + '/static/submissions'
     submission_ids = os.listdir(submissions_path)
 
     # If no submissions, initialize with first submission value
