@@ -119,5 +119,8 @@ def pickle_save_books(books, submission_id):
 
     # Pickle and save the books to the correct directory
     for i, book in enumerate(books):
+        print(book)
+        print([spine.word.string for spine in book.spines])
+
         with open(pickle_directory + '/' + str(i), 'wb') as file_handle:
             pickle.dump(book, file_handle)
