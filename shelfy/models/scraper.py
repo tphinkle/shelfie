@@ -88,7 +88,11 @@ def get_book_info(search_query):
     '''
     search_url = get_google_search_url_from_query(search_query)
     amazon_urls = get_amazon_url_from_google_search(search_url)
-    title = get_info_from_amazon(amazon_urls[0])
+
+    if len(amazon_urls) > 0:
+        title = get_info_from_amazon(amazon_urls[0])
+    else:
+        title = 'NULL'
     return title
 
 
