@@ -58,7 +58,7 @@ def create_new_submission(file):
     # Create the main and sub folders for the submission
     directory = shelfy.SHELFY_BASE_PATH + '/submissions/' + id
     os.makedirs(directory)
-    os.makedirs('/raw_img')
+    os.makedirs(directory + '/raw_img')
     os.makedirs(directory + '/annotated_imgs')
     os.makedirs(directory + '/books')
 
