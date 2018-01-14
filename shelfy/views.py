@@ -69,7 +69,7 @@ def index():
         if file:
 
             # Create a new submission folder for the submission
-            submission_id = server.create_new_submission(file)
+            submission_id = server.create_new_submission(file.filename)
 
             # Process the file and filename
             file_path = server.get_raw_image_path_from_submission_id(submission_id)
