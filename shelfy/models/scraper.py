@@ -9,8 +9,13 @@ from bs4 import BeautifulSoup
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Google cloud vision
+from google.cloud import vision
+from google.cloud.vision import types
+
+
 # Shelfy
-import shelfy.book
+from shelfy.models import book
 
 
 def full_pipeline(filepath):
@@ -41,10 +46,10 @@ def full_pipeline(filepath):
     texts = response.text_annotations
 
     # Create word objects from the google word objects
-    words = [Word.from_google_text(text) for text in texts[1:]]
+    words = [book.Word.from_google_text(text) for text in texts[1:]]
 
     # Group the words into spines
-    spines = get_spines_from_words(words)
+    spines = book.get_spines_from_words(words)
 
     # Run the scraping pipeline for each spine
     books = []
@@ -58,7 +63,7 @@ def full_pipeline(filepath):
         book_info = get_book_info(search_query)
 
         # Create and store the new book object
-        book = Book(book_info, spine)
+        book = book.Book(book_info, spine)
         books.append(book)
 
 
@@ -133,19 +138,19 @@ def get_info_from_amazon(url):
     book_info = {}
 
     # Title
-    book_info['title'] = GetTitleFromAmazonSoup(soup)
+    book_info['title'] = get_title_from_amazon_soup(soup)
 
     # Authors
-    book_info['authors'] = GetAuthorsFromAmazonSoup(soup)
+    book_info['authors'] = get_authors_from_amazon_soup(soup)
 
     # Edition
-    book_info['edition'] = GetEditionFromAmazonSoup(soup)
+    book_info['edition'] = get_edition_from_amazon_soup(soup)
 
     # ISBN-10
-    book_info['isbn-10'] = GetISBN10FromAmazonSoup(soup)
+    book_info['isbn-10'] = get_isbn10_from_amazon_soup(soup)
 
     # ISBN-13
-    book_info['isbn-13'] = GetISBN13FromAmazonSoup(soup)
+    book_info['isbn-13'] = get_isbn13_from_amazon_soup(soup)
 
     return book_info
 

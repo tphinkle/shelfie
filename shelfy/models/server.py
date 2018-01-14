@@ -1,6 +1,7 @@
 # Python standard library
 import io
 import os
+import pickle
 
 # Scipy
 import numpy as np
@@ -8,7 +9,11 @@ import matplotlib.pyplot as plt
 
 # Shelfy
 import shelfy
-import shelfy.book
+from shelfy.models import book
+
+# Google cloud visionfrom google.cloud import vision
+from google.cloud import vision
+from google.cloud.vision import types
 
 
 
@@ -21,7 +26,7 @@ def generate_unique_id_incremental():
     '''
 
     # Get all folder names
-    submissions_path = SHELFY_BASE_PATH + '/submissions'
+    submissions_path = shelfy.SHELFY_BASE_PATH + '/submissions'
     submission_ids = os.listdir(submissions_path)
 
     # If no submissions, initialize with first submission value
