@@ -57,6 +57,8 @@ def full_pipeline(img_path):
 
     for spine in spines:
 
+        print('asdfasdasdf')
+
         # Get query
         search_query = spine.sentence
 
