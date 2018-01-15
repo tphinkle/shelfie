@@ -206,6 +206,10 @@ def generate_processed_image(books, raw_file_path, save_path = None):
     onto the image. Optionally saves the file to save_path)
     '''
 
+    plt.ioff()
+
+
+
     img = cv2.imread(raw_file_path)
 
     print('img shape', img.shape)
