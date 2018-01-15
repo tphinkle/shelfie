@@ -155,5 +155,5 @@ def save_book_info(books, submission_id):
 
 
     # Dump the info to a json file
-    with open(info_directory + '/info.json', 'wb') as file_handle:
-        json.dumps([book.book_info for book in books], file_handle)
+    with open(info_directory + '/info.json', 'w') as file_handle:
+        json.dump([book.book_info for book in books], file_handle)
