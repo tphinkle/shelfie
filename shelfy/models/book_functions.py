@@ -217,7 +217,7 @@ class Book(object):
 
 
     def get_filtered_words(self):
-        words[word.string for word in self.spine.words]
+        words = word.string for word in self.spine.words
 
         # Remove all special characters
         for i in range(len(words)):
