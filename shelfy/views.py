@@ -28,7 +28,7 @@ def submission(submission_id):
 
     for book in books:
         print('book title', book.book_info['title'], book.book_info['authors'])
-        print(book.get_filtered_words)
+        print(book.get_filtered_words())
 
 
 
