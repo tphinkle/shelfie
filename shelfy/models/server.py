@@ -130,6 +130,8 @@ def get_pickle_directory_from_submission_id(submission_id):
 
     return pickle_directory
 
+
+
 def get_info_directory_from_submission_id(submission_id):
     '''
     Returns the correct path to the info directory for submission_id
@@ -157,8 +159,17 @@ def pickle_save_books(books, submission_id):
 
 
         with open(pickle_directory + '/' + str(i), 'wb') as file_handle:
-            #pickle.dump(book, file_handle)
+            pickle.dump(book, file_handle)
             pass
+
+
+def load_pickle_from_submission_id(submission_id):
+    '''
+    Loads the pickle object for the given submission_id, and returns the
+    list of books.
+    '''
+    
+    pass
 
 
 
