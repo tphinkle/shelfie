@@ -66,7 +66,7 @@
               <td>{{ book.book_info['publisher'] }}</td>
               <td>{{ book.book_info['isbn-13'] }}</td>
               <td>{{ book.book_info['isbn-10'] }}</td>
-              <td>{{ book.get_filtered_words() }}</td>
+              <td>{{ [word.string for word in book.spine.words] }}</td>
               <td>{{ book.book_info['title'] }}</td>
             </tr>
             {% endfor %}

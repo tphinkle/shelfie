@@ -202,21 +202,28 @@ class Book(object):
         # Copy spine
         self.spine = spine
 
+    def format_book_info_to_words_list(self):
+        '''
+        Formats the book's book_info as a list of individual tokens, all cast
+        to lower case strings
+        This is usually done in preparation for calculating a similarity measure
+        between strings
+        '''
+        book_words_list = []
+        for key in self.book_info.keys():
+            book_info_string = self.book_info[key].lower()
+            book_words_list += book_info_string.split(' ')
 
-    @property
-    def similarity(self):
-        return self.bag_distance_similarity
+        return book_words_list
 
-    @property
-    def bag_distance_similarity(self):
-        pass
+    def format_spine_words_to_words_list(self):
+        '''
+        Formats the book's spine.word.string tokens as a list of individual tokens,
+        all cast to lower case, and with special characters removed.
+        This is usually done in preparation for calculating a similarity measure
+        between strings
+        '''
 
-
-    def get_words(self):
-        return [word.string for word in self.spine.words]
-
-
-    def get_filtered_words(self):
         words = [word.string for word in self.spine.words]
 
         # Remove all special characters
@@ -227,6 +234,31 @@ class Book(object):
         words = [word for word in words if words != '']
 
         return words
+
+
+    def similarity(self, list1, list2):
+        '''
+        '''
+
+
+        book_words = self.format_book_info_to_words_list()
+        spine_words = self.format_spine_words_to_words_list()
+
+        print('book words', book_words)
+        print('spine words', spine_words)
+
+        return self.bag_distance_similarity
+
+
+    def bag_distance_similarity(self):
+        return 0
+
+
+
+    def get_words(self):
+        return [word.string for word in self.spine.words]
+
+
 
 
 
