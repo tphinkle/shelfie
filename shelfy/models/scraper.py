@@ -57,7 +57,6 @@ def full_pipeline(img_path):
 
     for spine in spines:
 
-        print('asdfasdasdf')
 
         # Get query
         search_query = spine.sentence
@@ -157,7 +156,7 @@ def get_amazon_url_from_google_search(search_url):
                 print('redirecting to ', 'https://www.google.com' + url)
                 url = get_amazon_url_from_google_search('https://www.google.com' + url)
 
-
+            print ('returning amazon url:', url)
             return url
 
     return None
