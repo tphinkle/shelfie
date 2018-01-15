@@ -11,7 +11,7 @@ views = flask.Blueprint('views', __name__)
 
 
 def format_for_routing(file_path):
-    file_path = '/shelfy' + file_path.replace(shelfy.SHELFY_BASE_PATH, '')
+    file_path = file_path.replace(shelfy.SHELFY_BASE_PATH, '')
     print('FORMATTED FILE PATH', file_path)
     return file_path
 
