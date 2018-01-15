@@ -156,8 +156,7 @@ def pickle_save_books(books, submission_id):
     sys.setrecursionlimit(100000)    # Necessary to pickle objects
 
     for i, book in enumerate(books):
-        print(dir(book))
-        print(book.book_info)
+
         for word in book.spine.words:
             print(word.string)
             print(word.bounding_box)
