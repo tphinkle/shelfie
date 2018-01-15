@@ -86,8 +86,14 @@ def get_book_info(search_query):
     '''
     Grabs the Amazon link for a given search query and then scrapes the Amazon link for the book title
     '''
+
+
     search_url = get_google_search_url_from_query(search_query)
+    print('search URL!', search_url)
+
     amazon_urls = get_amazon_url_from_google_search(search_url)
+
+
 
     if len(amazon_urls) > 0:
         title = get_info_from_amazon(amazon_urls[0])
