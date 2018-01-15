@@ -129,7 +129,9 @@ def get_amazon_url_from_google_search(search_url):
             # the google main search url
             print('first seven letters', url[:7])
             if url[:7] == '/search':
-                url = 'https://www.google.com' + url
+                amazon_urls += get_amazon_url_from_google_search('https://www.google.com' + url)
+                print('special url', url)
+
 
             amazon_urls.append(url)
     return amazon_urls
