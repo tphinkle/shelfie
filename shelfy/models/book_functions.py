@@ -1,9 +1,12 @@
+# Python standard library
 import io
 
+# Scientific computing
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 
+# Google cloud
 from google.cloud import vision
 from google.cloud.vision import types
 
@@ -204,6 +207,9 @@ def generate_processed_image(books, raw_file_path, save_path = None):
     '''
 
     img = cv2.imread(raw_file_path)
+
+    print('img shape', img.shape)
+    print('raw file path = ', raw_file_path)
 
     plt.imshow(img)
 
