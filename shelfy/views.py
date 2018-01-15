@@ -10,7 +10,10 @@ from shelfy.models import book_functions, scraper, server
 views = flask.Blueprint('views', __name__)
 
 
-
+def format_for_routing(file_path):
+    file_path = file_path.replace(shelfy.SHELFY_BASE_PATH, '/')
+    print('FORMATTED FILE PATH', file_path)
+    return file_path
 
 @views.route('/uploads/<submission_id>', methods=['GET'])
 def uploads(submission_id):
@@ -22,6 +25,8 @@ def uploads(submission_id):
 
 
     print('raw_img_file_path!', raw_img_file_path)
+
+
 
     return flask.render_template('submission.html', rawimgfilepath = raw_img_file_path)
 
