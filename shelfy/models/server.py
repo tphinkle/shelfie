@@ -175,6 +175,23 @@ def load_pickle_from_submission_id(submission_id):
     list of books.
     '''
 
+    # Get pickle directory
+    pickle_directory = get_pickle_directory_from_submission_id(submission_id):
+
+    # Get number of items in pickle directory
+    file_paths = os.listdir(pickle_directory)
+
+    # Load the objects
+    books = []
+    for file_path in file_paths:
+        with open(file_path, 'rb') as file_handle:
+            book = pickle.load(file_handle)
+            books.append(book)
+
+    return books
+
+
+
     pass
 
 

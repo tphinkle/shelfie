@@ -196,9 +196,9 @@ class Book(object):
         self.spine = spine
 
 
-    #@property
-    #def similarity(self):
-        #return 0
+    @property
+    def similarity(self):
+        return 0
 
 
 
