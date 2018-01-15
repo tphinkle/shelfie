@@ -180,7 +180,7 @@ def get_title_from_amazon_soup(soup):
     ebook_children = soup.find_all(id = 'ebooksProductTitle')
     book_children = soup.find_all(id = 'productTitle')
 
-    title = ''
+    title = 'NONE'
     if ebook_children != []:
         print('EBOOK')
         title = soup.find_all(id = 'ebooksProductTitle')[0].contents[0]
