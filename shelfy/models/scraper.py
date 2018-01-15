@@ -89,7 +89,6 @@ def get_google_search_url_from_query(search_query):
     Formats a string to be in the proper url for a google search
     '''
     url = 'https://www.google.com/search?q=amazon+'+search_query.replace(' ', '+')
-    print(url)
     return url
 
 def get_book_info(search_query):
@@ -104,6 +103,7 @@ def get_book_info(search_query):
 
     t0 = time.time()
     amazon_url = get_amazon_url_from_google_search(search_url)
+    print('amazon url!', amazon_url)
     t1 = time.time()
     #print('get google search', t1 - t0)
 
@@ -151,6 +151,7 @@ def get_amazon_url_from_google_search(search_url):
 
         # Found an amazon link
         if 'amazon' in str(url):
+            print('found amazon url', url)
             if is_google_search_redirect(url):
                 url = get_amazon_url_from_google_search('https://www.google.com' + url)
 
