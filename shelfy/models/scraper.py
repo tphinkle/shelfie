@@ -89,7 +89,7 @@ def get_google_search_url_from_query(search_query):
     Formats a string to be in the proper url for a google search
     '''
 
-    return 'https://www.google.com/search?q='+search_query.replace(' ', '+').replace('-','')
+    return 'https://www.google.com/search?q=amazon+'+search_query.replace(' ', '+').replace('-','')
 
 def get_book_info(search_query):
     '''
