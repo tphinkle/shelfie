@@ -188,11 +188,10 @@ def load_pickle_from_submission_id(submission_id):
             book = pickle.load(file_handle)
             books.append(book)
 
+    print('BOOKS!', len(books))
     return books
 
 
-
-    pass
 
 
 
