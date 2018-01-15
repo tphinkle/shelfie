@@ -30,11 +30,12 @@ def submission(submission_id):
         print('book title', book.book_info['title'], book.book_info['authors'])
         print(book.get_filtered_words())
 
+    #tokens = [book.get_filtered_words() for book in books]
 
 
 
 
-    return flask.render_template('submission.html', rawimgfilepath = raw_img_file_path, procimgfilepath = proc_img_file_path, books = books)
+    return flask.render_template('submission.html', rawimgfilepath = raw_img_file_path, procimgfilepath = proc_img_file_path, books = books)#, tokens = tokens)
 
 
 @views.route('/', methods=['GET', 'POST'])

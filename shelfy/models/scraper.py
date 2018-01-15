@@ -261,7 +261,7 @@ def get_publisher_from_amazon_soup(soup):
 
         for line in str(book_details[0]).split('\n'):
             if 'Publisher' in line:
-                publisher = line.split(':')[-1]
+                publisher = line.split(':')[-1].replace('</b>','').replace('</li>','')
 
 
 
