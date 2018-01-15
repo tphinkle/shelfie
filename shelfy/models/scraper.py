@@ -66,14 +66,7 @@ def full_pipeline(img_path):
         # Create and store the new book object
         book = book_functions.Book(book_info, spine)
 
-
-        print('tokens', [word.string for word in book.spine.words])
-        if book.book_info['title'] != 'NONE':
-            print('\t\ttitle', book.book_info['title'])
-
-
-
-            books.append(book)
+        books.append(book)
 
 
     # Finally, return

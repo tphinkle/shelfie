@@ -310,8 +310,7 @@ def generate_processed_image(books, raw_file_path, save_path = None):
         # Plot the bounding boxes
         bounding_boxes = [word.bounding_box for word in book.spine.words]
         for bb in bounding_boxes:
-            print('making a plot...')
-            print(bb.xs)
+
             plt.plot([bb.xs[0], bb.xs[1]], [bb.ys[0], bb.ys[1]], lw = 3, c = color)
             plt.plot([bb.xs[1], bb.xs[2]], [bb.ys[1], bb.ys[2]], lw = 3, c = color)
             plt.plot([bb.xs[2], bb.xs[3]], [bb.ys[2], bb.ys[3]], lw = 3, c = color)
