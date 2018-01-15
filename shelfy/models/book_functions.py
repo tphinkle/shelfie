@@ -193,8 +193,13 @@ class Book(object):
         book_info is a dict of information (e.g., {'title':[title]}).
         spine is the Spine object that the book info was determined from.
         '''
-        book_info = {'title':'NONE', 'authors':'NONE'}
-        self.book_info = book_info
+        # Initialize the default book_info dict and replace with values found
+        # in initializer object
+        self.book_info = {'title':'NONE', 'authors':'NONE'}
+        for key in book_info.keys():
+            self.book_info[key] = book_info[key]
+
+        # Copy spine
         self.spine = spine
 
 

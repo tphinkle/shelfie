@@ -145,6 +145,7 @@ def get_info_from_amazon(url):
     soup = BeautifulSoup(content, 'html.parser')
 
 
+    book_info = {}
 
     # Title
     book_info['title'] = get_title_from_amazon_soup(soup)
