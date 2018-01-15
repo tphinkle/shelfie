@@ -157,15 +157,11 @@ def pickle_save_books(books, submission_id):
 
     for i, book in enumerate(books):
 
-        for word in book.spine.words:
-            print(word.string)
-            print(word.bounding_box)
-            print(word.bounding_box.xs)
-            print(word.bounding_box.ys)
+
 
         with open(pickle_directory + '/' + str(i), 'wb') as file_handle:
             pickle.dump(book, file_handle)
-            pass
+
 
 
 def load_pickle_from_submission_id(submission_id):
@@ -183,6 +179,7 @@ def load_pickle_from_submission_id(submission_id):
     # Load the objects
     books = []
     for file_path in file_paths:
+        print('PICKLE FILE PATH', file_path)
         with open(file_path, 'rb') as file_handle:
             book = pickle.load(file_handle)
             books.append(book)
