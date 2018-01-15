@@ -103,7 +103,6 @@ def get_book_info(search_query):
 
     t0 = time.time()
     amazon_url = get_amazon_url_from_google_search(search_url)
-    print('amazon url!', amazon_url)
     t1 = time.time()
     #print('get google search', t1 - t0)
 
@@ -123,6 +122,7 @@ def get_book_info(search_query):
 
 
 def is_google_search_redirect(url):
+
     if url[:7] == '/search':
         return True
     else:
@@ -147,12 +147,19 @@ def get_amazon_url_from_google_search(search_url):
     soup = BeautifulSoup(content, 'html.parser')
     amazon_urls = []
     for link in soup.find_all('a'):
+
+        # Skip 'Did you mean? link'
+
+
+
+
+
         url = link.get('href')
 
         # Found an amazon link
         if 'amazon' in str(url):
-            print('found amazon url', url)
             if is_google_search_redirect(url):
+                print('redirecting to ', 'https://www.google.com' + url)
                 url = get_amazon_url_from_google_search('https://www.google.com' + url)
 
 
