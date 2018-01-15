@@ -91,15 +91,25 @@ def get_book_info(search_query):
     search_url = get_google_search_url_from_query(search_query)
     print('search URL!', search_url)
 
-    amazon_urls = get_amazon_url_from_google_search(search_url)
+    amazon_url = get_amazon_url_from_google_search(search_url)
 
 
 
-    if len(amazon_urls) > 0:
-        book_info = get_info_from_amazon(amazon_urls[0])
+    if amazon_urls != None:
+        book_info = get_info_from_amazon(amazon_url)
     else:
         book_info = {}
+
+
+
     return book_info
+
+
+def is_google_search_redirect(url):
+    if url[:7] == '/search':
+        return True
+    else:
+        return False
 
 
 def get_amazon_url_from_google_search(search_url):
@@ -122,19 +132,16 @@ def get_amazon_url_from_google_search(search_url):
     amazon_urls = []
     for link in soup.find_all('a'):
         url = link.get('href')
+
+        # Found an amazon link
         if 'amazon' in str(url):
-            print('found an amazon url:', url)
-
-            # If suggested link at bottom of google page, need to preprend
-            # the google main search url
-            print('first seven letters', url[:7])
-            if url[:7] == '/search':
-                amazon_urls += get_amazon_url_from_google_search('https://www.google.com' + url)
-                print('special url', url)
+            if is_google_search_redirect(url):
+                url = get_amazon_url_from_google_search('https://www.google.com' + url)
 
 
-            amazon_urls.append(url)
-    return amazon_urls
+            return url
+
+    return None
 
 
 
