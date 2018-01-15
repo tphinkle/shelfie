@@ -96,10 +96,10 @@ def get_book_info(search_query):
 
 
     if len(amazon_urls) > 0:
-        title = get_info_from_amazon(amazon_urls[0])
+        book_info = get_info_from_amazon(amazon_urls[0])
     else:
-        title = 'NULL'
-    return title
+        book_info = {}
+    return book_info
 
 
 def get_amazon_url_from_google_search(search_url):
