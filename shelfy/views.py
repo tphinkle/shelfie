@@ -23,7 +23,7 @@ def uploads(submission_id):
 
 
 
-    return flask.render_template('submission.html', image_file = raw_img_file_path)
+    return flask.render_template('submission.html', raw_image_file_path = raw_img_file_path)
 
 
 @views.route('/', methods=['GET', 'POST'])
