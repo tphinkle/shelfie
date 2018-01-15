@@ -281,7 +281,7 @@ def get_isbn13_from_amazon_soup(soup):
 
         for line in str(book_details[0]).split('\n'):
             if 'ISBN-13' in line:
-                isbn_13 = line[20:30]
+                isbn_13 = line[20:34]
                 break
 
 
