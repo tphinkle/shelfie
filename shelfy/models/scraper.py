@@ -66,9 +66,14 @@ def full_pipeline(img_path):
         # Create and store the new book object
         book = book_functions.Book(book_info, spine)
 
+
+
         if book.book_info['title'] != 'NONE':
             print('title', book.book_info['title'])
             print('tokens', [word.string for word in book.spine.words])
+
+            
+
             books.append(book)
 
 
@@ -94,7 +99,6 @@ def get_book_info(search_query):
 
 
     search_url = get_google_search_url_from_query(search_query)
-    print('search query!', search_query)
 
 
 
@@ -108,7 +112,6 @@ def get_book_info(search_query):
     if amazon_url != None:
         t0 = time.time()
         book_info = get_info_from_amazon(amazon_url)
-        print('\tbook info!', book_info['title'])
         t1 = time.time()
         #print('get amazon', t1 - t0)
     else:
