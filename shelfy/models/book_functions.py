@@ -205,7 +205,11 @@ class Book(object):
 
     @property
     def similarity(self):
-        return 0
+        return self.bag_distance_similarity
+
+    @property
+    def bag_distance_similarity(self):
+        
 
 
 

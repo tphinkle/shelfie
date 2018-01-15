@@ -67,6 +67,8 @@ def full_pipeline(img_path):
         book = book_functions.Book(book_info, spine)
 
         if book.book_info['title'] != 'NONE':
+            print('title', book.book_info['title'])
+            print('tokens', [word.string for word in book.spine.words])
             books.append(book)
 
 
