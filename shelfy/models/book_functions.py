@@ -209,7 +209,8 @@ class Book(object):
 
     @property
     def bag_distance_similarity(self):
-        
+        pass
+
 
 
 
