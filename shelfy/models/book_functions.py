@@ -222,8 +222,6 @@ def generate_processed_image(books, raw_file_path, save_path = None):
     img = cv2.imread(raw_file_path)
     img = img[:,:,::-1]
 
-    print('img shape', img.shape)
-    print('raw file path = ', raw_file_path)
 
     plt.imshow(img)
 
@@ -369,8 +367,8 @@ def get_spines_from_words(words):
     ycs = []
     thetas = []
 
-    yc_tolerance = 100
-    theta_tolerance = 1000
+    yc_tolerance = 50
+    theta_tolerance = 1000.
 
     matched_words = []
     for i, special_word in enumerate(words):

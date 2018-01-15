@@ -1,6 +1,7 @@
 # Python standard library
 import io
 import requests
+import time
 
 # Scraping
 from bs4 import BeautifulSoup
@@ -91,12 +92,20 @@ def get_book_info(search_query):
     search_url = get_google_search_url_from_query(search_query)
     print('search URL!', search_url)
 
+
+
+    t0 = time.time()
     amazon_url = get_amazon_url_from_google_search(search_url)
+    t1 = time.time()
+    print('get google search', t1 - t0)
 
 
 
     if amazon_url != None:
+        t0 = time.time()
         book_info = get_info_from_amazon(amazon_url)
+        t1 = time.time()
+        print('get amazon', t1 - t0)
     else:
         book_info = {}
 
@@ -120,7 +129,6 @@ def get_amazon_url_from_google_search(search_url):
     Next, scrapes the resulting HTML for all links to amazon pages,
     and returns the list of amazon links
     '''
-    print('a')
 
     # Perform the search and get the HTML
     ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
