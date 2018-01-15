@@ -104,6 +104,7 @@ def get_book_info(search_query):
     if amazon_url != None:
         t0 = time.time()
         book_info = get_info_from_amazon(amazon_url)
+        print('\tbook info!', book_info['title'])
         t1 = time.time()
         #print('get amazon', t1 - t0)
     else:
@@ -178,9 +179,6 @@ def get_info_from_amazon(url):
     # Authors
     book_info['authors'] = get_authors_from_amazon_soup(soup)
 
-    # Edition
-    book_info['edition'] = get_edition_from_amazon_soup(soup)
-
     # ISBN-10
     book_info['isbn-10'] = get_isbn10_from_amazon_soup(soup)
 
@@ -202,14 +200,20 @@ def get_title_from_amazon_soup(soup):
     # Title
     # (ebook)
 
-    ebook_children = soup.find_all(id = 'ebooksProductTitle')
-    book_children = soup.find_all(id = 'productTitle')
-
     title = 'NONE'
-    if ebook_children != []:
-        title = soup.find_all(id = 'ebooksProductTitle')[0].contents[0]
-    elif book_children != []:
-        title = soup.find_all(id = 'productTitle')[0].contents[0]
+
+    try:
+        ebook_children = soup.find_all(id = 'ebooksProductTitle')
+        book_children = soup.find_all(id = 'productTitle')
+
+        if ebook_children != []:
+            title = soup.find_all(id = 'ebooksProductTitle')[0].contents[0]
+        elif book_children != []:
+            title = soup.find_all(id = 'productTitle')[0].contents[0]
+
+    except:
+        pass
+
 
 
     return title
@@ -221,25 +225,17 @@ def get_authors_from_amazon_soup(soup):
     authors
     '''
 
+    author = 'NONE'
+
+    try:
+        author = soup.find_all(class_ = 'a-link-normal contributorNameID')[0].contents[0]
+    except:
+        pass
 
 
-    '''
-    # Author
-    author = soup.find_all(class_ = 'a-link-normal contributorNameID')[0].contents[0]
-    '''
 
+    return author
 
-    return ''
-
-
-def get_edition_from_amazon_soup(soup):
-    '''
-    Scrapes soup created from an amazon page for the book's
-    edition
-    '''
-
-
-    return ''
 
 
 def get_isbn10_from_amazon_soup(soup):
@@ -248,15 +244,26 @@ def get_isbn10_from_amazon_soup(soup):
     isbn-10 number
     '''
 
+    isbn_10 = 'NONE'
 
-    '''
-    # ISBN-10
-    isbn_10 = soup.find_all(class_ = 'a-size-base a-color-base')[1].contents
-    '''
-
+    try:
+        book_details = soup.findAll(id = 'detail-bullets')
 
 
-    return ''
+        for line in str(book_details[0]).split('\n'):
+            if 'ISBN-10' in line:
+                isbn_10 = line[20:30]
+                break
+
+
+
+
+    except:
+        pass
+
+    return isbn_10
+
+
 
 
 def get_isbn13_from_amazon_soup(soup):
@@ -266,10 +273,21 @@ def get_isbn13_from_amazon_soup(soup):
     '''
 
 
-    '''
-    # ISBN-13
-    isbn_13 = soup.find_all(class_ = 'a-size-base a-color-base')[0].contents
-    '''
+    isbn_13 = 'NONE'
+
+    try:
+        book_details = soup.findAll(id = 'detail-bullets')
 
 
-    return ''
+        for line in str(book_details[0]).split('\n'):
+            if 'ISBN-13' in line:
+                isbn_13 = line[20:30]
+                break
+
+
+
+
+    except:
+        pass
+
+    return isbn_13

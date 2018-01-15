@@ -387,6 +387,7 @@ def get_spines_from_words(words):
             if j in matched_words:
                 continue
 
+
             x, y = word.bounding_box.center
             xc, yc = special_word.bounding_box.image_to_bounding_box_coordinate_transformation(x, y)
             theta = np.abs(word.bounding_box.vertical_axis_angle - special_word.bounding_box.vertical_axis_angle)%(np.pi/2.)
