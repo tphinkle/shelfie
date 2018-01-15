@@ -95,7 +95,7 @@ def get_book_info(search_query):
 
 
 
-    if amazon_urls != None:
+    if amazon_url != None:
         book_info = get_info_from_amazon(amazon_url)
     else:
         book_info = {}
