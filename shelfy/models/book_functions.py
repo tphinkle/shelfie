@@ -193,6 +193,7 @@ class Book(object):
         book_info is a dict of information (e.g., {'title':[title]}).
         spine is the Spine object that the book info was determined from.
         '''
+        book_info = {'title':'NONE', 'authors':'NONE'}
         self.book_info = book_info
         self.spine = spine
 
@@ -200,7 +201,6 @@ class Book(object):
     @property
     def similarity(self):
         return 0
-
 
 
 
