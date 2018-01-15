@@ -103,17 +103,7 @@ def get_processed_image_path_from_submission_id(submission_id):
     '''
 
     # Get the directory of the raw_file file for the submission_id
-    file_directory = shelfy.SHELFY_BASE_PATH + '/static/submissions/' + submission_id + '/proc_img'
-
-
-    # get file path
-    file_name = [file_name for file_name in os.listdir(file_directory) \
-     if os.path.isfile(os.path.join(file_directory, file_name))][0]
-
-
-
-
-    file_path = file_directory + '/' + file_name
+    file_path = shelfy.SHELFY_BASE_PATH + '/static/submissions/' + submission_id + '/proc_img/proc_img.png'
 
 
     return file_path
