@@ -153,7 +153,7 @@ def pickle_save_books(books, submission_id):
 
     # Pickle and save the books to the correct directory
 
-    sys.setrecursionlimit(100000)    # Necessary to pickle objects
+    sys.setrecursionlimit(10000)    # Necessary to pickle objects
 
     for i, book in enumerate(books):
         print(dir(book))
