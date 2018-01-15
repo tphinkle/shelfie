@@ -196,6 +196,47 @@ class Book(object):
 
 
 
+def generate_processed_image(books, raw_file_path, save_path = None):
+    '''
+    Loads the image at raw_file_path, plots the image, and draws all bounding boxes
+    onto the image. Optionally saves the file to save_path)
+    '''
+
+    img = cv2.imread(raw_file_path)
+
+    plt.imshow(img)
+
+    for book in books:
+
+        # Get a random color to plot for the bounding box
+        color = np.random.rand(3)*.5 + .5
+
+
+        # Plot the bounding boxes
+        bounding_boxes = [word.bounding_box for word in book.spine.words]
+        for bb in bounding_boxes:
+            plt.plot([bb.xs[0], bb.xs[1]], [bb.ys[0], bb.ys[1]], lw = 3, c = color)
+            plt.plot([bb.xs[1], bb.xs[2]], [bb.ys[1], bb.ys[2]], lw = 3, c = color)
+            plt.plot([bb.xs[2], bb.xs[3]], [bb.ys[2], bb.ys[3]], lw = 3, c = color)
+            plt.plot([bb.xs[3], bb.xs[0]], [bb.ys[3], bb.ys[0]], lw = 3, c = color)
+
+
+    # Cosmetic options
+    plt.xticks([])
+    plt.yticks([])
+
+
+    # Save the figure
+    if save_path != None:
+        plt.savefig(save_path, dpi = 100, bbox_inches = 'tight')
+
+
+    # Close the plot
+    plt.close()
+
+
+
+
 
 
 def plot_boxed_image_words(img, words, color = 'red', show = True):

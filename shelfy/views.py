@@ -10,9 +10,8 @@ from shelfy.models import book_functions, scraper, server
 views = flask.Blueprint('views', __name__)
 
 
-def format_for_routing(file_path):
+def format_file_path_for_routing(file_path):
     file_path = file_path.replace(shelfy.SHELFY_BASE_PATH, '')
-    print('FORMATTED FILE PATH', file_path)
     return file_path
 
 @views.route('/uploads/<submission_id>', methods=['GET'])
@@ -21,10 +20,9 @@ def uploads(submission_id):
 
 
 
-    raw_img_file_path = format_for_routing(server.get_raw_image_path_from_submission_id(submission_id))
+    raw_img_file_path = format_file_path_for_routing(server.get_raw_image_path_from_submission_id(submission_id))
+    proc_img_file_path = format_file_path_for_routing(server.get_proc_image_path_from_submission_id(submission_id))
 
-
-    print('raw_img_file_path!', raw_img_file_path)
 
 
 
@@ -74,14 +72,13 @@ def index():
             # Create a new submission folder for the submission
             submission_id = server.create_new_submission(file)
 
-            # Process the file and filename
-            file_path = server.get_raw_image_path_from_submission_id(submission_id)
+            # Full pipeline
+            raw_file_path = server.get_raw_image_path_from_submission_id(submission_id)
+            books = scraper.full_pipeline(raw_file_path)
 
-
-
-            # Process the image
-            books = scraper.full_pipeline(file_path)
-
+            # Save the processed image
+            proc_file_path = server.get_proc_image_path_from_submission_id(submission_id)
+            book_functions.generate_processed_image(books, raw_file_path, save_path = proc_file_path)
 
             # Pickle and save the books
             server.pickle_save_books(books, submission_id)
