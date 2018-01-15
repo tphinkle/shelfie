@@ -209,7 +209,7 @@ class Book(object):
         '''
         book_words_list = []
         for key in self.book_info.keys():
-            book_words_list += book_info[key].split(' ')
+            book_words_list += self.book_info[key].split(' ')
 
         return book_words_list
 
@@ -265,8 +265,8 @@ class Book(object):
         book_words = self.format_preprocess_book_info_to_words_list()
         spine_words = self.format_preprocess_spine_words_to_words_list()
 
-        print('book words', book_words)
-        print('spine words', spine_words)
+        #print('book words', book_words)
+        #print('spine words', spine_words)
 
         return self.bag_distance_similarity
 

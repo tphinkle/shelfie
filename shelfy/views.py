@@ -25,6 +25,7 @@ def submission(submission_id):
     books = server.load_pickle_from_submission_id(submission_id)
 
     for book in books:
+        print('\n\n')
         print('book info', book.format_raw_book_info_to_words_list())
         print('spine words', book.format_raw_spine_words_to_words_list())
 
