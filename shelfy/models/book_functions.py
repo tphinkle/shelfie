@@ -265,8 +265,7 @@ class Book(object):
         book_words = self.format_preprocess_book_info_to_words_list()
         spine_words = self.format_preprocess_spine_words_to_words_list()
 
-        #print('book words', book_words)
-        #print('spine words', spine_words)
+    
 
         return self.bag_distance_similarity
 
