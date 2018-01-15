@@ -14,15 +14,15 @@ def format_file_path_for_routing(file_path):
     file_path = file_path.replace(shelfy.SHELFY_BASE_PATH, '')
     return file_path
 
-@views.route('/uploads/<submission_id>', methods=['GET'])
-def uploads(submission_id):
+@views.route('/submission/<submission_id>', methods=['GET'])
+def submission(submission_id):
 
 
 
 
     raw_img_file_path = format_file_path_for_routing(server.get_raw_image_path_from_submission_id(submission_id))
     proc_img_file_path = format_file_path_for_routing(server.get_processed_image_path_from_submission_id(submission_id))
-    books = server.get_words_from_submission_id(submission_id)
+    books = server.load_pickle_from_submission_id(submission_id)
 
     print('BOOKS!!!!!!!!!!!!!!!!!!!!!!!!!!!', len(books))
 
