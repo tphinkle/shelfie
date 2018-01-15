@@ -82,6 +82,8 @@ def index():
             raw_file_path = server.get_raw_image_path_from_submission_id(submission_id)
             books = scraper.full_pipeline(raw_file_path)
 
+            print('number of books:', len(books))
+
             # Save the processed image
             proc_file_path = server.get_processed_image_path_from_submission_id(submission_id)
             book_functions.generate_processed_image(books, raw_file_path, save_path = proc_file_path)
