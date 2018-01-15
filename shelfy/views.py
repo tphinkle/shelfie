@@ -21,7 +21,7 @@ def uploads(submission_id):
     raw_img_file_path = server.get_raw_image_path_from_submission_id(submission_id)
 
 
-
+    print('raw_image_file_path!', raw_image_file_path)
 
     return flask.render_template('submission.html', raw_image_file_path = raw_img_file_path)
 
