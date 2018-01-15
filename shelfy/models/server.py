@@ -118,6 +118,8 @@ def get_info_directory_from_submission_id(submission_id):
 
     info_directory = shelfy.SHELFY_BASE_PATH + '/static/submissions/' + submission_id + '/info'
 
+    return info_directory
+
 
 def pickle_save_books(books, submission_id):
     '''
