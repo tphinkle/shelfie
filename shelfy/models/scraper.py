@@ -72,7 +72,7 @@ def full_pipeline(img_path):
             print('title', book.book_info['title'])
             print('tokens', [word.string for word in book.spine.words])
 
-            
+
 
             books.append(book)
 
@@ -186,6 +186,9 @@ def get_info_from_amazon(url):
     # Authors
     book_info['authors'] = get_authors_from_amazon_soup(soup)
 
+    # Publisher
+    book_info['publisher'] = get_publisher_from_amazon_soup(soup)
+
     # ISBN-10
     book_info['isbn-10'] = get_isbn10_from_amazon_soup(soup)
 
@@ -242,6 +245,31 @@ def get_authors_from_amazon_soup(soup):
 
 
     return author
+
+
+def get_publisher_from_amazon_soup(soup):
+    '''
+    Scrapes soup created from an amazon page for the book's
+    publisher
+    '''
+
+    publisher = 'NONE'
+
+    try:
+        book_details = soup.findAll(id = 'detail-bullets')
+
+
+        for line in str(book_details[0]).split('\n'):
+            if 'Publisher' in line:
+                publisher = line.split(':')[-1]
+
+
+
+
+    except:
+        pass
+
+    return publisher
 
 
 
