@@ -156,7 +156,13 @@ def pickle_save_books(books, submission_id):
     sys.setrecursionlimit(5000)    # Necessary to pickle objects
 
     for i, book in enumerate(books):
-
+        print(dir(book))
+        print(book.book_info)
+        for word in book.spine.words:
+            print(word.string)
+            print(word.bounding_box)
+            print(word.bounding_box.xs)
+            print(word.bounding_box.ys)
 
         with open(pickle_directory + '/' + str(i), 'wb') as file_handle:
             pickle.dump(book, file_handle)
@@ -168,7 +174,7 @@ def load_pickle_from_submission_id(submission_id):
     Loads the pickle object for the given submission_id, and returns the
     list of books.
     '''
-    
+
     pass
 
 
