@@ -62,7 +62,7 @@ def create_new_submission(file):
 
     os.makedirs(directory)
     os.makedirs(directory + '/raw_img')
-    os.makedirs(directory + '/annotated_imgs')
+    os.makedirs(directory + '/proc_img')
     os.makedirs(directory + '/books')
     os.makedirs(directory + '/info')
 
