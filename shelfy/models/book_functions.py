@@ -202,7 +202,28 @@ class Book(object):
         # Copy spine
         self.spine = spine
 
-    def format_book_info_to_words_list(self):
+
+    def format_raw_book_info_to_words_list(self):
+        '''
+        Formats the book's book_info as a list of individual tokens
+        '''
+        book_words_list = []
+        for key in self.book_info.keys():
+            book_words_list += book_info_string.split(' ')
+
+        return book_words_list
+
+    def format_raw_spine_words_to_words_list(self):
+        '''
+        Formats the book's spine.word.string tokens as a list of individual tokens
+        '''
+
+        words = [word.string for word in self.spine.words]
+
+        return words
+
+
+    def format_preprocess_book_info_to_words_list(self):
         '''
         Formats the book's book_info as a list of individual tokens, all cast
         to lower case strings
@@ -216,7 +237,7 @@ class Book(object):
 
         return book_words_list
 
-    def format_spine_words_to_words_list(self):
+    def format_preprocess_spine_words_to_words_list(self):
         '''
         Formats the book's spine.word.string tokens as a list of individual tokens,
         all cast to lower case, and with special characters removed.
@@ -241,8 +262,8 @@ class Book(object):
         '''
 
 
-        book_words = self.format_book_info_to_words_list()
-        spine_words = self.format_spine_words_to_words_list()
+        book_words = self.format_preprocess_book_info_to_words_list()
+        spine_words = self.format_preprocess_spine_words_to_words_list()
 
         print('book words', book_words)
         print('spine words', spine_words)

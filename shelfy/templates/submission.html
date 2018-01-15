@@ -66,8 +66,12 @@
               <td>{{ book.book_info['publisher'] }}</td>
               <td>{{ book.book_info['isbn-13'] }}</td>
               <td>{{ book.book_info['isbn-10'] }}</td>
-              <td>{{ [word.string for word in book.spine.words] }}</td>
+              <td>{{ book.format_raw_spine_words_to_words_list() }}</td>
               <td>{{ book.book_info['title'] }}</td>
+
+
+
+
             </tr>
             {% endfor %}
           </tbody>
