@@ -81,6 +81,10 @@ def index():
             # Pickle and save the books
             server.pickle_save_books(books, submission_id)
 
+            # Save json of book info
+            server.save_book_info(books, submission_id)
+
+
             # Save the annotated images
 
 

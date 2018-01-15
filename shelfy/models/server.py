@@ -63,6 +63,7 @@ def create_new_submission(file):
     os.makedirs(directory + '/raw_img')
     os.makedirs(directory + '/annotated_imgs')
     os.makedirs(directory + '/books')
+    os.makedirs(directory + '/info')
 
     # Save the image to the newly created folder
     file_name = file.filename
@@ -110,6 +111,13 @@ def get_pickle_directory_from_submission_id(submission_id):
 
     return pickle_directory
 
+def get_info_directory_from_submission_id(submission_id):
+    '''
+    Returns the correct path to the info directory for submission_id
+    '''
+
+    info_directory = shelfy.SHELFY_BASE_PATH + '/static/submissions/' + submission_id + '/info'
+
 
 def pickle_save_books(books, submission_id):
     '''
@@ -130,3 +138,19 @@ def pickle_save_books(books, submission_id):
 
         with open(pickle_directory + '/' + str(i), 'wb') as file_handle:
             pickle.dump(book, file_handle)
+
+
+
+def save_book_info(books, submission_id):
+    '''
+    Saves the found book information in a json format to allow fellow humans
+    to parse easily
+    '''
+
+    # Get the directory to which to save the book information
+    info_directory = get_info_directory_from_submission_id(submission_id)
+
+
+    # Dump the info to a json file
+    with open(info_directory + '/info.json', 'wb') as file_handle:
+        json.dump([book.book_info for book in books], file_handle)
