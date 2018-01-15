@@ -195,7 +195,7 @@ class Book(object):
         '''
         # Initialize the default book_info dict and replace with values found
         # in initializer object
-        self.book_info = {'title':'NONE', 'authors':'NONE'}
+        self.book_info = {'title':'NONE', 'authors':'NONE', 'isbn-10':'NONE', 'isbn-13':'NONE'}
         for key in book_info.keys():
             self.book_info[key] = book_info[key]
 
