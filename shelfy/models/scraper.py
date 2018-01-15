@@ -131,7 +131,6 @@ def get_info_from_amazon(url):
 
     # Get HTML for the amazon url
     ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
-    print('url = (130)', url)
     response = requests.get(url, headers=ua)
     content = response.content
 
