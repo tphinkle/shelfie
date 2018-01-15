@@ -2,6 +2,7 @@
 import io
 import os
 import pickle
+import sys
 
 # Scipy
 import numpy as np
@@ -101,6 +102,8 @@ def get_pickle_directory_from_submission_id(submission_id):
     Returns the correct path to the pickle directory for submission_id
     '''
 
+
+
     # Get the directory of the raw_file file for the submission_id
     pickle_directory = shelfy.SHELFY_BASE_PATH + '/static/submissions/' + submission_id + '/books'
 
@@ -118,6 +121,9 @@ def pickle_save_books(books, submission_id):
     pickle_directory = get_pickle_directory_from_submission_id(submission_id)
 
     # Pickle and save the books to the correct directory
+
+    sys.setrecursionlimit(5000)    # Necessary to pickle objects
+
     for i, book in enumerate(books):
         print(book)
         print([word.string for word in book.spine.words])
