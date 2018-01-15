@@ -239,11 +239,12 @@ def generate_processed_image(books, raw_file_path, save_path = None):
     # Cosmetic options
     plt.xticks([])
     plt.yticks([])
-
+    plt.gca().set_frame_on(False)
+    plt.axis('off')
 
     # Save the figure
     if save_path != None:
-        plt.savefig(save_path, dpi = 100, bbox_inches = 'tight')
+        plt.savefig(save_path, dpi = 100, bbox_inches = 'tight', pad_inches = 0)
 
 
     # Close the plot
