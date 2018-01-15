@@ -22,11 +22,12 @@ def uploads(submission_id):
 
     raw_img_file_path = format_file_path_for_routing(server.get_raw_image_path_from_submission_id(submission_id))
     proc_img_file_path = format_file_path_for_routing(server.get_processed_image_path_from_submission_id(submission_id))
+    books = server.get_words_from_submission_id(submission_id)
 
 
 
 
-    return flask.render_template('submission.html', rawimgfilepath = raw_img_file_path)
+    return flask.render_template('submission.html', rawimgfilepath = raw_img_file_path, procimgfilepath = proc_img_file_path, books = books)
 
 
 @views.route('/', methods=['GET', 'POST'])

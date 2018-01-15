@@ -109,6 +109,13 @@ def get_processed_image_path_from_submission_id(submission_id):
     return file_path
 
 
+def get_words_from_submission_id(submission_id):
+    '''
+    Returns the book objects from the submission_id
+    '''
+
+    pass
+
 
 def get_pickle_directory_from_submission_id(submission_id):
     '''
