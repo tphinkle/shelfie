@@ -209,7 +209,7 @@ class Book(object):
         '''
         book_words_list = []
         for key in self.book_info.keys():
-            book_words_list += book_info_string.split(' ')
+            book_words_list += book_info[key].split(' ')
 
         return book_words_list
 
