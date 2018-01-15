@@ -182,9 +182,13 @@ def get_title_from_amazon_soup(soup):
 
     title = ''
     if ebook_children != []:
+        print('EBOOK')
         title = soup.find_all(id = 'ebooksProductTitle')[0].contents[0]
     elif book_children != []:
+        print('NORMAL BOOK')
         title = soup.find_all(id = 'productTitle')[0].contents[0]
+
+    print('TITLE!!!', title)
 
     return title
 
