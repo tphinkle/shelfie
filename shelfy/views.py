@@ -98,4 +98,4 @@ def index():
 
 
 
-            return flask.redirect('/uploads/' + submission_id)
+            return flask.redirect('/submission/' + submission_id)
