@@ -21,7 +21,7 @@ def uploads(submission_id):
 
 
     raw_img_file_path = format_file_path_for_routing(server.get_raw_image_path_from_submission_id(submission_id))
-    proc_img_file_path = format_file_path_for_routing(server.get_proc_image_path_from_submission_id(submission_id))
+    proc_img_file_path = format_file_path_for_routing(server.get_processed_image_path_from_submission_id(submission_id))
 
 
 
