@@ -124,6 +124,13 @@ def get_amazon_url_from_google_search(search_url):
         url = link.get('href')
         if 'amazon' in str(url):
             print('found an amazon url:', url)
+
+            # If suggested link at bottom of google page, need to preprend
+            # the google main search url
+            print('first seven letters', url[:7])
+            if url[:7] == '/search':
+                url = 'https://www.google.com' + url
+
             amazon_urls.append(url)
     return amazon_urls
 
