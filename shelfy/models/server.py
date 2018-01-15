@@ -175,7 +175,7 @@ def load_pickle_from_submission_id(submission_id):
 
     # Get number of items in pickle directory
     file_names = os.listdir(pickle_directory)
-    file_paths = [pickle_directory + file_name for file_name in file_names]
+    file_paths = [pickle_directory + '/' + file_name for file_name in file_names]
 
 
     # Load the objects
