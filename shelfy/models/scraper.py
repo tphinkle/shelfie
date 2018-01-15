@@ -90,14 +90,14 @@ def get_book_info(search_query):
 
 
     search_url = get_google_search_url_from_query(search_query)
-    print('search URL!', search_url)
+    print('search query!', search_query)
 
 
 
     t0 = time.time()
     amazon_url = get_amazon_url_from_google_search(search_url)
     t1 = time.time()
-    print('get google search', t1 - t0)
+    #print('get google search', t1 - t0)
 
 
 
@@ -105,7 +105,7 @@ def get_book_info(search_query):
         t0 = time.time()
         book_info = get_info_from_amazon(amazon_url)
         t1 = time.time()
-        print('get amazon', t1 - t0)
+        #print('get amazon', t1 - t0)
     else:
         book_info = {}
 
@@ -207,13 +207,10 @@ def get_title_from_amazon_soup(soup):
 
     title = 'NONE'
     if ebook_children != []:
-        print('EBOOK')
         title = soup.find_all(id = 'ebooksProductTitle')[0].contents[0]
     elif book_children != []:
-        print('NORMAL BOOK')
         title = soup.find_all(id = 'productTitle')[0].contents[0]
 
-    print('TITLE!!!', title)
 
     return title
 
