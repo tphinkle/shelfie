@@ -110,6 +110,7 @@ def get_amazon_url_from_google_search(search_url):
     Next, scrapes the resulting HTML for all links to amazon pages,
     and returns the list of amazon links
     '''
+    print('a')
 
     # Perform the search and get the HTML
     ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
@@ -122,8 +123,8 @@ def get_amazon_url_from_google_search(search_url):
     for link in soup.find_all('a'):
         url = link.get('href')
         if 'amazon' in str(url):
+            print('found an amazon url:', url)
             amazon_urls.append(url)
-
     return amazon_urls
 
 
