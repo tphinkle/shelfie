@@ -211,7 +211,7 @@ def generate_processed_image(books, raw_file_path, save_path = None):
     print('img shape', img.shape)
     print('raw file path = ', raw_file_path)
 
-    plt.imshow(img)
+    #plt.imshow(img)
 
     for book in books:
 
