@@ -2,6 +2,7 @@ import io
 
 import numpy as np
 import matplotlib.pyplot as plt
+import cv2
 
 from google.cloud import vision
 from google.cloud.vision import types
