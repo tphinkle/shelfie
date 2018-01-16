@@ -141,7 +141,7 @@ def is_isbn10(isbn10, debug = True):
             print('isbn', isbn10, 'is isbn10'))
 
         else:
-            print('isbn', isbn10, 'is not isbn10'))
+            print('isbn', isbn10, 'is not isbn10')
 
     return is_isbn
 
