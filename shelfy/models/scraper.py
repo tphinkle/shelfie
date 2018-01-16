@@ -148,7 +148,7 @@ def get_amazon_url_from_google_search(search_url):
 
 
 
-        url = link.get('href')
+        url = link.get('data-href')
 
         # Found an amazon link
         if 'www.amazon.com' in str(url):
@@ -160,6 +160,8 @@ def get_amazon_url_from_google_search(search_url):
 
             #else:
             amazon_url = url
+
+            print('found an amazon url!')
 
 
             return amazon_url
