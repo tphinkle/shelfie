@@ -87,11 +87,11 @@ def full_pipeline(img_path):
 
 
             # Try to get info from google API
-            book_info = query_google_books_api(isbn10)
+            book_info = query_google_books_api(isbn10, debug = True)
 
             # Else try to get info from good reads API
             if book_info == {}:
-                book_info = query_goodreads_api(isbn10)
+                book_info = query_goodreads_api(isbn10, debug = True)
 
 
             # Create and store the new book object
@@ -118,7 +118,6 @@ def get_google_search_url_from_query(search_query):
     Formats a string to be in the proper url for a google search
     '''
     url = 'https://www.google.com/search?q=amazon+'+search_query.replace(' ', '+')
-    print('google search query', url)
     return url
 
 def is_isbn10(isbn10):
@@ -298,11 +297,8 @@ def get_amazon_url_from_google_search(search_url):
         url = str(link.get('href'))
 
 
-        # Found an amazon link
+        # Found an amazon url
         if 'www.amazon.com' in url:
-
-            print('found an amazon url', url)
-
 
             amazon_url = url
 
