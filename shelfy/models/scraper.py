@@ -90,6 +90,9 @@ def get_google_search_url_from_query(search_query):
     print('google search query', url)
     return url
 
+def is_isbn10(isbn10):
+    return isbn10.isdigit() and (len(isbn10) == 10)
+
 def get_book_info(search_query):
     '''
     Grabs the Amazon link for a given search query and then scrapes the Amazon link for the book title
@@ -110,14 +113,11 @@ def get_book_info(search_query):
     if amazon_url != None:
 
         isbn_10 = get_isbn10_from_amazon_url(amazon_url)
-        print(isbn_10)
-        
 
-        book_info = query_google_books_api(isbn_10)
+        if is_isbn10(isbn_10):
+            book_info = query_google_books_api(isbn_10)
 
 
-    else:
-        book_info = {}
 
 
 
