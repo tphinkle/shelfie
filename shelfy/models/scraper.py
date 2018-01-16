@@ -110,7 +110,7 @@ def get_book_info(search_query):
 
         isbn_10 = get_isbn10_from_amazon_url(amazon_url)
 
-        book_info_google = query_google_books_api(isbn_10)
+        book_info = query_google_books_api(isbn_10)
 
 
     else:
@@ -138,21 +138,20 @@ def query_google_books_api(isbn_10):
     book_info = {}
 
     # Get title
-    book_info['title'] = content['items'][0]['volumeInfo']['title'])
+    book_info['title'] = content['items'][0]['volumeInfo']['title']
 
     # Get authors
-    book_info['authors'] = content['items'][0]['volumeInfo']['authors'])
+    book_info['authors'] = content['items'][0]['volumeInfo']['authors']
 
     # Get publisher
-    book_info['publisher'] = content['items'][0]['volumeInfo']['publisher'])
+    book_info['publisher'] = content['items'][0]['volumeInfo']['publisher']
 
 
     # Get isbn-10
-    book_info['isbn_10'] = content['items'][0]['volumeInfo']['industryIdentifiers'][1]['identifier'])
-
+    book_info['isbn_10'] = content['items'][0]['volumeInfo']['industryIdentifiers'][1]['identifier']
 
     # Get isbn-13
-    book_info['isbn_13'] = content['items'][0]['volumeInfo']['industryIdentifiers'][0]['identifier'])
+    book_info['isbn_13'] = content['items'][0]['volumeInfo']['industryIdentifiers'][0]['identifier']
 
     return book_info
 
