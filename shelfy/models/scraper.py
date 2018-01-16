@@ -128,18 +128,18 @@ def get_google_search_url_from_query(search_query):
 
 def is_isbn10(isbn10, debug = True):
 
-    is_isbn10 = False
+    is_isbn = False
 
     # isbn10 must be a string
     if type(isbn10) == 'str':
 
         # isbn10 must be numeric and have length 10
-        is_isbn10 = (isbn10.isdigit() and (len(isbn10) == 10))
+        is_isbn = (isbn10.isdigit() and (len(isbn10) == 10))
 
     if debug:
-        print('isbn', isbn10, 'is'*is_isbn10 + 'is not'*(not(is_isbn10), 'isbn10')
+        print('isbn', isbn10, 'is'*is_isbn + 'is not'*(not(is_isbn), 'isbn10')
 
-    return is_isbn10
+    return is_isbn
 
 
 def query_goodreads_api(isbn10, debug = False):
