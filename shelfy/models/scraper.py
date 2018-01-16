@@ -137,7 +137,7 @@ def is_isbn10(isbn10, debug = True):
         is_isbn = (isbn10.isdigit() and (len(isbn10) == 10))
 
     if debug:
-        print('isbn', isbn10, 'is'*is_isbn + 'is not'*(not(is_isbn), 'isbn10')
+        print('isbn', isbn10, 'is'*is_isbn + 'is not'*(not(is_isbn), 'isbn10'))
 
     return is_isbn
 
