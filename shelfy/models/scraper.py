@@ -5,6 +5,7 @@ import time
 
 # Scraping
 from bs4 import BeautifulSoup
+import json
 
 # Scipy
 import numpy as np
