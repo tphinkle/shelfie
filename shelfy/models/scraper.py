@@ -22,6 +22,7 @@ from shelfy.models import book_functions
 
 
 google_books_api_key = 'AIzaSyBueagspvDe8R-prJ3bmqtEnr7fPTH10Xo'
+goodreads_api_key = 'ooiawV83knPQnQ8If3eiSg'
 
 def full_pipeline(img_path):
     '''
@@ -65,11 +66,37 @@ def full_pipeline(img_path):
         # Get query
         search_query = spine.sentence
 
-        # Process query
-        book_info = get_book_info(search_query)
+        # Get google search url from query
+        search_url = get_google_search_url_from_query(search_query)
 
-        # Create and store the new book object
-        book = book_functions.Book(book_info, spine)
+        # Get first amazon link from google search url
+        amazon_url = get_amazon_url_from_google_search(search_url)
+
+        # Get isbn10 from amazon_url
+        isbn10 = get_isbn10_from_amazon_url(amazon_url)
+
+
+        # Query apis for the isbn10
+        if is_isbn10(isbn10):
+
+
+            # Try to get info from google API
+            book_info = query_google_books_api(isbn10)
+
+            # Else try to get info from good reads API
+            if book_info = {}:
+                book_info = query_goodreads_api(isbn10)
+
+
+            # Create and store the new book object
+            book = book_functions.Book(book_info, spine)
+
+
+        # Couldn't find an isbn10, just append a book w/ no info
+        else:
+            book = book_functions.Book({}, spine)
+
+
 
         books.append(book)
 
@@ -93,49 +120,73 @@ def get_google_search_url_from_query(search_query):
 def is_isbn10(isbn10):
     return isbn10.isdigit() and (len(isbn10) == 10)
 
-def get_book_info(search_query):
+
+def query_goodreads_api(isbn10, debug = False):
     '''
-    Grabs the Amazon link for a given search query and then scrapes the Amazon link for the book title
+    Gets book information from goodreads API call
     '''
 
-
-    search_url = get_google_search_url_from_query(search_query)
-
-
-
-    t0 = time.time()
-    amazon_url = get_amazon_url_from_google_search(search_url)
-    t1 = time.time()
-    #print('get google search', t1 - t0)
-
+    # Main info
 
     book_info = {}
-
-
-    if amazon_url != None:
-
-        isbn_10 = get_isbn10_from_amazon_url(amazon_url)
-        print(search_url, isbn_10)
-        if is_isbn10(isbn_10):
-            book_info = query_google_books_api(isbn_10)
+    book_info['isbn10'] = isbn10
 
 
 
+
+
+    # Header
+    ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
+
+    # Query for goodreads ID
+    rest_url = 'https://www.goodreads.com/search/index.xml?key=ooiawV83knPQnQ8If3eiSg&q=' + isbn10
+    response = requests.get(rest_url, headers=ua)
+    soup = BeautifulSoup(response.content, 'lxml')
+
+    goodreads_id = print(soup.find('id').contents[0])
+
+    # Query for book info
+    rest_url = 'https://www.goodreads.com/book/show.xml?key=ooiawV83knPQnQ8If3eiSg&id='+goodreads_id
+    response = requests.get(rest_url, headers=ua)
+
+    soup = BeautifulSoup(response.content, 'lxml')
+
+    # Title
+    try:
+        book_info['title'] = soup.original_title.contents[0])
+    except:
+        pass
+        if debug:
+            print('Could not find title for isbn 10', isbn10, '(goodreads api)')
+
+    # Authors
+    try:
+        book_info['authors'] = [child.find('name').contents[0] for child in soup.authors.children if child.find('name') != -1]
+    except:
+        pass
+        if debug:
+            print('Could not find authors for isbn 10', isbn10, '(goodreads api)')
+
+    # Publisher
+    try:
+        book_info['publisher'] = soup.find('publisher').contents[0])
+    except:
+        pass
+        if debug:
+            print('Could not find publisher for isbn 10', isbn10, '(goodreads api)')
 
 
     return book_info
 
-
-def query_google_books_api(isbn_10, debug = False):
+def query_google_books_api(isbn10, debug = False):
     '''
-    Gets google information
-    '''
+    Gets book info from google book API call    '''
 
 
     ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
 
 
-    rest_url = 'https://www.googleapis.com/books/v1/volumes?key='+google_books_api_key+'&q=isbn:' + isbn_10
+    rest_url = 'https://www.googleapis.com/books/v1/volumes?key='+google_books_api_key+'&q=isbn:' + isbn10
     response = requests.get(rest_url, headers=ua)
 
 
@@ -174,24 +225,24 @@ def query_google_books_api(isbn_10, debug = False):
 
 
 
-    # Get isbn-10
+    # Get isbn10
     try:
-        book_info['isbn_10'] = content['items'][0]['volumeInfo']['industryIdentifiers'][1]['identifier']
+        book_info['isbn10'] = content['items'][0]['volumeInfo']['industryIdentifiers'][1]['identifier']
 
     except:
         pass
         if debug:
-            print('Could not find book isbn_10')
+            print('Could not find book isbn10')
 
 
     # Get isbn-13
     try:
-        book_info['isbn_13'] = content['items'][0]['volumeInfo']['industryIdentifiers'][0]['identifier']
+        book_info['isbn13'] = content['items'][0]['volumeInfo']['industryIdentifiers'][0]['identifier']
 
     except:
         pass
         if debug:
-            print('Could not find book isbn_13')
+            print('Could not find book isbn13')
 
 
     return book_info
@@ -249,8 +300,8 @@ def get_amazon_url_from_google_search(search_url):
 
 def get_isbn10_from_amazon_url(url):
     '''
-    Given a url to an amazon page, gets the ISBN-10 number from that link.
-    The isbn-10 is the last 10 digits of the url that follow the forward slash
+    Given a url to an amazon page, gets the isbn10 number from that link.
+    The isbn10 is the last 10 digits of the url that follow the forward slash
     '''
     return url.split('/')[-1]
 
@@ -284,11 +335,11 @@ def get_info_from_amazon(url):
     # Publisher
     book_info['publisher'] = get_publisher_from_amazon_soup(soup)
 
-    # ISBN-10
-    book_info['isbn-10'] = get_isbn10_from_amazon_soup(soup)
+    # isbn10
+    book_info['isbn10'] = get_isbn10_from_amazon_soup(soup)
 
-    # ISBN-13
-    book_info['isbn-13'] = get_isbn13_from_amazon_soup(soup)
+    # isbn10
+    book_info['isbn10'] = get_isbn13_from_amazon_soup(soup)
 
     return book_info
 
@@ -371,18 +422,18 @@ def get_publisher_from_amazon_soup(soup):
 def get_isbn10_from_amazon_soup(soup):
     '''
     Scrapes soup created from an amazon page for the book's
-    isbn-10 number
+    isbn10 number
     '''
 
-    isbn_10 = 'NONE'
+    isbn10 = 'NONE'
 
     try:
         book_details = soup.findAll(id = 'detail-bullets')
 
 
         for line in str(book_details[0]).split('\n'):
-            if 'ISBN-10' in line:
-                isbn_10 = line[20:30]
+            if 'isbn10' in line:
+                isbn10 = line[20:30]
                 break
 
 
@@ -391,7 +442,7 @@ def get_isbn10_from_amazon_soup(soup):
     except:
         pass
 
-    return isbn_10
+    return isbn10
 
 
 
@@ -399,19 +450,19 @@ def get_isbn10_from_amazon_soup(soup):
 def get_isbn13_from_amazon_soup(soup):
     '''
     Scrapes soup created from an amazon page for the book's
-    isbn-13 number
+    isbn10 number
     '''
 
 
-    isbn_13 = 'NONE'
+    isbn10 = 'NONE'
 
     try:
         book_details = soup.findAll(id = 'detail-bullets')
 
 
         for line in str(book_details[0]).split('\n'):
-            if 'ISBN-13' in line:
-                isbn_13 = line[20:34]
+            if 'isbn13' in line:
+                isbn10 = line[20:34]
                 break
 
 
@@ -420,4 +471,4 @@ def get_isbn13_from_amazon_soup(soup):
     except:
         pass
 
-    return isbn_13
+    return isbn10
