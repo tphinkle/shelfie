@@ -78,7 +78,6 @@ def full_pipeline(img_path):
         if amazon_url != None:
             isbn10 = get_isbn10_from_amazon_url(amazon_url)
         else:
-
             # Couldn't get isbn10 from amazon link (or there was no amazon link)
             isbn10 = None
 
@@ -123,7 +122,14 @@ def get_google_search_url_from_query(search_query):
     return url
 
 def is_isbn10(isbn10):
-    return isbn10.isdigit() and (len(isbn10) == 10)
+
+    # isbn10 must be a string
+    if type(isbn10) == 'str':
+
+        # isbn10 must be numeric and have length 10
+        return isbn10.isdigit() and (len(isbn10) == 10)
+    else:
+        return False
 
 
 def query_goodreads_api(isbn10, debug = False):
