@@ -152,12 +152,13 @@ def get_amazon_url_from_google_search(search_url):
 
         # Found an amazon link
         if 'amazon' in str(url):
+            print(url)
             if is_google_search_redirect(url):
-                print('redirecting to ', 'https://www.google.com' + url)
                 return get_amazon_url_from_google_search('https://www.google.com' + url)
 
-            print ('returning amazon url:', url)
             return url
+
+        print('\n\n\n')
 
     return None
 
