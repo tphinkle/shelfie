@@ -124,7 +124,10 @@ def get_book_info(search_query):
     return book_info
 
 
-def query_google_books_api(isbn_10):
+def query_google_books_api(isbn_10, debug = False):
+    '''
+    Gets google information
+    '''
 
 
     ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
@@ -141,20 +144,53 @@ def query_google_books_api(isbn_10):
     book_info = {}
 
     # Get title
-    book_info['title'] = content['items'][0]['volumeInfo']['title']
+    try:
+        book_info['title'] = content['items'][0]['volumeInfo']['title']
+    except:
+        pass
+        if debug:
+            print('Could not find book title')
 
     # Get authors
-    book_info['authors'] = content['items'][0]['volumeInfo']['authors']
+    try:
+        book_info['authors'] = content['items'][0]['volumeInfo']['authors']
+
+    except:
+        pass
+        if debug:
+            print('Could not find book authors')
 
     # Get publisher
-    book_info['publisher'] = content['items'][0]['volumeInfo']['publisher']
+
+    try:
+        book_info['publisher'] = content['items'][0]['volumeInfo']['publisher']
+
+    except:
+        pass
+        if debug:
+            print('Could not find book publisher')
+
 
 
     # Get isbn-10
-    book_info['isbn_10'] = content['items'][0]['volumeInfo']['industryIdentifiers'][1]['identifier']
+    try:
+        book_info['isbn_10'] = content['items'][0]['volumeInfo']['industryIdentifiers'][1]['identifier']
+
+    except:
+        pass
+        if debug:
+            print('Could not find book isbn_10')
+
 
     # Get isbn-13
-    book_info['isbn_13'] = content['items'][0]['volumeInfo']['industryIdentifiers'][0]['identifier']
+    try:
+        book_info['isbn_13'] = content['items'][0]['volumeInfo']['industryIdentifiers'][0]['identifier']
+
+    except:
+        pass
+        if debug:
+            print('Could not find book isbn_13')
+
 
     return book_info
 
