@@ -95,15 +95,18 @@ def full_pipeline(img_path):
 
             # Try to get info from google API
             if book_info == {}:
+                print('trying google')
                 book_info = query_google_books_api(isbn10, debug = True)
 
 
             # Else try to get info from good reads API
             if book_info == {}:
+                print('trying goodreads')
                 book_info = query_goodreads_api(isbn10, debug = True)
 
             # Else try to get info from amazon
             if book_info == {}:
+                print('trying amazon')
                 book_info = query_amazon_page(isbn10, debug = True)
 
 
