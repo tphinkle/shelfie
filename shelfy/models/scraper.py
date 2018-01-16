@@ -130,12 +130,14 @@ def is_isbn10(isbn10, debug = True):
 
     is_isbn = False
 
+
+
     # isbn10 must be a string
-    if type(isbn10) == 'str':
+    if type(isbn10) == str:
 
         # isbn10 must be numeric and have length 10
-        print('is digit', isbn10.isdigit())
-        print('length', len(isbn10))
+        #print('is digit', isbn10.isdigit())
+        #print('length', len(isbn10))
         is_isbn = (isbn10.isdigit() and (len(isbn10) == 10))
 
     if debug:
