@@ -153,7 +153,7 @@ def query_goodreads_api(isbn10, debug = False):
 
     # Title
     try:
-        book_info['title'] = soup.original_title.contents[0])
+        book_info['title'] = soup.original_title.contents[0]
     except:
         pass
         if debug:
@@ -169,7 +169,7 @@ def query_goodreads_api(isbn10, debug = False):
 
     # Publisher
     try:
-        book_info['publisher'] = soup.find('publisher').contents[0])
+        book_info['publisher'] = soup.find('publisher').contents[0]
     except:
         pass
         if debug:
