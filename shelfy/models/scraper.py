@@ -105,7 +105,7 @@ def get_book_info(search_query):
     #print('get google search', t1 - t0)
 
 
-
+    book_info = {}
     if amazon_url != None:
 
         isbn_10 = get_isbn10_from_amazon_url(amazon_url)
@@ -130,14 +130,31 @@ def query_google_books_api(isbn_10):
     rest_url = 'https://www.googleapis.com/books/v1/volumes?key='+google_books_api_key+'&q=isbn:' + isbn_10
     response = requests.get(rest_url, headers=ua)
 
-    print('rest_url', rest_url)
 
 
-    content = response.content
+    content = json.loads(response.content)
 
-    print(content)
 
-    return 'fuck'
+    book_info = {}
+
+    # Get title
+    book_info['title'] = content['items'][0]['volumeInfo']['title'])
+
+    # Get authors
+    book_info['authors'] = content['items'][0]['volumeInfo']['authors'])
+
+    # Get publisher
+    book_info['publisher'] = content['items'][0]['volumeInfo']['publisher'])
+
+
+    # Get isbn-10
+    book_info['isbn_10'] = content['items'][0]['volumeInfo']['industryIdentifiers'][1]['identifier'])
+
+
+    # Get isbn-13
+    book_info['isbn_13'] = content['items'][0]['volumeInfo']['industryIdentifiers'][0]['identifier'])
+
+    return book_info
 
 
 
