@@ -106,7 +106,7 @@ def get_book_info(search_query):
     if amazon_url != None:
         t0 = time.time()
 
-        print('attempting to get info from the amazon url')
+        print('attempting to get info from the amazon url', amazon_url)
         book_info = get_info_from_amazon(amazon_url)
         t1 = time.time()
         #print('get amazon', t1 - t0)
