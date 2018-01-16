@@ -65,6 +65,8 @@ def full_pipeline(img_path):
 
         book_info = {}
 
+        print('starting query', [word.string for word in spine.words])
+
         # Get query
         search_query = spine.sentence
 
@@ -88,12 +90,13 @@ def full_pipeline(img_path):
         if is_isbn10(isbn10, debug = True):
 
 
-
+            # Run through all the APIs
+            book_info = {}
 
             # Try to get info from google API
-            book_info = query_google_books_api(isbn10, debug = True)
+            if book_info == {}:
+                book_info = query_google_books_api(isbn10, debug = True)
 
-            print(book_info)
 
             # Else try to get info from good reads API
             if book_info == {}:
