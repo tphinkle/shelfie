@@ -84,7 +84,7 @@ def full_pipeline(img_path):
             book_info = query_google_books_api(isbn10)
 
             # Else try to get info from good reads API
-            if book_info = {}:
+            if book_info == {}:
                 book_info = query_goodreads_api(isbn10)
 
 
