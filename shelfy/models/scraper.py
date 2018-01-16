@@ -99,6 +99,10 @@ def full_pipeline(img_path):
             if book_info == {}:
                 book_info = query_goodreads_api(isbn10, debug = True)
 
+            # Else try to get info from amazon
+            if book_info = {}:
+                book_info = query_amazon_page(isbn10, debug = True)
+
 
             # Create and store the new book object
             book = book_functions.Book(book_info, spine)
@@ -109,6 +113,8 @@ def full_pipeline(img_path):
 
 
         books.append(book)
+
+        print('\n\n')
 
 
     # Finally, return
@@ -283,6 +289,88 @@ def query_google_books_api(isbn10, debug = False):
     return book_info
 
 
+def query_amazon_page(isbn10, debug = False):
+    '''
+    Search amazon for an isbn10, and scrape the result
+    '''
+
+    # Create query
+    query = isbn10 + ' amazon'
+
+    # Get google search url
+    google_search_url = get_google_search_url_from_query(query)
+
+    amazon_url = get_amazon_url_from_google_search(google_search_url)
+
+    ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
+
+
+    rest_url = 'https://www.googleapis.com/books/v1/volumes?key='+google_books_api_key+'&q=isbn:' + isbn10
+    response = requests.get(rest_url, headers=ua)
+
+
+
+    content = response.content
+
+    soup = BeautifulSoup(content, 'html.parser')
+
+
+    book_info = {}
+
+    # Get title
+    try:
+        book_info['title'] = get_title_from_amazon_soup(soup)
+
+    except:
+        pass
+        if debug:
+            print('Could not find book title (amazon)')
+
+    # Get authors
+    try:
+        book_info['authors'] = get_authors_from_amazon_soup(soup)
+
+    except:
+        pass
+        if debug:
+            print('Could not find book authors (amazon)')
+
+    # Get publisher
+    try:
+        book_info['publisher'] = get_publisher_from_amazon_soup(soup)
+
+
+    except:
+        pass
+        if debug:
+            print('Could not find book publisher (amazon)')
+
+
+
+    # Get isbn10
+    try:
+        book_info['isbn10'] = get_isbn10_from_amazon_soup(soup)
+
+    except:
+        pass
+        if debug:
+            print('Could not find book isbn10 (amazon)')
+
+
+    # Get isbn-13
+    try:
+        book_info['isbn13'] = get_isbn13_from_amazon_soup(soup)
+    except:
+        pass
+        if debug:
+            print('Could not find book isbn13 (amazon)')
+
+
+    return book_info
+
+
+
+
 
 def is_google_search_redirect(url):
     '''
@@ -341,13 +429,13 @@ def get_isbn10_from_amazon_url(url, debug = False):
         print('found an isbn', isbn10)
     return url.split('/')[-1]
 
-
+'''
 
 def get_info_from_amazon(url):
-    '''
+
     Given a url to an amazon page, will scrape that page for as much information
     as possible about the book; returns the information in `dict' format.
-    '''
+
 
 
     # Get HTML for the amazon url
@@ -379,7 +467,7 @@ def get_info_from_amazon(url):
 
     return book_info
 
-
+'''
 
 def get_title_from_amazon_soup(soup):
     '''
