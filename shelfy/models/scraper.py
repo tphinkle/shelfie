@@ -140,6 +140,9 @@ def get_amazon_url_from_google_search(search_url):
     # Parse HTML content for amazon link; return first amazon url
     soup = BeautifulSoup(content, 'html.parser')
     amazon_urls = []
+
+    print('\nall urls on page...')
+
     for link in soup.find_all('a'):
 
         # Skip 'Did you mean? link'
@@ -149,6 +152,8 @@ def get_amazon_url_from_google_search(search_url):
 
 
         url = link.get('data-href')
+
+        print(url)
 
         # Found an amazon link
         if 'www.amazon.com' in str(url):
@@ -161,12 +166,7 @@ def get_amazon_url_from_google_search(search_url):
             #else:
             amazon_url = url
 
-            print('found an amazon url!')
-
-
             return amazon_url
-
-        print('\n')
 
     return None
 

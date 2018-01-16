@@ -24,14 +24,6 @@ def submission(submission_id):
     proc_img_file_path = format_file_path_for_routing(server.get_processed_image_path_from_submission_id(submission_id))
     books = server.load_pickle_from_submission_id(submission_id)
 
-    for book in books:
-        print('\n\n')
-        print('book info', book.format_raw_book_info_to_words_list())
-        print('spine words', book.format_raw_spine_words_to_words_list())
-
-
-
-
     return flask.render_template('submission.html', rawimgfilepath = raw_img_file_path, procimgfilepath = proc_img_file_path, books = books)#, tokens = tokens)
 
 
