@@ -172,7 +172,7 @@ def query_goodreads_api(isbn10, debug = False):
     response = requests.get(rest_url, headers=ua)
     soup = BeautifulSoup(response.content, 'lxml')
 
-    goodreads_id = print(soup.find('id').contents[0])
+    goodreads_id = soup.find('id').contents[0]
 
     # Query for book info
     rest_url = 'https://www.goodreads.com/book/show.xml?key=ooiawV83knPQnQ8If3eiSg&id='+goodreads_id
