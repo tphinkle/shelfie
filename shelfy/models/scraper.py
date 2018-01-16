@@ -76,7 +76,10 @@ def full_pipeline(img_path):
 
         # Get isbn10 from amazon_url
         if amazon_url != None:
-            isbn10 = get_isbn10_from_amazon_url(amazon_url)
+            print('found an isbn')
+            isbn10 = get_isbn10_from_amazon_url(amazon_url, debug = True)
+
+
         else:
             # Couldn't get isbn10 from amazon link (or there was no amazon link)
             isbn10 = None
@@ -86,8 +89,12 @@ def full_pipeline(img_path):
         if is_isbn10(isbn10):
 
 
+
+
             # Try to get info from google API
             book_info = query_google_books_api(isbn10, debug = True)
+
+            print(book_info)
 
             # Else try to get info from good reads API
             if book_info == {}:
@@ -306,11 +313,14 @@ def get_amazon_url_from_google_search(search_url):
 
     return None
 
-def get_isbn10_from_amazon_url(url):
+def get_isbn10_from_amazon_url(url, debug = False):
     '''
     Given a url to an amazon page, gets the isbn10 number from that link.
     The isbn10 is the last 10 digits of the url that follow the forward slash
     '''
+    isbn10 = url.split('/')[-1]
+    if debug:
+        print('found an isbn', isbn10)
     return url.split('/')[-1]
 
 
