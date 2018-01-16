@@ -19,6 +19,9 @@ from google.cloud.vision import types
 from shelfy.models import book_functions
 
 
+
+google_books_api_key = 'AIzaSyBueagspvDe8R-prJ3bmqtEnr7fPTH10Xo'
+
 def full_pipeline(img_path):
     '''
     Given a path to an img (img_path), performs the full processing pipeline,
@@ -104,13 +107,12 @@ def get_book_info(search_query):
 
 
     if amazon_url != None:
-        t0 = time.time()
 
-        print('attempting to get info from the amazon url', amazon_url)
-        time.sleep(1)
-        book_info = get_info_from_amazon(amazon_url)
-        t1 = time.time()
-        #print('get amazon', t1 - t0)
+        isbn_10 = get_isbn10_from_amazon_url(amazon_url)
+
+        book_info_google = query_google_books_api(isbn_10)
+
+
     else:
         book_info = {}
 
@@ -119,7 +121,31 @@ def get_book_info(search_query):
     return book_info
 
 
+def query_google_books_api(isbn_10):
+
+
+    ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
+
+
+    rest_url = 'https://www.googleapis.com/books/v1/volumes?key='+google_books_api_key+'&q=isbn:' + isbn_10
+    response = requests.get(rest_url, headers=ua)
+
+    print('rest_url', rest_url)
+
+
+    content = response.content
+
+    print(content)
+
+    return 'fuck'
+
+
+
 def is_google_search_redirect(url):
+    '''
+    Determines whether a url on a google page is an internal redirect to another
+    revised google search
+    '''
 
     if url[:7] == '/search':
         return True
@@ -163,6 +189,13 @@ def get_amazon_url_from_google_search(search_url):
             return amazon_url
 
     return None
+
+def get_isbn10_from_amazon_url(url):
+    '''
+    Given a url to an amazon page, gets the ISBN-10 number from that link.
+    The isbn-10 is the last 10 digits of the url that follow the forward slash
+    '''
+    return url.split('/')[-1]
 
 
 
