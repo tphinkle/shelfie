@@ -63,6 +63,8 @@ def full_pipeline(img_path):
     for spine in spines:
 
 
+        book_info = {}
+
         # Get query
         search_query = spine.sentence
 
@@ -73,7 +75,12 @@ def full_pipeline(img_path):
         amazon_url = get_amazon_url_from_google_search(search_url)
 
         # Get isbn10 from amazon_url
-        isbn10 = get_isbn10_from_amazon_url(amazon_url)
+        if amazon_url != None:
+            isbn10 = get_isbn10_from_amazon_url(amazon_url)
+        else:
+
+            # Couldn't get isbn10 from amazon link (or there was no amazon link)
+            isbn10 = None
 
 
         # Query apis for the isbn10
@@ -92,9 +99,7 @@ def full_pipeline(img_path):
             book = book_functions.Book(book_info, spine)
 
 
-        # Couldn't find an isbn10, just append a book w/ no info
-        else:
-            book = book_functions.Book({}, spine)
+        book = book_functions.Book(book_info, spine)
 
 
 
@@ -268,6 +273,7 @@ def get_amazon_url_from_google_search(search_url):
     and grabs the HTML.
     Next, scrapes the resulting HTML for all links to amazon pages,
     and returns the list of amazon links
+    Returns None if no link can be found
     '''
 
     # Perform the search and get the HTML
