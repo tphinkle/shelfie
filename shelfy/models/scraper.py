@@ -151,14 +151,20 @@ def get_amazon_url_from_google_search(search_url):
         url = link.get('href')
 
         # Found an amazon link
-        if 'amazon' in str(url):
-            print(url)
-            if is_google_search_redirect(url):
-                return get_amazon_url_from_google_search('https://www.google.com' + url)
+        if 'www.amazon.com' in str(url):
 
-            return url
 
-        print('\n\n\n')
+            # The link doesn't point to amazon, but is actually a redirect
+            #if is_google_search_redirect(url):
+                #amazon_url = get_amazon_url_from_google_search('https://www.google.com' + url)
+
+            #else:
+            amazon_url = url
+
+
+            return amazon_url
+
+        print('\n')
 
     return None
 
