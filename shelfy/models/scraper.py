@@ -83,6 +83,7 @@ def get_google_search_url_from_query(search_query):
     Formats a string to be in the proper url for a google search
     '''
     url = 'https://www.google.com/search?q=amazon'+search_query.replace(' ', '+')
+    print('google search query', url)
     return url
 
 def get_book_info(search_query):
@@ -141,7 +142,6 @@ def get_amazon_url_from_google_search(search_url):
     soup = BeautifulSoup(content, 'html.parser')
     amazon_urls = []
 
-    print('\nall urls on page...')
 
     for link in soup.find_all('a'):
 
@@ -153,11 +153,6 @@ def get_amazon_url_from_google_search(search_url):
         if 'www.amazon.com' in str(url):
 
 
-            # The link doesn't point to amazon, but is actually a redirect
-            #if is_google_search_redirect(url):
-                #amazon_url = get_amazon_url_from_google_search('https://www.google.com' + url)
-
-            #else:
             amazon_url = str(url)
 
             return amazon_url
