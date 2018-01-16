@@ -206,6 +206,7 @@ def query_goodreads_api(isbn10, debug = False):
         pass
         if debug:
             print('Could not find title for isbn 10', isbn10, '(goodreads api)')
+            print('asdf')
 
     # Authors
     try:
