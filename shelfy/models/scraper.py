@@ -110,10 +110,12 @@ def get_book_info(search_query):
 
 
     book_info = {}
+
+
     if amazon_url != None:
 
         isbn_10 = get_isbn10_from_amazon_url(amazon_url)
-
+        print(search_url, isbn_10)
         if is_isbn10(isbn_10):
             book_info = query_google_books_api(isbn_10)
 
