@@ -100,7 +100,7 @@ def full_pipeline(img_path):
                 book_info = query_goodreads_api(isbn10, debug = True)
 
             # Else try to get info from amazon
-            if book_info = {}:
+            if book_info == {}:
                 book_info = query_amazon_page(isbn10, debug = True)
 
 
