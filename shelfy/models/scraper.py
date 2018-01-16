@@ -150,10 +150,12 @@ def get_amazon_url_from_google_search(search_url):
 
 
         # Found an amazon link
-        if 'www.amazon.com' in str(url):
+        if 'www.amazon.com' in url:
+
+            print('found an amazon url', amazon_url)
 
 
-            amazon_url = str(url)
+            amazon_url = url
 
             return amazon_url
 
