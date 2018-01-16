@@ -136,7 +136,7 @@ def get_google_search_url_from_query(search_query):
     '''
     Formats a string to be in the proper url for a google search
     '''
-    url = 'https://www.google.com/search?q=amazon+'+search_query.replace(' ', '+')
+    url = 'https://www.google.com/search?q=amazon+book+'+search_query.replace(' ', '+')
     return url
 
 def is_isbn10(isbn10, debug = True):
@@ -302,7 +302,7 @@ def query_amazon_page(isbn10, debug = False):
     '''
 
     # Create query
-    query = isbn10 + ' amazon'
+    query = isbn10
 
     # Get google search url
     google_search_url = get_google_search_url_from_query(query)
