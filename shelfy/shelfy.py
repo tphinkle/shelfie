@@ -53,10 +53,11 @@ PASSWORD = 'default'
 
 
 # Register view blueprints
-import shelfy.views
+
+import views
 
 
-app.register_blueprint(shelfy.views.views)
+app.register_blueprint(views.views)
 
 
 if __name__ == 'main':
