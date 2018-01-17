@@ -4,6 +4,8 @@ import Levenshtein
 import numpy as np
 
 
+MAX_SIMILARITY = np.inf
+
 def calculate_book_score(book):
     '''
     Calculates the 'similarity' of a book object, that is how close the tokens
@@ -43,10 +45,11 @@ def preprocess_book_info(book_info):
     publisher = book_info['publisher']
 
     if title == 'NONE':
+        print('title none')
         title = ''
 
-    if title == 'NONE':
-        author = ''
+    if authors == 'NONE':
+        authors = ''
 
     if publisher == 'NONE':
         publisher = ''
@@ -119,7 +122,10 @@ def single_token_levenshtein(tokens, book_words):
             distance = Levenshtein.distance(token, book_word)
             temp_distances.append(distance)
 
-        minimum_distance = np.min(temp_distances)/len(token)
+        try:
+            minimum_distance = np.min(temp_distances)/len(token)
+        except:
+            minimum_distance = MAX_SIMILARITY
 
 
         total_distance += minimum_distance

@@ -4,7 +4,7 @@ import flask
 import os
 from werkzeug.utils import secure_filename
 import shelfy
-from shelfy.models import book_functions, scraper, server
+from shelfy.models import book_functions, scraper, server, utility
 
 
 views = flask.Blueprint('views', __name__)
@@ -72,7 +72,7 @@ def index():
 
             # Full pipeline
             raw_file_path = server.get_raw_image_path_from_submission_id(submission_id)
-            books = scraper.full_pipeline(raw_file_path)
+            books = utility.full_pipeline(raw_file_path)
 
 
             # Save the processed image
@@ -84,13 +84,6 @@ def index():
 
             # Save json of book info
             server.save_book_info(books, submission_id)
-
-
-            # Save the annotated images
-
-
-
-
 
 
 
