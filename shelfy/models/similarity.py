@@ -42,6 +42,15 @@ def preprocess_book_info(book_info):
     authors = ''.join([author for author in book_info['authors']])
     publisher = book_info['publisher']
 
+    if title == 'NONE':
+        title = ''
+
+    if title == 'NONE':
+        author = ''
+
+    if publisher == 'NONE':
+        publisher = ''
+
 
     book_words = title + ' ' + authors + ' ' + publisher
 
@@ -95,22 +104,23 @@ def single_token_levenshtein(tokens, book_words):
     '''
 
 
-    
+
     total_distance = 0
 
 
 
     # Loop over all tokens (words found on spine)
     for i, token in enumerate(tokens):
-        print('token = ', token)
         temp_distances = []
+
+        # Loop over all book words (words associated with the book's info, e.g.
+        # actual titles, publishers, etc.)
         for j, book_word in enumerate(book_words):
             distance = Levenshtein.distance(token, book_word)
             temp_distances.append(distance)
 
         minimum_distance = np.min(temp_distances)/len(token)
 
-        print('\t', minimum_distance)
 
         total_distance += minimum_distance
 
