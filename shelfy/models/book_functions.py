@@ -443,8 +443,8 @@ def get_spines_from_words(words):
     ycs = []
     thetas = []
 
-    yc_tolerance = 50
-    theta_tolerance = np.pi/10.
+    yc_tolerance = 25.
+    theta_tolerance = np.pi/6.
 
     matched_words = []
     for i, special_word in enumerate(words):
