@@ -117,11 +117,12 @@ def full_pipeline(img_path):
 
         book = book_functions.Book(book_info, spine)
 
+        book.similarity = similarity.calculate_book_score(book)
+
 
 
         books.append(book)
 
-        print('\n\n')
 
 
     # Finally, return
@@ -206,7 +207,6 @@ def query_goodreads_api(isbn10, debug = False):
         pass
         if debug:
             print('Could not find title for isbn 10', isbn10, '(goodreads api)')
-            print('asdf')
 
     # Authors
     try:
