@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+
+
+{% block head %}
+  <title> shelfy </title>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+{% block body %}
+
+  <div class="container-fluid bg-1 text-center">
+
+
+
+    <h1><a href="/">shelfy</a></h1>
+
+    <div class="row">
+
+      <div class="col-lg-1"></div>
+
+      <div class="col-lg-5">
+        <img src="{{ rawimgfilepath }}" class="img-responsive" width="100%" alt="Raw img">
+      </div>
+
+      <div class="col-lg-5">
+        <img src="{{ procimgfilepath }}" class="img-responsive" width="100%" alt="Proc img">
+      </div>
+
+      <div class="col-lg-1"></div>
+
+
+    </div>
+
+    <div class="row">
+
+
+      <div class="col-lg-1"></div>
+
+
+      <div class="col-lg-10">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Publisher</th>
+              <th>ISBN-13</th>
+              <th>ISBN-10</th>
+              <th>Tokens</th>
+              <th>Similarity score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for book in books %}
+            <tr>
+              <th scope="row">{{ book.book_info['title'] }}</th>
+              <td>{{ book.book_info['authors'] }}</td>
+              <td>{{ book.book_info['publisher'] }}</td>
+              <td>{{ book.book_info['isbn-13'] }}</td>
+              <td>{{ book.book_info['isbn-10'] }}</td>
+              <td>{{ book.format_raw_spine_words_to_words_list() }}</td>
+              <td>{{ book.similarity }}</td>
+
+
+
+
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-lg-1"></div>
+
+    </div>
+
+
+
+
+
+
+{% endblock %}

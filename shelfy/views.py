@@ -14,7 +14,7 @@ def format_file_path_for_routing(file_path):
     file_path = file_path.replace(shelfy.SHELFY_BASE_PATH, '')
     return file_path
 
-@views.route('/submission/<submission_id>', methods=['GET'])
+@views.route('/submission/<submission_id>/admin', methods=['GET'])
 def submission(submission_id):
 
 
@@ -24,7 +24,7 @@ def submission(submission_id):
     proc_img_file_path = format_file_path_for_routing(server.get_processed_image_path_from_submission_id(submission_id))
     books = server.load_pickle_from_submission_id(submission_id)
 
-    return flask.render_template('submission.html', rawimgfilepath = raw_img_file_path, procimgfilepath = proc_img_file_path, books = books)#, tokens = tokens)
+    return flask.render_template('submission-admin.html', rawimgfilepath = raw_img_file_path, procimgfilepath = proc_img_file_path, books = books)#, tokens = tokens)
 
 
 @views.route('/', methods=['GET', 'POST'])
@@ -95,4 +95,4 @@ def index():
 
 
 
-            return flask.redirect('/submission/' + submission_id)
+            return flask.redirect('/submission/' + submission_id + '/admin')
