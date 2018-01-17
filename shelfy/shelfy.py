@@ -4,12 +4,12 @@ flask run (or, through compile.sh)
 '''
 
 
-'''
+
 import shelfy
 app = shelfy.app
 
 
-'''
+
 
 
 
@@ -18,7 +18,7 @@ app = shelfy.app
 ONLY INCLUDE THIS IF RUNNING VIA
 python shelfy.py
 '''
-
+'''
 # Imports
 import flask
 import os
@@ -61,4 +61,4 @@ app.register_blueprint(views.views)
 
 
 if __name__ == 'main':
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=80)'''
