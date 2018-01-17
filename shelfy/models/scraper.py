@@ -18,6 +18,7 @@ from google.cloud.vision import types
 
 # Shelfy
 from shelfy.models import book_functions
+from shelfy.models import similarity
 
 
 
