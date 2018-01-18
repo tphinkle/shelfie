@@ -1,4 +1,6 @@
 # Python standard library
+import csv
+import datetime
 import io
 import json
 import os
@@ -61,6 +63,15 @@ def create_new_submission(file):
     directory = shelfy.SHELFY_BASE_PATH + '/static/submissions/' + id
 
     os.makedirs(directory)
+
+
+    # Create a file w/ some meta information
+    with open(directory + '/info.txt', 'w') as file_handle:
+        writer = csv.writer(file_handle, delimiter = ',')
+        file_handle.writerow(file.filename)
+        file_handle.writerow(datetime.datetime.now())
+
+
     os.makedirs(directory + '/raw_img')
     os.makedirs(directory + '/proc_img')
     os.makedirs(directory + '/books')
