@@ -57,6 +57,8 @@ def query_goodreads_api(isbn10, debug = False):
     Gets book information from goodreads API call
     '''
 
+
+
     # Main info
 
     book_info = {}
@@ -70,9 +72,11 @@ def query_goodreads_api(isbn10, debug = False):
     ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
 
     # Query for goodreads ID
-    rest_url = 'https://www.goodreads.com/search/index.xml?key=ooiawV83knPQnQ8If3eiSg&q=' + isbn10
+    #'https://www.goodreads.com/book/show.xml?key=ooiawV83knPQnQ8If3eiSg&isbn=' + isbn
+    rest_url = 'https://www.goodreads.com/book/show.xml?key=ooiawV83knPQnQ8If3eiSg&isbn=' + isbn10
     response = requests.get(rest_url, headers=ua)
     soup = BeautifulSoup(response.content, 'lxml')
+
 
     try:
         goodreads_id = soup.find('id').contents[0]
@@ -82,6 +86,7 @@ def query_goodreads_api(isbn10, debug = False):
             print('Could not find goodreads id')
             return book_info
 
+
     # Query for book info
     rest_url = 'https://www.goodreads.com/book/show.xml?key=ooiawV83knPQnQ8If3eiSg&id='+goodreads_id
     response = requests.get(rest_url, headers=ua)
@@ -90,7 +95,31 @@ def query_goodreads_api(isbn10, debug = False):
 
     # Title
     try:
-        book_info['title'] = soup.original_title.contents[0]
+
+        # Try to query 'original_title'
+        original_title = soup.original_title.contents
+        if len(original_title) > 0:
+            original_title = original_title[0]
+
+        # Try to query 'title'
+        title = soup.title.contents
+        if len(title) > 0:
+            title = title[0]
+
+
+        if original_title == []:
+            actual_title = title
+        else:
+            actual_title = original_title
+
+        if actual_title == []:
+            actual_title = 'NONE'
+
+
+        book_info['title'] = actual_title
+
+
+
     except:
         pass
         if debug:
@@ -198,11 +227,11 @@ def query_amazon_page(isbn10, debug = False):
 
     amazon_url = get_amazon_url_from_google_search(google_search_url)
 
+
     ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
 
 
-    rest_url = 'https://www.googleapis.com/books/v1/volumes?key='+google_books_api_key+'&q=isbn:' + isbn10
-    response = requests.get(rest_url, headers=ua)
+    response = requests.get(amazon_url, headers=ua)
 
 
 
@@ -319,7 +348,7 @@ def get_amazon_url_from_google_search(search_url):
 
 
         # Found an amazon url
-        if 'www.amazon.com' in url:
+        if ('www.amazon.com' in url) and ('/dp/' in url):
 
             amazon_url = url
 
@@ -336,6 +365,8 @@ def get_isbn10_from_amazon_url(url, debug = False):
     if debug:
         print('found an isbn', isbn10)
     return url.split('/')[-1]
+
+
 
 '''
 
@@ -390,14 +421,18 @@ def get_title_from_amazon_soup(soup):
 
     title = 'NONE'
 
-    try:
-        ebook_children = soup.find_all(id = 'ebooksProductTitle')
-        book_children = soup.find_all(id = 'productTitle')
 
-        if ebook_children != []:
-            title = soup.find_all(id = 'ebooksProductTitle')[0].contents[0]
-        elif book_children != []:
-            title = soup.find_all(id = 'productTitle')[0].contents[0]
+    try:
+
+        title = soup.find_all(id = 'productTitle')[0].contents[0]
+
+
+        #ebook_children = soup.find_all(id = 'ebooksProductTitle')
+
+        #if ebook_children != []:
+            #title = soup.find_all(id = 'ebooksProductTitle')[0].contents[0]
+        #elif book_children != []:
+            #title = soup.find_all(id = 'productTitle')[0].contents[0]
 
     except:
         pass

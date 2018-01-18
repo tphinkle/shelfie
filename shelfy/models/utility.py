@@ -3,6 +3,7 @@ import datetime
 import os
 import pickle
 import sys
+import time
 
 # Google cloud vision
 from google.cloud import vision
@@ -72,9 +73,23 @@ def full_pipeline(img_path):
             isbn10 = get_isbn10_from_amazon_url(amazon_url, debug = True)
 
 
+
         else:
             # Couldn't get isbn10 from amazon link (or there was no amazon link)
             isbn10 = None
+
+
+
+        book_info['isbn10'] = isbn10
+
+
+
+
+        # Time
+        last_amazon_query = time.time()
+        last_google_query = time.time()
+        last_goodreads_query = time.time()
+
 
 
         # Query apis for the isbn10
@@ -84,21 +99,35 @@ def full_pipeline(img_path):
             # Run through all the APIs
             book_info = {}
 
+
+            # Try to get info from amazon
+            if book_info == {}:
+                print('trying amazon')
+                dt = last_amazon_query - time.time()
+                time.sleep(1-dt)
+                book_info = query_amazon_page(isbn10, debug = True)
+                last_amazon_query = time.time()
+
+
             # Try to get info from google API
             if book_info == {}:
                 print('trying google')
+                dt = last_google_query - time.time()
+                time.sleep(1-dt)
                 book_info = query_google_books_api(isbn10, debug = True)
+                last_google_query = time.time()
 
 
-            # Else try to get info from good reads API
+            # Try to get info from good reads API
             if book_info == {}:
                 print('trying goodreads')
+                dt = last_goodreads_query - time.time()
+                time.sleep(1-dt)
                 book_info = query_goodreads_api(isbn10, debug = True)
+                last_goodreads_query = time.time()
 
-            # Else try to get info from amazon
-            if book_info == {}:
-                print('trying amazon')
-                book_info = query_amazon_page(isbn10, debug = True)
+
+
 
 
             # Create and store the new book object
@@ -160,16 +189,4 @@ def unpickle_all_books():
 
 
 
-
-def save_books(books):
-    # Save all information to analytics path
-    dt = datetime.datetime
-
-    output_file_path = '_'.join([str(ele) for ele in [dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second]])
-
-    with open(output_file_path, 'w') as output_file_handle:
-        for book in books:
-
-
-
-            output_file_path.writerow()
+def load_books_in_shelf()
