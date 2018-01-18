@@ -15,7 +15,7 @@ def format_file_path_for_routing(file_path):
     return file_path
 
 @views.route('/submission/<submission_id>/admin', methods=['GET'])
-def submission(submission_id):
+def submission_admin(submission_id):
 
 
 
@@ -25,6 +25,19 @@ def submission(submission_id):
     books = server.load_pickle_from_submission_id(submission_id)
 
     return flask.render_template('submission-admin.html', rawimgfilepath = raw_img_file_path, procimgfilepath = proc_img_file_path, books = books)#, tokens = tokens)
+
+
+@views.route('/submission/<submission_id>/user', methods=['GET'])
+def submission_user(submission_id):
+
+
+
+
+    raw_img_file_path = format_file_path_for_routing(server.get_raw_image_path_from_submission_id(submission_id))
+    proc_img_file_path = format_file_path_for_routing(server.get_processed_image_path_from_submission_id(submission_id))
+    books = server.load_pickle_from_submission_id(submission_id)
+
+    return flask.render_template('submission-user.html', rawimgfilepath = proc_img_file_path, books = books)
 
 
 @views.route('/', methods=['GET', 'POST'])
@@ -87,5 +100,5 @@ def index():
 
 
 
-
+            return flask.redirect('/submission/' + submission_id + '/user')
             return flask.redirect('/submission/' + submission_id + '/admin')

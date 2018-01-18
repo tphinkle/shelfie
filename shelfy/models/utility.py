@@ -110,6 +110,8 @@ def full_pipeline(img_path):
                 book_info = scraper.query_amazon_page(isbn10, debug = True)
                 last_amazon_query = time.time()
 
+                book_info['api'] = 'amazon'
+
 
             # Try to get info from google API
             if book_info == {}:
@@ -119,6 +121,8 @@ def full_pipeline(img_path):
                 book_info = scraper.query_google_books_api(isbn10, debug = True)
                 last_google_query = time.time()
 
+                book_info['api'] = 'google'
+
 
             # Try to get info from good reads API
             if book_info == {}:
@@ -127,6 +131,8 @@ def full_pipeline(img_path):
                 time.sleep(1-dt)
                 book_info = scraper.query_goodreads_api(isbn10, debug = True)
                 last_goodreads_query = time.time()
+
+                book_info['api'] = 'goodreads'
 
 
 

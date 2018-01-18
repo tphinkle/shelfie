@@ -10,6 +10,10 @@ app = shelfy.app
 
 
 
+# Register view blueprints
+import shelfy.views
+app.register_blueprint(shelfy.views.views)
+
 
 
 
