@@ -186,7 +186,3 @@ def unpickle_all_books():
 
 
     return books
-
-
-
-def load_books_in_shelf()
