@@ -13,6 +13,7 @@ from google.cloud.vision import types
 # Shelfy
 import shelfy
 from shelfy.models import book_functions
+from shelfy.models import scraper
 from shelfy.models import similarity
 
 
@@ -64,14 +65,14 @@ def full_pipeline(img_path):
         search_query = spine.sentence
 
         # Get google search url from query
-        search_url = get_google_search_url_from_query(search_query)
+        search_url = scraper.get_google_search_url_from_query(search_query)
 
         # Get first amazon link from google search url
-        amazon_url = get_amazon_url_from_google_search(search_url)
+        amazon_url = scraper.get_amazon_url_from_google_search(search_url)
 
         # Get isbn10 from amazon_url
         if amazon_url != None:
-            isbn10 = get_isbn10_from_amazon_url(amazon_url, debug = True)
+            isbn10 = scraper.get_isbn10_from_amazon_url(amazon_url, debug = True)
 
 
 
@@ -94,7 +95,7 @@ def full_pipeline(img_path):
 
 
         # Query apis for the isbn10
-        if is_isbn10(isbn10, debug = True):
+        if scraper.is_isbn10(isbn10, debug = True):
 
 
             # Run through all the APIs
@@ -106,7 +107,7 @@ def full_pipeline(img_path):
                 print('trying amazon')
                 dt = last_amazon_query - time.time()
                 time.sleep(1-dt)
-                book_info = query_amazon_page(isbn10, debug = True)
+                book_info = scraper.query_amazon_page(isbn10, debug = True)
                 last_amazon_query = time.time()
 
 
@@ -115,7 +116,7 @@ def full_pipeline(img_path):
                 print('trying google')
                 dt = last_google_query - time.time()
                 time.sleep(1-dt)
-                book_info = query_google_books_api(isbn10, debug = True)
+                book_info = scraper.query_google_books_api(isbn10, debug = True)
                 last_google_query = time.time()
 
 
@@ -124,7 +125,7 @@ def full_pipeline(img_path):
                 print('trying goodreads')
                 dt = last_goodreads_query - time.time()
                 time.sleep(1-dt)
-                book_info = query_goodreads_api(isbn10, debug = True)
+                book_info = scraper.query_goodreads_api(isbn10, debug = True)
                 last_goodreads_query = time.time()
 
 
