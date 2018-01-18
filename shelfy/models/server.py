@@ -69,7 +69,7 @@ def create_new_submission(file):
     with open(directory + '/info.txt', 'w') as file_handle:
         writer = csv.writer(file_handle, delimiter = ',')
         writer.writerow(file.filename)
-        writer.writerow(datetime.datetime.now())
+        writer.writerow(str(datetime.datetime.now()))
 
 
     os.makedirs(directory + '/raw_img')
