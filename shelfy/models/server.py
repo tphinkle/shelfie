@@ -68,8 +68,8 @@ def create_new_submission(file):
     # Create a file w/ some meta information
     with open(directory + '/info.txt', 'w') as file_handle:
         writer = csv.writer(file_handle, delimiter = ',')
-        file_handle.writerow(file.filename)
-        file_handle.writerow(datetime.datetime.now())
+        writer.writerow(file.filename)
+        writer.writerow(datetime.datetime.now())
 
 
     os.makedirs(directory + '/raw_img')
