@@ -186,7 +186,8 @@ def load_pickle_from_submission_id(submission_id):
 
     # Load the objects
     books = []
-    for file_path in file_paths:
+    for i, file_path in enumerate(file_paths):
+        print('loadingp ickle', i)
         with open(file_path, 'rb') as file_handle:
             book = pickle.load(file_handle)
             books.append(book)
