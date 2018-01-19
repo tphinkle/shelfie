@@ -3,7 +3,7 @@ import Levenshtein
 
 import numpy as np
 
-
+MIN_SIMILARITY = 0
 MAX_SIMILARITY = np.inf
 
 def calculate_book_score(book):
@@ -135,8 +135,6 @@ def single_token_inverse_weighted_levenshtein_tfidf(tokens, book_words):
             distance = Levenshtein.distance(token, book_word)
             scale_factor = 2.*np.min([L_token, L_book_word])+np.abs(L_token-L_book_word)
 
-            print('distance', distance)
-            print('scale_factor', scale_factor)
             temp_similarities.append(1./(1+distance/scale_factor))
 
         try:
