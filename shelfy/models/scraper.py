@@ -670,7 +670,7 @@ def query_amazon_products_api(isbn10, amazon, debug = False):
 
     return book_info, price_info
 
-def AmazonPrice(object):
+class AmazonPrice(object):
     categories = ['Great', 'Fair', 'Poor']
 
     def __init__(self, prices, shipping_prices, qualities):
