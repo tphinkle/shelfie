@@ -141,7 +141,6 @@ def full_pipeline(img_path):
 
         book.pricing = book_pricing
 
-        print(book.pricing)
 
         book.similarity = similarity.calculate_book_score(book)
 
@@ -150,6 +149,7 @@ def full_pipeline(img_path):
         books.append(book)
 
         print(book.book_info)
+        print(book.pricing)
 
 
 

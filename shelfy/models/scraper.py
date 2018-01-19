@@ -48,7 +48,6 @@ def get_page_soup(url):
     response = requests.get(url, headers=ua)
     soup = BeautifulSoup(response.content, 'lxml')
 
-    print('made it through get_page_soup!!!!!!!')
 
     return soup
 
@@ -700,14 +699,12 @@ def get_prices_from_sales_page_soup(soup):
 
     for offer in soup.find(class_='a-section a-padding-small').find_all(class_='a-row a-spacing-mini olpOffer'):
 
-        print('asdf')
 
         # Get the pricing information
         try:
             price = offer.find(class_ = 'a-size-large a-color-price olpOfferPrice a-text-bold').contents[0].replace(' ','').replace('$','').replace(',','')
         except:
             price = 0
-            print('could not find price...')
         try:
             shipping_price = offer.find(class_ = 'olpShippingPrice').contents[0].replace('$','').replace(',','')
         except:
@@ -717,10 +714,8 @@ def get_prices_from_sales_page_soup(soup):
             quality = offer.find(class_ = 'a-size-medium olpCondition a-text-bold').contents[0].replace(' ','').replace('\n','').replace('Used','').replace('-','')
         except:
             quality = 'NONE'
-            print('could not find quality')
 
 
-        print(price, shipping_price, quality)
 
         # Append to lists
         if price != 0:
@@ -728,7 +723,6 @@ def get_prices_from_sales_page_soup(soup):
             shipping_prices.append(float(shipping_price))
             qualities.append(quality)
 
-    print('made it through get_prices_from_sales_page!!!')
 
     return prices, shipping_prices, qualities
 
@@ -745,7 +739,7 @@ def get_prices_from_amazon_products(isbn, amazon):
 
     soup = BeautifulSoup(response, 'lxml')
 
-    price = soup.lowestnewprice.amount.contents[0]
+    price = soup.lowestusedprice.amount.contents[0]
 
     return price
 
@@ -831,6 +825,5 @@ def get_next_sales_url_from_sales_page_soup(soup, base_url):
     next_url = base_url + next_url
 
 
-    print('made it through get_next_sales_url_from_amazon!!!!!!!!')
 
     return next_url
