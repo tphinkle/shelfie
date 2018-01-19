@@ -55,13 +55,13 @@
             </tr>
           </thead>
           <tbody>
-            {% for i, book in enumerate(books) %}
+            {% for book in books %}
             <tr>
               <th scope="row">{{ book.book_info['title'] }}</th>
               <td>{{ book.book_info['cost'] }}</td>
               <td>
                 <div class="radio">
-                     <label><input type="radio" id='{{i}}' name="optradio">TIKI</label>
+                     <label><input type="radio" id={{ book.book_info['isbn10'] }} name="optradio">TIKI</label>
                 </div>
               </td>
 
