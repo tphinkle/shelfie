@@ -14,6 +14,9 @@ import hmac
 import hashlib
 import base64
 
+# Program specific
+import shelfy
+
 
 
 
