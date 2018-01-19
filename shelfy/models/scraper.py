@@ -704,12 +704,12 @@ def get_prices_from_sales_page_soup(soup):
 
         # Get the pricing information
         try:
-            price = offer.find(class_ = 'a-size-large a-color-price olpOfferPrice a-text-bold').contents[0].replace(' ','').replace('$','')
+            price = offer.find(class_ = 'a-size-large a-color-price olpOfferPrice a-text-bold').contents[0].replace(' ','').replace('$','').replace(',','')
         except:
             price = 0
             print('could not find price...')
         try:
-            shipping_price = offer.find(class_ = 'olpShippingPrice').contents[0].replace('$','')
+            shipping_price = offer.find(class_ = 'olpShippingPrice').contents[0].replace('$','').replace(',','')
         except:
             shipping_price = 0
 
