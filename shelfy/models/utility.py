@@ -147,12 +147,10 @@ def full_pipeline(img_path):
 
 
             # Create and store the new book object
-            print('book info:', book_info)
 
 
 
 
-        print('bok info!!!!!', book_info)
         book = book_functions.Book(book_info, spine)
 
         book.similarity = similarity.calculate_book_score(book)
@@ -171,6 +169,8 @@ def full_pipeline(img_path):
     #utility.save_books()
 
     # Finally, return
+
+    print('about to return!')
     return books
 
 
