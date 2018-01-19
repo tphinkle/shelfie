@@ -695,6 +695,8 @@ def get_prices_from_sales_page(soup):
     prices = []
     shipping_prices = []
     qualities = []
+
+    print(soup)
     #print(soup.find(class_='a-section a-padding-small').find_all(class_='a-row a-spacing-mini olpOffer'))
     for offer in soup.find(class_='a-section a-padding-small').find_all(class_='a-row a-spacing-mini olpOffer'):
 
