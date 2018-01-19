@@ -758,7 +758,7 @@ def get_prices_from_amazon_products(isbn, amazon):
         total_qualities += qualities
 
         # Get next sales url
-        sales_url = get_next_sales_url_from_amazon(sales_url, base_url)
+        sales_url = get_next_sales_url_from_sales_page_soup(sales_page_soup, base_url)
 
     book_price = AmazonPrice(total_prices, total_shipping_prices, total_qualities)
 
@@ -787,7 +787,7 @@ def get_first_sales_url_from_amazon(isbn, amazon):
         if description == 'All Offers':
             return item_link.URL.text
 
-def get_next_sales_url_from_amazon(soup, base_url):
+def get_next_sales_url_from_sales_page_soup(soup, base_url):
     '''
     Given a url to a sales page, returns the next available sales page
     if it exists, otherwise returns None
@@ -801,7 +801,7 @@ def get_next_sales_url_from_amazon(soup, base_url):
         return None
 
     # Append all the stuff before
-    next_url = '' + next_url
+    next_url = base_url + next_url
 
 
     print('made it through get_next_sales_url_from_amazon!!!!!!!!')
