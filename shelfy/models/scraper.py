@@ -632,6 +632,10 @@ def query_amazon_products_api(isbn10, amazon, debug = False):
     book_info['publisher'] = 'NONE'
 
 
+    # Price info
+    price_info = None
+
+
 
     try:
         book_info['title'] = str(soup.ItemLookupResponse.Items.Item.ItemAttributes.Title.contents[0])
@@ -724,9 +728,13 @@ def get_prices_from_amazon_products(isbn, amazon):
     sales_url = get_first_sales_url_from_amazon(isbn, amazon)
     base_url = sales_url.split('ref')[0]
 
+    print('first sales url:', sales_url)
+    print('base url:', base_url)
+
     # Loop over all sales page
     total_prices, total_shipping_prices, total_qualities = [],[],[]
     while sales_url:
+        print('trying a new url!', sales_url)
 
         # Get the soup
         sales_page_soup = get_page_soup(sales_url)
