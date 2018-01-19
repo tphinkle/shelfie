@@ -571,7 +571,7 @@ def get_amazon_api_info():
     Opens a file to get amazon api info
     '''
 
-    with open('keys/amazon_key', 'r') as file_handle:
+    with open(shelfy.SHELFY_BASE_PATH + '/keys/amazon_key', 'r') as file_handle:
         reader = csv.reader(file_handle, delimiter = ',')
 
         aws_access_key_id = next(reader)[1]
