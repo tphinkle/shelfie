@@ -93,6 +93,57 @@ def preprocess_book_tokens(tokens):
 
 
 
+def single_token_inverse_weighted_levenshtein_tfidf(tokens, bookwords):
+    '''
+    Does a one-sided, weighted levenshtein score calculation, scaled by the
+    TF-IDF value of the word in the data set
+    inverse: The score goes like 1 over the weighted levenshtein 1/(1+L)
+    'one-sided': Only matches from tokens->book words are considered, i.e. if
+    a word shows up in book_words but not in tokens, there is no penalty
+    'weighted': Divide the computed levenshtein distance by the maximal number
+    of insertions and deletions that would be required under the worst case scenario,
+    i.e. no letters overlap between the two words at all
+    'levenshtein': Number of insertions and deletions needed to transform one
+    word to another
+    'tfidf': 'Term frequency inverse document frequency', scale the computed
+    similarity score by the inverse of the number of times it appears across all
+    book titles. To illustrate why this is important, considering the following two
+    scenarios where in both cases only one word is detected along the book's spine:
+        a) The word is 'dragon'; there are tons of books with the word 'dragon'
+        in the title, so it's not very meaningful and therefore we shouldn't have
+        much confidence in the match
+        b) The word is 'elantris'; while still only a single word match, the word
+        is basically present in the list of all available books only once, and
+        therefore suggests a strong match
+    '''
+
+    total_similarity = 0
+
+
+
+    # Loop over all tokens (words found on spine)
+    for i, token in enumerate(tokens):
+        temp_similarities = []
+
+        # Loop over all book words (words associated with the book's info, e.g.
+        # actual titles, publishers, etc.)
+        L_token = len(token)
+        for j, book_word in enumerate(book_words):
+            L_book_word = len(book_word)
+
+            distance = Levenshtein.distance(token, book_word)
+            scale_factor = 2.*np.min([L_token, L_book_word])+np.abs(L_token-L_book_word)
+            temp_similarities.append(1./(1+distance/scale_factor))
+
+        try:
+            max_similarity = np.max(temp_distances)
+        except:
+            max_similarity =  MAX_SIMILARITY
+
+
+        total_similarity += max_similarity
+
+    return total_similarity
 
 
 
