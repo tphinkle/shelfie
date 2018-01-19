@@ -611,6 +611,7 @@ def get_book_info_amazon_products(isbn, amazon):
 
 
     # Get the book info
+    book_info = {}
     book_info['isbn10'] = isbn
 
     try:
