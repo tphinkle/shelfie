@@ -687,7 +687,7 @@ def AmazonPrice(object):
 
 
 
-def get_prices_from_sales_page(soup):
+def get_prices_from_sales_page_soup(soup):
     '''
     Gets all of the pricing information from the soup
     '''
@@ -696,7 +696,6 @@ def get_prices_from_sales_page(soup):
     shipping_prices = []
     qualities = []
 
-    print(soup)
     #print(soup.find(class_='a-section a-padding-small').find_all(class_='a-row a-spacing-mini olpOffer'))
     for offer in soup.find(class_='a-section a-padding-small').find_all(class_='a-row a-spacing-mini olpOffer'):
 
