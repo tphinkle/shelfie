@@ -701,12 +701,19 @@ def get_prices_from_sales_page(soup):
 
 
         # Get the pricing information
-        price = offer.find(class_ = 'a-size-large a-color-price olpOfferPrice a-text-bold').contents[0].replace(' ','').replace('$','')
+        try:
+            price = offer.find(class_ = 'a-size-large a-color-price olpOfferPrice a-text-bold').contents[0].replace(' ','').replace('$','')
+        except:
+            print('could not find price...')
         try:
             shipping_price = offer.find(class_ = 'olpShippingPrice').contents[0].replace('$','')
         except:
             shipping_price = 0
-        quality = offer.find(class_ = 'a-size-medium olpCondition a-text-bold').contents[0].replace(' ','').replace('\n','').replace('Used','').replace('-','')
+
+        try:
+            quality = offer.find(class_ = 'a-size-medium olpCondition a-text-bold').contents[0].replace(' ','').replace('\n','').replace('Used','').replace('-','')
+        except:
+            print('could not find quality')
 
 
         # Append to lists
