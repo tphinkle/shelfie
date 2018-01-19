@@ -613,6 +613,11 @@ def query_amazon_products_api(isbn, amazon):
     # Get the book info
     book_info = {}
     book_info['isbn10'] = isbn
+    book_info['title'] = 'NONE'
+    book_info['authors'] = 'NONE'
+    book_info['publisher'] = 'NONE'
+
+
 
     try:
         book_info['title'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Title.contents[0]
@@ -623,7 +628,7 @@ def query_amazon_products_api(isbn, amazon):
             print('could not find title (amazon products)')
 
     try:
-        book_info['author'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Author.contents[0]
+        book_info['authors'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Author.contents[0]
     except:
         pass
         if debug:

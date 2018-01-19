@@ -103,8 +103,6 @@ def full_pipeline(img_path):
                 print('trying amazon products')
                 book_info = scraper.query_amazon_products_api(isbn10, amazon)
 
-                print(book_info)
-
                 book_info['api'] = 'amazon products'
 
 
@@ -149,8 +147,6 @@ def full_pipeline(img_path):
         book = book_functions.Book(book_info, spine)
 
         book.similarity = similarity.calculate_book_score(book)
-
-
 
         books.append(book)
 
