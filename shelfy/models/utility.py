@@ -152,7 +152,7 @@ def full_pipeline(img_path):
 
 
 
-        print('book info!!!!!', book_info)
+        print('bok info!!!!!', book_info)
         book = book_functions.Book(book_info, spine)
 
         book.similarity = similarity.calculate_book_score(book)
