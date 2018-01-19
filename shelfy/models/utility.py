@@ -99,6 +99,7 @@ def full_pipeline(img_path):
 
 
             # Try to get info from amazon products api
+
             if book_info == {}:
                 print('trying amazon products')
                 book_info = scraper.get_book_info_amazon_products(isbn10, amazon)
@@ -147,12 +148,11 @@ def full_pipeline(img_path):
 
             # Create and store the new book object
             print('book info:', book_info)
-            book = book_functions.Book(book_info, spine)
 
 
 
 
-
+        print('book info!!!!!', book_info)
         book = book_functions.Book(book_info, spine)
 
         book.similarity = similarity.calculate_book_score(book)
@@ -181,7 +181,7 @@ def unpickle_all_books():
     '''
 
 
-    
+
     submissions_base_path = shelfy.SHELFY_BASE_PATH + '/static/submissions/'
 
     submissions = [dir for dir in os.listdir(submissions_base_path)]
