@@ -758,6 +758,8 @@ def get_prices_from_amazon_products(isbn, amazon):
         # Get the pricing information
         prices, shipping_prices, qualities = get_prices_from_sales_page_soup(sales_page_soup)
 
+        print(prices, shipping_prices, qualities)
+
         # Append to total lists
         total_prices += prices
         total_shipping_prices += shipping_prices
