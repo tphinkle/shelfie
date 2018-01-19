@@ -768,12 +768,12 @@ def get_prices_from_amazon_products(isbn, amazon):
         total_qualities += qualities
 
         # Get next sales url
-        sales_url = get_next_sales_url_from_sales_page_soup(sales_page_soup, base_url)
+        #sales_url = get_next_sales_url_from_sales_page_soup(sales_page_soup, base_url)
+        sales_url = None
 
 
-    print('creating price')
     book_price = AmazonPrice(total_prices, total_shipping_prices, total_qualities)
-    print('done creating price')
+
 
     return book_price
 
