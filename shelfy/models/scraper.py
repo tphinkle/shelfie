@@ -610,9 +610,26 @@ def get_book_info_amazon_products(isbn, amazon):
     # Get the book info
     book_info = {}
 
-    book_info['title'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Title.contents[0]
-    book_info['author'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Author.contents[0]
-    book_info['publisher'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Publisher.contents[0]
+    try:
+        book_info['title'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Title.contents[0]
+    except:
+        pass
+        if debug:
+            print('could not find title (amazon products)')
+
+    try:
+        book_info['author'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Author.contents[0]
+    except:
+        pass
+        if debug:
+            print('could not find author (amazon products)')
+
+    try:
+        book_info['publisher'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Publisher.contents[0]
+    except:
+        pass
+        if debug:
+            print('could not find publisher (amazon products)')
 
     return book_info
 

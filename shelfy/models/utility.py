@@ -181,6 +181,7 @@ def unpickle_all_books():
     '''
 
 
+    
     submissions_base_path = shelfy.SHELFY_BASE_PATH + '/static/submissions/'
 
     submissions = [dir for dir in os.listdir(submissions_base_path)]
