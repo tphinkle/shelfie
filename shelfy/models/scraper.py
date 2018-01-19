@@ -636,6 +636,15 @@ def get_book_info_amazon_products(isbn, amazon):
         if debug:
             print('could not find publisher (amazon products)')
 
+
+
+    for item in book_info:
+        print('book info items')
+        print(book_info)
+
+
+
+
     return book_info
 
 
