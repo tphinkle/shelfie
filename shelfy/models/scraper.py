@@ -750,8 +750,7 @@ def get_prices_from_amazon_products(isbn, amazon):
     # Loop over all sales page
     total_prices, total_shipping_prices, total_qualities = [],[],[]
     while sales_url != None:
-        print('trying a new url!', sales_url)
-
+        time.sleep(0.5)
         # Get the soup
         sales_page_soup = get_page_soup(sales_url)
 
