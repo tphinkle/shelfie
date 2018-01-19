@@ -740,6 +740,21 @@ def get_prices_from_amazon_products(isbn, amazon):
     '''
 
 
+    response = amazon.ItemLookup(ItemId="0553582011", ResponseGroup="Offers",
+    SearchIndex="Books", IdType="ISBN")
+
+    soup = BeautifulSoup(response, 'lxml')
+
+    price = soup.lowestnewprice.amount.contents[0]
+
+    return price
+
+
+
+
+
+    '''
+    # Scraping...
     # Get the first sales page
     sales_url = get_first_sales_url_from_amazon(isbn, amazon)
     base_url = sales_url.split('?')[0]
@@ -775,6 +790,7 @@ def get_prices_from_amazon_products(isbn, amazon):
 
 
     return book_price
+    '''
 
 
 
