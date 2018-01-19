@@ -182,6 +182,7 @@ def query_google_books_api(isbn10, debug = False):
 
 
     book_info = {}
+    book_info['isbn10'] = isbn10
 
     # Get title
     try:
@@ -262,6 +263,8 @@ def query_amazon_page(isbn10, debug = False):
 
 
     book_info = {}
+    book_info['isbn10'] = isbn10
+
 
     # Get title
     try:
@@ -608,7 +611,7 @@ def get_book_info_amazon_products(isbn, amazon):
 
 
     # Get the book info
-    book_info = {}
+    book_info['isbn10'] = isbn
 
     try:
         book_info['title'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Title.contents[0]

@@ -170,7 +170,9 @@ def full_pipeline(img_path):
 
     # Finally, return
 
-    print('about to return!')
+    for book in books:
+        print(book.book_info)
+
     return books
 
 
