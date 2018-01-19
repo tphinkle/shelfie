@@ -599,7 +599,7 @@ def get_amazon_object():
     return amazon
 
 
-def query_amazon_products_api(isbn, amazon):
+def query_amazon_products_api(isbn, amazon, debug = False):
     '''
     Gets the book info using the amazon products api, given the isbn and a
     bottlenose.Amazon object (amazon)
