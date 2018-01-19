@@ -48,7 +48,7 @@ def get_page_soup(url):
     response = requests.get(url, headers=ua)
     soup = BeautifulSoup(response.content, 'lxml')
 
-
+    print('made it through get_page_soup!!!!!!!')
 
     return soup
 
@@ -714,6 +714,8 @@ def get_prices_from_sales_page(soup):
         shipping_prices.append(float(shipping_price))
         qualities.append(quality)
 
+    print('made it through get_prices_from_sales_page!!!')
+
     return prices, shipping_prices, qualities
 
 
@@ -733,7 +735,7 @@ def get_prices_from_amazon_products(isbn, amazon):
 
     # Loop over all sales page
     total_prices, total_shipping_prices, total_qualities = [],[],[]
-    while sales_url:
+    while sales_url != None:
         print('trying a new url!', sales_url)
 
         # Get the soup
@@ -793,5 +795,7 @@ def get_next_sales_url_from_amazon(soup, base_url):
     # Append all the stuff before
     next_url = '' + next_url
 
+
+    print('made it through get_next_sales_url_from_amazon!!!!!!!!')
 
     return next_url
