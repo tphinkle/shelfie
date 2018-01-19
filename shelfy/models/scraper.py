@@ -659,7 +659,7 @@ def query_amazon_products_api(isbn10, amazon, debug = False):
             print('could not find publisher (amazon products)')
 
     try:
-        price_info = get_prices_from_amazon_products(isbn, amazon)
+        price_info = get_prices_from_amazon_products(isbn10, amazon)
     except:
         pass
         if debug:
