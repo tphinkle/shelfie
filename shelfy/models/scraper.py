@@ -610,9 +610,9 @@ def get_book_info_amazon_products(isbn, amazon):
     # Get the book info
     book_info = {}
 
-    book_info['title'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Title.contents
-    book_info['author'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Author.contents
-    book_info['publisher'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Publisher.contents
+    book_info['title'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Title.contents[0]
+    book_info['author'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Author.contents[0]
+    book_info['publisher'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Publisher.contents[0]
 
     return book_info
 
