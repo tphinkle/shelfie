@@ -612,6 +612,7 @@ def get_book_info_amazon_products(isbn, amazon):
 
     try:
         book_info['title'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Title.contents[0]
+        print('this is the book title!', book_info['title'])
     except:
         pass
         if debug:
