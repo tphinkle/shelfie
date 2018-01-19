@@ -740,7 +740,7 @@ def get_prices_from_amazon_products(isbn, amazon):
     '''
 
 
-    response = amazon.ItemLookup(ItemId="0553582011", ResponseGroup="Offers",
+    response = amazon.ItemLookup(ItemId=str(isbn), ResponseGroup="Offers",
     SearchIndex="Books", IdType="ISBN")
 
     soup = BeautifulSoup(response, 'lxml')
