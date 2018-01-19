@@ -564,6 +564,19 @@ Amazon Products API
 '''
 
 
+def get_amazon_api_info():
+    '''
+    Opens a file to get amazon api info
+    '''
+
+    with open('keys/amazon_key', 'r') as file_handle:
+        reader = csv.reader(file_handle, delimiter = ',')
+
+        aws_access_key_id = next(reader)[1]
+        aws_secret_access_key = next(reader)[1]
+        aws_associate_tag = next(reader)[1]
+
+        return aws_access_key_id, aws_secret_access_key, aws_associate_tag
 
 
 def get_amazon_object():
@@ -572,6 +585,7 @@ def get_amazon_object():
     functions that use the bottlenose module
     '''
 
+    AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_ASSOCIATE_TAG = get_amazon_api_info()
     amazon = bottlenose.Amazon(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_ASSOCIATE_TAG)
     return amazon
 
