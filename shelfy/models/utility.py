@@ -91,18 +91,21 @@ def full_pipeline(img_path):
         # Create amazon bottlenose object
         amazon = scraper.get_amazon_object()
 
+        # Run through all the APIs
+        book_info = {}
+
         # Query apis for the isbn10
         if scraper.is_isbn10(isbn10, debug = True):
-
-
-            # Run through all the APIs
-            book_info = {}
 
 
             # Try to get info from amazon products api
             if book_info == {}:
                 print('trying amazon products')
                 book_info = scraper.get_book_info_amazon_products(isbn10, amazon)
+
+                print(book_info)
+
+                book_info['api'] = 'amazon products'
 
 
 
