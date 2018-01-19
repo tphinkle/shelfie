@@ -49,25 +49,21 @@
         <table class="table table-hover">
           <thead>
             <tr>
-              <th>Title</th>
-              <th>Author</th>
-              <th>Publisher</th>
-              <th>ISBN-13</th>
-              <th>ISBN-10</th>
-              <th>Tokens</th>
-              <th>Similarity score</th>
+              <th>Book</th>
+              <th>Price ($)</th>
+              <th>Include?</th>
             </tr>
           </thead>
           <tbody>
-            {% for book in books %}
+            {% for i, book in enumerate(books) %}
             <tr>
               <th scope="row">{{ book.book_info['title'] }}</th>
-              <td>{{ book.book_info['authors'] }}</td>
-              <td>{{ book.book_info['publisher'] }}</td>
-              <td>{{ book.book_info['isbn-13'] }}</td>
-              <td>{{ book.book_info['isbn-10'] }}</td>
-              <td>{{ book.format_raw_spine_words_to_words_list() }}</td>
-              <td>{{ book.similarity }}</td>
+              <td>{{ book.book_info['cost'] }}</td>
+              <td>
+                <div class="radio">
+                     <label><input type="radio" id='{{i}}' name="optradio">TIKI</label>
+                </div>
+              </td>
 
 
 

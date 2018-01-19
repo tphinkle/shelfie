@@ -6,6 +6,17 @@ import time
 # Scraping
 from bs4 import BeautifulSoup
 import json
+import bottlenose
+
+
+# Hash
+import hmac
+import hashlib
+import base64
+
+
+
+
 
 
 
@@ -14,6 +25,9 @@ import json
 google_books_api_key = 'AIzaSyBueagspvDe8R-prJ3bmqtEnr7fPTH10Xo'
 goodreads_api_key = 'ooiawV83knPQnQ8If3eiSg'
 
+AWS_ACCESS_KEY_ID = 'AKIAIUTFJOPFEXJ6LSAA'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_ASSOCIATE_TAG = 'prestonh-20'
 
 
 
@@ -50,6 +64,111 @@ def is_isbn10(isbn10, debug = True):
             print('isbn', isbn10, 'is not isbn10')
 
     return is_isbn
+
+
+
+
+
+
+
+def query_amazon_products_api(isbn10, debug = False):
+    '''
+    Gets book information from amazno products API call
+    '''
+
+
+    # Main info
+
+    book_info = {}
+    book_info['isbn10'] = isbn10
+
+
+
+
+
+    # Header
+    ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
+
+    # Query for goodreads ID
+    #'https://www.goodreads.com/book/show.xml?key=ooiawV83knPQnQ8If3eiSg&isbn=' + isbn
+
+    rest_url = 'http://webservices.amazon.com/onca/xml?Service=AWSECommerceService&Operation=ItemSearch&\
+    AWSAccessKeyId=[Access Key ID]&AssociateTag=''+AMAZON_ASSOCIATE_ID+'&SearchIndex=Apparel&\
+    Keywords=Shirt&Timestamp=[YYYY-MM-DDThh:mm:ssZ]&Signature=[Request Signature]'\
+
+
+    response = requests.get(rest_url, headers=ua)
+    soup = BeautifulSoup(response.content, 'lxml')
+
+
+    try:
+        goodreads_id = soup.find('id').contents[0]
+    except:
+        pass
+        if debug:
+            print('Could not find goodreads id')
+            return book_info
+
+
+    # Query for book info
+    rest_url = 'https://www.goodreads.com/book/show.xml?key=ooiawV83knPQnQ8If3eiSg&id='+goodreads_id
+    response = requests.get(rest_url, headers=ua)
+
+    soup = BeautifulSoup(response.content, 'lxml')
+
+    # Title
+    try:
+
+        # Try to query 'original_title'
+        original_title = soup.original_title.contents
+        if len(original_title) > 0:
+            original_title = original_title[0]
+
+        # Try to query 'title'
+        title = soup.title.contents
+        if len(title) > 0:
+            title = title[0]
+
+
+        if original_title == []:
+            actual_title = title
+        else:
+            actual_title = original_title
+
+        if actual_title == []:
+            actual_title = 'NONE'
+
+
+        book_info['title'] = actual_title
+
+
+
+    except:
+        pass
+        if debug:
+            print('Could not find title for isbn 10', isbn10, '(goodreads api)')
+
+    # Authors
+    try:
+        book_info['authors'] = [child.find('name').contents[0] for child in soup.authors.children if child.find('name') != -1]
+    except:
+        pass
+        if debug:
+            print('Could not find authors for isbn 10', isbn10, '(goodreads api)')
+
+    # Publisher
+    try:
+        book_info['publisher'] = soup.find('publisher').contents[0]
+    except:
+        pass
+        if debug:
+            print('Could not find publisher for isbn 10', isbn10, '(goodreads api)')
+
+
+    return book_info
+
+
+
 
 
 def query_goodreads_api(isbn10, debug = False):
@@ -539,3 +658,67 @@ def get_isbn13_from_amazon_soup(soup):
         pass
 
     return isbn10
+
+
+
+
+
+'''
+Amazon Products API
+'''
+
+
+
+
+def get_amazon_object():
+    '''
+    Need to get an amazon object and pass it around to the
+    functions that use the bottlenose module
+    '''
+
+    amazon = bottlenose.Amazon(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_ASSOCIATE_TAG)
+    return amazon
+
+
+def get_book_info_amazon_products(isbn, amazon):
+    '''
+    Gets the book info using the amazon products api, given the isbn and a
+    bottlenose.Amazon object (amazon)
+    '''
+
+    # Get response, turn into soup
+    response = amazon.ItemLookup(ItemId=isbn, ResponseGroup="ItemAttributes", SearchIndex="Books", IdType="ISBN").decode('utf-8')
+    soup = BeautifulSoup(str(response), 'xml')
+
+
+    # Get the book info
+    book_info = {}
+
+    book_info['title'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Title
+    book_info['author'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Author
+    book_info['publisher'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Publisher
+
+    return book_info
+
+
+
+
+
+def get_first_sales_url_from_amazon(isbn, amazon):
+    '''
+    Gets the first sales page url from amazon for the given isbn
+    '''
+
+    response = amazon.ItemLookup(ItemId=isbn, ResponseGroup="Small",
+    SearchIndex="Books", IdType="ISBN").decode('utf-8')
+
+
+    soup = BeautifulSoup(str(response), 'xml')
+
+    item_links = soup.Items.Item.ItemLinks.find_all('ItemLink')
+
+    for item_link in item_links:
+        description = item_link.Description.text
+
+        if description == 'All Offers':
+            return item_link.URL.text

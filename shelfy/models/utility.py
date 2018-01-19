@@ -82,17 +82,14 @@ def full_pipeline(img_path):
 
 
 
-        book_info['isbn10'] = isbn10
-
-
-
-
         # Time
         last_amazon_query = time.time()
         last_google_query = time.time()
         last_goodreads_query = time.time()
 
 
+        # Create amazon bottlenose object
+        amazon = scraper.get_amazon_object()
 
         # Query apis for the isbn10
         if scraper.is_isbn10(isbn10, debug = True):
@@ -100,6 +97,13 @@ def full_pipeline(img_path):
 
             # Run through all the APIs
             book_info = {}
+
+
+            # Try to get info from amazon products api
+            if book_info = {}:
+                print('trying amazon products')
+                scraper.get_book_info_amazon_products(isbn, amazon):
+
 
 
             # Try to get info from amazon
