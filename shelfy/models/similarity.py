@@ -18,15 +18,16 @@ def calculate_book_score(book):
     '''
 
     # Get book variables
-    info = book.book_info
+    book_info = book.book_info
     tokens = [word.string for word in book.spine.words]
 
     # Preprocess the variables
-    info = preprocess_book_info(info)
+    book_info = preprocess_book_info(book_info)
     tokens = preprocess_book_tokens(tokens)
 
     # Calculate similarity score
-    similarity = single_token_levenshtein(tokens, info)
+    #similarity = single_token_levenshtein(tokens, info)
+    similarity = single_token_inverse_weighted_levenshtein_tfidf(tokens, book_info)
 
     return similarity
 
@@ -93,7 +94,7 @@ def preprocess_book_tokens(tokens):
 
 
 
-def single_token_inverse_weighted_levenshtein_tfidf(tokens, bookwords):
+def single_token_inverse_weighted_levenshtein_tfidf(tokens, book_words):
     '''
     Does a one-sided, weighted levenshtein score calculation, scaled by the
     TF-IDF value of the word in the data set
@@ -133,12 +134,15 @@ def single_token_inverse_weighted_levenshtein_tfidf(tokens, bookwords):
 
             distance = Levenshtein.distance(token, book_word)
             scale_factor = 2.*np.min([L_token, L_book_word])+np.abs(L_token-L_book_word)
+
+            print('distance', distance)
+            print('scale_factor', scale_factor)
             temp_similarities.append(1./(1+distance/scale_factor))
 
         try:
-            max_similarity = np.max(temp_distances)
+            max_similarity = np.max(temp_similarities)
         except:
-            max_similarity =  MAX_SIMILARITY
+            max_similarity =  MIN_SIMILARITY
 
 
         total_similarity += max_similarity
