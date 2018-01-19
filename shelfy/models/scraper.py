@@ -36,7 +36,21 @@ goodreads_api_key = 'ooiawV83knPQnQ8If3eiSg'
 
 
 
+def get_page_soup(url):
+    '''
+    Submits a request and returns the soup of the object;
+    if 404, returns False
+    '''
 
+    ua = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.36\
+     (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36'}
+
+    response = requests.get(url, headers=ua)
+    soup = BeautifulSoup(response.content, 'lxml')
+
+
+
+    return soup
 
 
 def get_google_search_url_from_query(search_query):
@@ -640,8 +654,99 @@ def query_amazon_products_api(isbn10, amazon, debug = False):
         if debug:
             print('could not find publisher (amazon products)')
 
+    try:
+        price_info = get_prices_from_amazon_products(isbn, amazon)
+    except:
+        pass
+        if debug:
+            print('could not find price info! (amazon products)')
 
-    return book_info
+
+
+
+    return book_info, price_info
+
+def AmazonPrice(object):
+    categories = ['Great', 'Fair', 'Poor']
+
+    def __init__(self, prices, shipping_prices, qualities):
+
+        # Get raw data
+        self.prices = prices
+        self.shipping_prices = shipping_prices
+        self.qualities = qualities
+
+        # Calculate means
+        #self.price_mean = np.mean(self.prices)
+        #self.shipping_prices_mean = np.mean(self.shipping_prices)
+
+
+
+
+def get_prices_from_sales_page(soup):
+    '''
+    Gets all of the pricing information from the soup
+    '''
+
+    prices = []
+    shipping_prices = []
+    qualities = []
+    #print(soup.find(class_='a-section a-padding-small').find_all(class_='a-row a-spacing-mini olpOffer'))
+    for offer in soup.find(class_='a-section a-padding-small').find_all(class_='a-row a-spacing-mini olpOffer'):
+
+
+
+        # Get the pricing information
+        price = offer.find(class_ = 'a-size-large a-color-price olpOfferPrice a-text-bold').contents[0].replace(' ','').replace('$','')
+        try:
+            shipping_price = offer.find(class_ = 'olpShippingPrice').contents[0].replace('$','')
+        except:
+            shipping_price = 0
+        quality = offer.find(class_ = 'a-size-medium olpCondition a-text-bold').contents[0].replace(' ','').replace('\n','').replace('Used','').replace('-','')
+
+
+        # Append to lists
+        prices.append(float(price))
+        shipping_prices.append(float(shipping_price))
+        qualities.append(quality)
+
+    return prices, shipping_prices, qualities
+
+
+
+def get_prices_from_amazon_products(isbn, amazon):
+    '''
+    Returns a AmazonPrice object, an object that stores the pricing information for a book
+    '''
+
+
+    # Get the first sales page
+    sales_url = get_first_sales_url_from_amazon(isbn, amazon)
+    base_url = sales_url.split('ref')[0]
+
+    # Loop over all sales page
+    total_prices, total_shipping_prices, total_qualities = [],[],[]
+    while sales_url:
+
+        # Get the soup
+        sales_page_soup = get_page_soup(sales_url)
+
+        # Get the pricing information
+        prices, shipping_prices, qualities = get_prices_from_sales_page_soup(sales_page_soup)
+
+        # Append to total lists
+        total_prices += prices
+        total_shipping_prices += shipping_prices
+        total_qualities += qualities
+
+        # Get next sales url
+        sales_url = get_next_sales_url_from_amazon(sales_url, base_url)
+
+    book_price = AmazonPrice(total_prices, total_shipping_prices, total_qualities)
+
+
+    return book_price
+
 
 
 
@@ -654,8 +759,6 @@ def get_first_sales_url_from_amazon(isbn, amazon):
 
     response = amazon.ItemLookup(ItemId=isbn, ResponseGroup="Small",
     SearchIndex="Books", IdType="ISBN").decode('utf-8')
-
-
     soup = BeautifulSoup(str(response), 'xml')
 
     item_links = soup.Items.Item.ItemLinks.find_all('ItemLink')
@@ -665,3 +768,22 @@ def get_first_sales_url_from_amazon(isbn, amazon):
 
         if description == 'All Offers':
             return item_link.URL.text
+
+def get_next_sales_url_from_amazon(soup, base_url):
+    '''
+    Given a url to a sales page, returns the next available sales page
+    if it exists, otherwise returns None
+    '''
+
+    try:
+        # There is a next button; get the url for it
+        next_url = soup.find(class_='a-last').a['href']
+    except:
+        # Failed because no next link to follow; return None!
+        return None
+
+    # Append all the stuff before
+    next_url = '' + next_url
+
+
+    return next_url
