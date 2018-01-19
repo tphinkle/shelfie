@@ -100,7 +100,7 @@ def full_pipeline(img_path):
 
 
             # Try to get info from amazon products api
-            if book_info = {}:
+            if book_info == {}:
                 print('trying amazon products')
                 scraper.get_book_info_amazon_products(isbn, amazon):
 
