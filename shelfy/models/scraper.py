@@ -726,7 +726,7 @@ def get_prices_from_amazon_products(isbn, amazon):
 
     # Get the first sales page
     sales_url = get_first_sales_url_from_amazon(isbn, amazon)
-    base_url = sales_url.split('ref')[0]
+    base_url = sales_url.split('?')[0]
 
     print('first sales url:', sales_url)
     print('base url:', base_url)
