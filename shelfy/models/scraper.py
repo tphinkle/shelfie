@@ -697,7 +697,7 @@ def get_prices_from_sales_page_soup(soup):
     qualities = []
 
     #print(soup.find_all(class_='a-section a-padding-small').find_all(class_='a-row a-spacing-mini olpOffer'))
-    
+
     for offer in soup.find(class_='a-section a-padding-small').find_all(class_='a-row a-spacing-mini olpOffer'):
 
         print('asdf')
@@ -706,6 +706,7 @@ def get_prices_from_sales_page_soup(soup):
         try:
             price = offer.find(class_ = 'a-size-large a-color-price olpOfferPrice a-text-bold').contents[0].replace(' ','').replace('$','')
         except:
+            price = 0
             print('could not find price...')
         try:
             shipping_price = offer.find(class_ = 'olpShippingPrice').contents[0].replace('$','')
@@ -715,13 +716,17 @@ def get_prices_from_sales_page_soup(soup):
         try:
             quality = offer.find(class_ = 'a-size-medium olpCondition a-text-bold').contents[0].replace(' ','').replace('\n','').replace('Used','').replace('-','')
         except:
+            quality = 'NONE'
             print('could not find quality')
 
 
+        print(price, shipping_price, quality)
+
         # Append to lists
-        prices.append(float(price))
-        shipping_prices.append(float(shipping_price))
-        qualities.append(quality)
+        if price != 0:
+            prices.append(float(price))
+            shipping_prices.append(float(shipping_price))
+            qualities.append(quality)
 
     print('made it through get_prices_from_sales_page!!!')
 
