@@ -158,13 +158,9 @@ def pickle_save_books(books, submission_id):
     pickle_directory = get_pickle_directory_from_submission_id(submission_id)
 
     # Pickle and save the books to the correct directory
-
     sys.setrecursionlimit(100000)    # Necessary to pickle objects
 
     for i, book in enumerate(books):
-
-
-
         with open(pickle_directory + '/' + str(i), 'wb') as file_handle:
             pickle.dump(book, file_handle)
 
@@ -187,7 +183,6 @@ def load_pickle_from_submission_id(submission_id):
     # Load the objects
     books = []
     for i, file_path in enumerate(file_paths):
-        print('loadingp ickle', i)
         with open(file_path, 'rb') as file_handle:
             book = pickle.load(file_handle)
             books.append(book)

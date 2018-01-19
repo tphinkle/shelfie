@@ -599,20 +599,20 @@ def get_amazon_object():
     return amazon
 
 
-def query_amazon_products_api(isbn, amazon, debug = False):
+def query_amazon_products_api(isbn10, amazon, debug = False):
     '''
     Gets the book info using the amazon products api, given the isbn and a
     bottlenose.Amazon object (amazon)
     '''
 
     # Get response, turn into soup
-    response = amazon.ItemLookup(ItemId=isbn, ResponseGroup="ItemAttributes", SearchIndex="Books", IdType="ISBN").decode('utf-8')
+    response = amazon.ItemLookup(ItemId=isbn10, ResponseGroup="ItemAttributes", SearchIndex="Books", IdType="ISBN").decode('utf-8')
     soup = BeautifulSoup(str(response), 'xml')
 
 
     # Get the book info
     book_info = {}
-    book_info['isbn10'] = isbn
+    book_info['isbn10'] = isbn10
     book_info['title'] = 'NONE'
     book_info['authors'] = 'NONE'
     book_info['publisher'] = 'NONE'
@@ -621,7 +621,6 @@ def query_amazon_products_api(isbn, amazon, debug = False):
 
     try:
         book_info['title'] = soup.ItemLookupResponse.Items.Item.ItemAttributes.Title.contents[0]
-        print('this is the book title!', book_info['title'])
     except:
         pass
         if debug:
@@ -640,14 +639,6 @@ def query_amazon_products_api(isbn, amazon, debug = False):
         pass
         if debug:
             print('could not find publisher (amazon products)')
-
-
-
-    for item in book_info:
-        print('book info items')
-        print(book_info)
-
-
 
 
     return book_info

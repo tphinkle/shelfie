@@ -59,8 +59,6 @@ def full_pipeline(img_path):
 
         book_info = {}
 
-        print('starting query', [word.string for word in spine.words])
-
         # Get query
         search_query = spine.sentence
 
@@ -100,7 +98,6 @@ def full_pipeline(img_path):
 
             # Try to get info from amazon products api
             if book_info == {}:
-                print('trying amazon products')
                 book_info = scraper.query_amazon_products_api(isbn10, amazon)
 
                 book_info['api'] = 'amazon products'
@@ -109,7 +106,6 @@ def full_pipeline(img_path):
 
             # Try to get info from amazon
             if book_info == {}:
-                print('trying amazon')
                 dt = last_amazon_query - time.time()
                 time.sleep(1-dt)
                 book_info = scraper.query_amazon_page(isbn10, debug = True)
@@ -120,7 +116,6 @@ def full_pipeline(img_path):
 
             # Try to get info from google API
             if book_info == {}:
-                print('trying google')
                 dt = last_google_query - time.time()
                 time.sleep(1-dt)
                 book_info = scraper.query_google_books_api(isbn10, debug = True)
@@ -131,7 +126,6 @@ def full_pipeline(img_path):
 
             # Try to get info from good reads API
             if book_info == {}:
-                print('trying goodreads')
                 dt = last_goodreads_query - time.time()
                 time.sleep(1-dt)
                 book_info = scraper.query_goodreads_api(isbn10, debug = True)
@@ -150,6 +144,8 @@ def full_pipeline(img_path):
 
         books.append(book)
 
+        print(book.book_info)
+
 
 
 
@@ -161,8 +157,6 @@ def full_pipeline(img_path):
 
     # Finally, return
 
-    for book in books:
-        print(book.book_info)
 
     return books
 
