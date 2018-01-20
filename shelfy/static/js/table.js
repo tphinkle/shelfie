@@ -9,19 +9,23 @@ function sum_table() {
   var price;
   var number;
 
-  // Loop over table
-  $('#table table-header > tbody  > tr:not(:first)').each( function(){
 
-      price = $(this.'#price');
+
+
+  $("#element td:nth-child(2)").text('ChangedText');
+  // Loop over table
+  $('#table table-hover > tbody  > tr:not(:first)').each( function(){
+
+      price = $('this > #price').value();
+
       console.log(price);
-      //$(this).
+
       $("#element td:nth-child(2)").text('ChangedText');
 
       number = Number(price.replace(/[^0-9\.-]+/g,""));
       total = total + number;
     });
 
-  $("#element td:nth-child(2)").text('ChangedText');
 
 
   // Format the price
