@@ -45,8 +45,8 @@
     <!-- PRICING ROW -->
     <div class="row">
       <div class="col-lg-1"></div>
-      <div class="col-lg-10"></div>
-       <p class="text-xl-center">$100.00</p>
+      <div class="col-lg-10">
+       <p class="text-xl-center" id="total-label">$100.00</p>
       <div class="col-lg-1"></div>
     </div>
 
@@ -72,8 +72,8 @@
               <th scope="row">{{ book.book_info['title'] }}</th>
               <td>{{ book.formatted_price }}</td>
               <td>
-                <div class="radio">
-                     <label><input type="radio" id={{ book.book_info['id'] }} name="optradio">Sell?</label>
+                <div class="form-check">
+                     <input type="checkbox" class="form-check-input" id={{ book.book_info['id'] }} name="sell-checkbox">
                 </div>
               </td>
             </tr>
