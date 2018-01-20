@@ -9,7 +9,6 @@ $(document).ready(function () {
             var value = $(this).text();
             sum += Number(value.replace(/[^0-9/.-]+/g,""));
         });
-        //set the value of currents rows sum to the total-combat element in the current row
-        $('.total-price', this).html(sum);
-    });
+      });
+      $('.total-price', this).html(sum);
 });

@@ -20,7 +20,11 @@
 
 
 
+
+    <!-- HEADER -->
     <h1><a href="/">shelfy</a></h1>
+
+    <!-- IMAGES -->
 
     <div class="row">
 
@@ -35,16 +39,24 @@
       </div>
 
       <div class="col-lg-1"></div>
-
-
     </div>
 
+
+    <!-- PRICING ROW -->
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10"></div>
+       <p class="text-xl-center">$100.00</p>
+      <div class="col-lg-1"></div>
+    </div>
+
+
+
+    <!-- TABLE ROW -->
     <div class="row">
 
 
       <div class="col-lg-1"></div>
-
-
       <div class="col-lg-10">
         <table class="table table-hover">
           <thead>
@@ -65,13 +77,12 @@
                 </div>
               </td>
             </tr>
-
+            {% endfor %}
             <tr>
               <th>Total</th>
               <th>$1000.00</th>
               <th>asdf</th>
             </tr>
-            {% endfor %}
           </tbody>
         </table>
       </div>

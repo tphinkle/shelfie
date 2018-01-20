@@ -59,7 +59,7 @@ def get_google_search_url_from_query(search_query):
     url = 'https://www.google.com/search?q=amazon+book+'+search_query.replace(' ', '+')
     return url
 
-def is_isbn10(isbn10, debug = True):
+def is_isbn10(isbn10, debug = False):
 
     is_isbn = False
 
@@ -69,8 +69,7 @@ def is_isbn10(isbn10, debug = True):
     if type(isbn10) == str:
 
         # isbn10 must be numeric and have length 10
-        #print('is digit', isbn10.isdigit())
-        #print('length', len(isbn10))
+
         is_isbn = ((len(isbn10) == 10))
 
     if debug:
