@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  $("input[type=checkbox]").change(function(){
+  $("#form-check-input").change(function(){
     recalculate();
   });
 }
@@ -7,14 +7,9 @@ $(document).ready(function() {
 
 
 // recalculate the table sum
-function recalculate(){
-    var sum = 0;
+function recalculate_total_price(){
+  console.log('asdf');
 
-    $("input[type=checkbox]:checked").each(function(){
-      sum += price_to_float($(this).attr("rel"));
-    });
-
-    alert(sum);
 }
 
 
