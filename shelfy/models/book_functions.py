@@ -286,7 +286,7 @@ class Book(object):
             self.formatted_price = '$0.00'
         else:
             self.price = price
-            self.formatted_price = '$' + str(round(self.price/100., 2))
+            self.formatted_price = '$' + str(self.price/100., 2)
 
 
 
