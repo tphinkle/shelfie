@@ -149,13 +149,6 @@ def full_pipeline(img_path):
 
         books.append(book)
 
-        print(book.book_info)
-        print(book.pricing)
-
-
-
-
-
 
 
 
