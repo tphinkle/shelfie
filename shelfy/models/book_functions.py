@@ -286,10 +286,11 @@ class Book(object):
         else:
 
 
+
         self.price = price
         if self.price == None:
-            self.price = 0.00
-        self.formatted_price = '$' +
+            self.price = round(0.00, 2)
+        self.formatted_price = '$' + str(self.price)
 
 
 
