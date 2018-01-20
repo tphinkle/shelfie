@@ -9,18 +9,12 @@ function sum_table() {
   var price;
   var number;
 
-
-
-
-  $("#element td:nth-child(2)").text('ChangedText');
-  // Loop over table
-  $('#table table-hover > tbody  > tr:not(:first)').each( function(){
+  $('#table-hover > tbody  > tr:not(:first)').each( function(){
+      console.log('zws');
 
       price = $('this > #price').value();
 
       console.log(price);
-
-      $("#element td:nth-child(2)").text('ChangedText');
 
       number = Number(price.replace(/[^0-9\.-]+/g,""));
       total = total + number;
