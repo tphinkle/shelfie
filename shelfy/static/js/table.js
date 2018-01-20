@@ -1,22 +1,25 @@
+
+// recalculate the table sum
+function recalculate_total_price(){
+  console.log('asdf');
+}
+
 $(document).ready(function() {
 
   // Loop over all checkboxes
-  $.each("#form-check-input", function() {
+  $.each("#form-check-input", function(i) {
 
     // Set the callback for the checkbox
     $(this).change(function(){
       recalculate_total_price();
     })
   })
-  
+
 });
 
 
 
-// recalculate the table sum
-function recalculate_total_price(){
-  console.log('asdf');
-}
+
 
 
 
