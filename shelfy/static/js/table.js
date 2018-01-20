@@ -10,11 +10,18 @@ function sum_table() {
   var number;
 
   // Loop over table
-  $('.price_row').each( function(){
-      price = $(this).val();
+  $('#table table-header > tbody  > tr:not(:first)').each( function(){
+
+      price = $(this).'#price';
+      console.log(price);
+      //$(this).
+      $("#element td:nth-child(2)").text('ChangedText');
+
       number = Number(price.replace(/[^0-9\.-]+/g,""));
       total = total + number;
     });
+
+  $("#element td:nth-child(2)").text('ChangedText');
 
 
   // Format the price

@@ -75,7 +75,7 @@
             {% for book in books %}
             <tr>
               <th scope="row">{{ book.book_info['title'] }}</th>
-              <td name="price_row">{{ book.formatted_price }}</td>
+              <td class="price" name="price_row">{{ book.formatted_price }}</td>
               <td>
                 <div class="form-check">
                      <input type="checkbox" class="form-check-input" id={{ book.book_info['id'] }} name="sell-checkbox">
