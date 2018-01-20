@@ -11,9 +11,9 @@ $(document).ready(function() {
   // Loop over all checkboxes
   $('.form-check-input').each(function(i, obj) {
     console.log('asdf');
-    obj.change(function(){
-      recalculate_total_price();
-    });
+    //obj.change(function(){
+      //recalculate_total_price();
+    //});
   });
     // Set the callback for the checkbox
     //$(this).change(function(){
