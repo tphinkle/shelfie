@@ -12,7 +12,7 @@ function sum_table() {
   // Loop over table
   $('#table table-header > tbody  > tr:not(:first)').each( function(){
 
-      price = $(this).'#price';
+      price = $(this.'#price');
       console.log(price);
       //$(this).
       $("#element td:nth-child(2)").text('ChangedText');
