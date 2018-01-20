@@ -100,5 +100,5 @@ def index():
 
 
 
-            #return flask.redirect('/submission/' + submission_id + '/user')
-            return flask.redirect('/submission/' + submission_id + '/admin')
+            return flask.redirect('/submission/' + submission_id + '/user')
+            #return flask.redirect('/submission/' + submission_id + '/admin')

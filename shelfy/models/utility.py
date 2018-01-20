@@ -98,7 +98,7 @@ def full_pipeline(img_path):
 
             # Try to get info from amazon products api
             if book_info == {}:
-                book_info, book_pricing = scraper.query_amazon_products_api(isbn10, amazon)
+                book_info, book_price = scraper.query_amazon_products_api(isbn10, amazon)
                 book_info['api'] = 'amazon products'
 
 
@@ -139,8 +139,8 @@ def full_pipeline(img_path):
         # Create and store the new book object
         book = book_functions.Book(book_info, spine)
 
-        book.price = book_pricing
-        book.formatted_price = '$' + str(round(float(pricing)/100.,2))
+        book.price = book_price
+        book.formatted_price = '$' + str(round(float(book_price)/100.,2))
 
 
         book.similarity = similarity.calculate_book_score(book)
