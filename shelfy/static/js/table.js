@@ -1,9 +1,14 @@
 console.log('asdf');
 
 // Total updating function
+
+
+
+
 $(document).ready(function() {
     console.log('Trying to do something');
-    $('input[type=checkbox][name=sell-checkbox]').change(function() {
+    $('.form-check-input').each(
+      $('this').change(function() {
         console.log($(this).value());
-    });
+    }));
 });
