@@ -1,7 +1,14 @@
 $(document).ready(function() {
-  $("#form-check-input").change(function(){
-    recalculate_total_price();
-  });
+
+  // Loop over all checkboxes
+  $.each("#form-check-input", function() {
+
+    // Set the callback for the checkbox
+    $(this).change(function(){
+      recalculate_total_price();
+    })
+  })
+  
 });
 
 
