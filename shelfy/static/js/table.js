@@ -1,6 +1,6 @@
 $(document).ready(function() {
   $("#form-check-input").change(function(){
-    recalculate();
+    recalculate_total_price();
   });
 }
 
