@@ -9,15 +9,14 @@ $(document).ready(function() {
   console.log('page loaded');
 
   // Loop over all checkboxes
-  //$.each("#form-check-input", function(i) {
-
+  $.each("#form-check-input", function(i) {
+    console.log('asdf');
+  });
     // Set the callback for the checkbox
     //$(this).change(function(){
 //      recalculate_total_price();
     //})
 
-
-  //});
 
 });
 
