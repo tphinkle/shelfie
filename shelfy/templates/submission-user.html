@@ -61,7 +61,7 @@
               <td>{{ book.formatted_price }}</td>
               <td>
                 <div class="radio">
-                     <label><input type="radio" id={{ book.book_info['isbn10'] }} name="optradio">TIKI</label>
+                     <label><input type="radio" id={{ book.book_info['id'] }} name="optradio">Sell?</label>
                 </div>
               </td>
             </tr>
@@ -82,7 +82,7 @@
 
 
 
-
+<script src="/static/js/table.js"></script>
 
 
 {% endblock %}
