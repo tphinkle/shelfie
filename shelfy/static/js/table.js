@@ -1,3 +1,5 @@
+console.log('asdf');
+
 // Total updating function
 $(document).ready(function() {
     console.log('Trying to do something');
