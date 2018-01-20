@@ -9,7 +9,6 @@ $(document).ready(function() {
 // recalculate the table sum
 function recalculate_total_price(){
   console.log('asdf');
-
 }
 
 
