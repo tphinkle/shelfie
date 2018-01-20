@@ -8,7 +8,7 @@ console.log('asdf');
 $(document).ready(function() {
     console.log('Trying to do something');
     $('.form-check-input').each(
-      $('this').change(function() {
+      $(this).change(function() {
         console.log($(this).value());
     }));
 });
