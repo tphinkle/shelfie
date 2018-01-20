@@ -283,18 +283,10 @@ class Book(object):
         # Price was not calculated
         if price == None:
             self.price = 0
+            self.formatted_price = '$0.00'
         else:
-
-
-
-        self.price = price
-        if self.price == None:
-            self.price = round(0.00, 2)
-        self.formatted_price = '$' + str(self.price)
-
-
-
-
+            self.price = price
+            self.formatted_price = '$' + str(self.price)
 
 
 
