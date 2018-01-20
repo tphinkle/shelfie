@@ -9,7 +9,7 @@ function sum_table() {
   var price;
   var number;
 
-  $('#table-hover > tbody  > tr:not(:first)').each( function(){
+  $('#table table-hover > tbody  > tr:not(:first)').each( function(){
       console.log('zws');
 
       price = $('this > #price').value();
