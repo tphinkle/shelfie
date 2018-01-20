@@ -2,7 +2,7 @@ $(document).ready(function() {
   $("#form-check-input").change(function(){
     recalculate_total_price();
   });
-}
+});
 
 
 
