@@ -278,9 +278,20 @@ class Book(object):
     def get_words(self):
         return [word.string for word in self.spine.words]
 
+    def set_price(self, price):
+
+        # Price was not calculated
+        if price == None:
+            self.price = 0
+        else:
 
 
-    
+        self.price = price
+        if self.price == None:
+            self.price = 0.00
+        self.formatted_price = '$' +
+
+
 
 
 

@@ -139,8 +139,8 @@ def full_pipeline(img_path):
         # Create and store the new book object
         book = book_functions.Book(book_info, spine)
 
-        book.price = book_price
-        book.formatted_price = '$' + str(round(float(book_price)/100.,2))
+        book.set_price(book_price)
+        
 
 
         book.similarity = similarity.calculate_book_score(book)
