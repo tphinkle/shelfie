@@ -14,7 +14,7 @@ function sum_table() {
       price = $(this).val();
       number = Number(price.replace(/[^0-9\.-]+/g,""));
       total = total + number;
-    )
+    );
 
 
   // Format the price
