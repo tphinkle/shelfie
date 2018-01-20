@@ -6,14 +6,18 @@ function recalculate_total_price(){
 
 $(document).ready(function() {
 
+  console.log('page loaded');
+
   // Loop over all checkboxes
   $.each("#form-check-input", function(i) {
 
     // Set the callback for the checkbox
-    $(this).change(function(){
-      recalculate_total_price();
-    })
-  })
+    //$(this).change(function(){
+//      recalculate_total_price();
+    //})
+
+
+  });
 
 });
 
