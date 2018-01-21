@@ -1,7 +1,7 @@
 
 // recalculate the table sum
 function recalculate_total_price(){
-  console.log('asdf');
+  console.log($(this).parent().prop('className'));
 }
 
 $(document).ready(function() {
