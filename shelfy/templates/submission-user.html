@@ -29,6 +29,9 @@
     <!-- HEADER -->
     <img src='/static/img/shelfy-narrow.png' class='img-fluid' width='100%' alt='background'>
 
+
+
+
     <!-- IMAGES -->
 
     <div class="row">
@@ -74,7 +77,10 @@
           <tbody>
             {% for book in books %}
             <tr>
-              <th scope="row">{{ book.book_info['title'] }}</th>
+              <th scope="row">
+                <p class="font-weight-bold">{{ book.book_info['title'] }}</p>
+                <p class="font-italic">{{ book.book_info['title'] }}</p>
+              </th>
               <td name="price_row">{{ book.formatted_price }}</td>
               <td name="checkbox">
                 <div class="form-check">
