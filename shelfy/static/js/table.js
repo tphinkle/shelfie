@@ -1,11 +1,19 @@
 
+
+// Convert price to floating point number
+function price_to_float(price) {
+  return price.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+}
+
 // recalculate the table sum
 function recalculate_total_price(obj){
+  var total_price = 0;
+  var price;
   $('#cost_table > tbody  > tr').not(":first").each(function() {
-    console.log('asdf');
-    console.log($(this).children('td[name="price_row"]').text());//.val());
-    //console.log($(this).children());//'td[name="price_row"]').val());
+    price = price_to_float(console.log($(this).children('td[name="price_row"]').text()));
   });
+
+  console.log(total_price);
 }
 
 
@@ -28,14 +36,3 @@ $(document).ready(function() {
 
 
 });
-
-
-
-
-
-
-
-// Convert price to floating point number
-//function price_to_float(price) {
-//  return price.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
-//}
