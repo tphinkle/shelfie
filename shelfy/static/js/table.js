@@ -1,7 +1,7 @@
 
 // recalculate the table sum
-function recalculate_total_price(){
-  console.log($(this).parent().prop('nodeName'));
+function recalculate_total_price(obj){
+  console.log(obj.parent().prop('nodeName'));
 }
 
 $(document).ready(function() {
@@ -12,7 +12,7 @@ $(document).ready(function() {
   $('.form-check-input').each(function(i, obj) {
     console.log('asdf');
     $(this).change(function(){
-      recalculate_total_price();
+      recalculate_total_price($(this));
     });
   });
     // Set the callback for the checkbox
