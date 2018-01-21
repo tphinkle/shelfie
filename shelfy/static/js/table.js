@@ -13,6 +13,7 @@ function format_price(price) {
 function recalculate_total_price(obj){
   var total_price = 0;
   $('#cost_table > tbody  > tr').not(":first").each(function() {
+    //if $(this).children('td[name="checkbox"]')
     total_price += price_to_float($(this).children('td[name="price_row"]').text());
   });
 
@@ -31,7 +32,7 @@ $(document).ready(function() {
     $(this).change(function(){
       var total_price = recalculate_total_price($(this));
       var formatted_total_price = format_price(total_price);
-      console.log(formatted_total_price);
+      $('#total-label').text(formatted_total_price);
     });
   });
     // Set the callback for the checkbox
