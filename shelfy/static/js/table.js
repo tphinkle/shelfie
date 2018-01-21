@@ -8,9 +8,8 @@ function price_to_float(price) {
 // recalculate the table sum
 function recalculate_total_price(obj){
   var total_price = 0;
-  var price;
   $('#cost_table > tbody  > tr').not(":first").each(function() {
-    price = price_to_float($(this).children('td[name="price_row"]').text());
+    total_price += price_to_float($(this).children('td[name="price_row"]').text());
   });
 
   console.log(total_price);
