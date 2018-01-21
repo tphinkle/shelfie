@@ -32,7 +32,7 @@ function recalculate_total_price(){
 function reset_total_price(){
   var total_price = recalculate_total_price();
   var formatted_total_price = format_price(total_price);
-  $('#total-label').text(formatted_total_price);
+  $('#total-label').text('Your shelf is worth at least ' + formatted_total_price);
 }
 
 
