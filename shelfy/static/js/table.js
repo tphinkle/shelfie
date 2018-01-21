@@ -15,9 +15,10 @@ function recalculate_total_price(){
   $('#cost_table > tbody  > tr').not(":first").each(function() {
 
     // Check if item is selected
-    //if ($(this).children('td[name="checkbox"]')) {
+    if ($(this).children('td[name="checkbox"]').find('input').is(':checked'); {
 
       // If selected, update the total price
+      console.log('this one is checked');
       total_price += price_to_float($(this).children('td[name="price_row"]').text());
   //}
 
