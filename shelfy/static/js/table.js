@@ -2,7 +2,7 @@
 
 // Convert price to floating point number
 function price_to_float(price) {
-  return price.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+  return price.replace(/\D/g,'')/100.0;
 }
 
 // recalculate the table sum
