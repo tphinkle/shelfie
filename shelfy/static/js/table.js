@@ -5,6 +5,10 @@ function price_to_float(price) {
   return price.replace(/\D/g,'')/100.0;
 }
 
+function format_price(price) {
+  return '$' + price;
+}
+
 // recalculate the table sum
 function recalculate_total_price(obj){
   var total_price = 0;
@@ -12,7 +16,8 @@ function recalculate_total_price(obj){
     total_price += price_to_float($(this).children('td[name="price_row"]').text());
   });
 
-  console.log(total_price);
+ return total_price;
+
 }
 
 
@@ -23,9 +28,10 @@ $(document).ready(function() {
 
   // Loop over all checkboxes
   $('.form-check-input').each(function(i, obj) {
-    console.log('asdf');
     $(this).change(function(){
-      recalculate_total_price($(this));
+      var total_price = recalculate_total_price($(this));
+      var formatted_total_price = format_price(total_price);
+      console.log(formatted_total_price);
     });
   });
     // Set the callback for the checkbox
