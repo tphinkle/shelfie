@@ -1,11 +1,9 @@
 
 // recalculate the table sum
 function recalculate_total_price(obj){
-  $('#cost_table > tbody  > tr').not(":first").each(function {
-
+  $('#cost_table > tbody  > tr').not(":first").each(function() {
     console.log($(this).$('nodeName'));
   });
-  //console.log(obj.parent().parent().parent()..prop('nodeName'));
 }
 
 $(document).ready(function() {
