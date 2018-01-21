@@ -12,7 +12,8 @@ function format_price(price) {
 // recalculate the table sum
 function recalculate_total_price(){
   var total_price = 0;
-  $('#cost_table > tbody  > tr').not(":first").each(function() {
+  $('#cost_table > tbody  > tr').each(function() {
+  //$('#cost_table > tbody  > tr').not(":first").each(function() {
 
     // Check if item is selected
     if ($(this).children('td[name="checkbox"]').find('input').is(':checked')) {
