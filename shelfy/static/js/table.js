@@ -29,19 +29,23 @@ function recalculate_total_price(){
 
 }
 
+function reset_total_price(){
+  var total_price = recalculate_total_price();
+  var formatted_total_price = format_price(total_price);
+  $('#total-label').text(formatted_total_price);
+}
+
 
 
 $(document).ready(function() {
 
   console.log('page loaded');
-  recalculate_total_price();
+  reset_total_price();
 
   // Loop over all checkboxes
   $('.form-check-input').each(function(i, obj) {
     $(this).change(function(){
-      var total_price = recalculate_total_price();
-      var formatted_total_price = format_price(total_price);
-      $('#total-label').text(formatted_total_price);
+      reset_total_price();
     });
   });
     // Set the callback for the checkbox
