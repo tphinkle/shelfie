@@ -6,7 +6,7 @@ function price_to_float(price) {
 }
 
 function format_price(price) {
-  return '$' + price;
+  return '$' + price.toFixed(2);
 }
 
 // recalculate the table sum
