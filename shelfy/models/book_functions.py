@@ -423,6 +423,19 @@ def plot_annotated_image_google(img, texts):
 
 
 
+def get_spines_from_words_lines(words, img):
+    '''
+    Matches words that belong on the same spine into a 'Spine' object
+    Algorithm explanation:
+        - Starts with the raw image and attempts to find all (or as many as
+        possible) of the lines that comprise the edges of the book spines
+        - Pairs of lines from left to right comprise image zones
+        - Words within a zone most likely fall on the same spine, but a threshold
+        is still applied within words in case a line is not found; the words must still
+        be within the threshold
+    '''
+
+
 
 def get_spines_from_words(words):
     '''

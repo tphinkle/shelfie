@@ -49,7 +49,7 @@ def full_pipeline(img_path):
     words = [book_functions.Word.from_google_text(text) for text in texts[1:]]
 
     # Group the words into spines
-    spines = book_functions.get_spines_from_words(words)
+    spines = book_functions.get_spines_from_words_lines(words)
 
     # Run the scraping pipeline for each spine
     books = []
@@ -185,10 +185,6 @@ def unpickle_all_books():
         for file_path in os.listdir(books_paths[i]):
             with open(books_paths[i] + file_path, 'rb') as file_handle:
                 books.append(pickle.load(file_handle))
-
-
-
-
 
 
     return books
