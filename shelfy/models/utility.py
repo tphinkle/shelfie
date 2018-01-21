@@ -140,11 +140,15 @@ def full_pipeline(img_path):
         book = book_functions.Book(book_info, spine)
 
         book.set_price(book_price)
-        
 
 
+
+        # Flag book
         book.similarity = similarity.calculate_book_score(book)
-
+        if book.similarity < 2:
+            book.flag = False
+        else:
+            book.flag = True
 
 
         books.append(book)

@@ -76,7 +76,14 @@
           </thead>
           <tbody>
             {% for book in books %}
-            <tr>
+              {% if book.flag == False %}
+                <tr class="table-success">
+              {% endif %}
+
+              {% if book.flag == True %}
+                <tr class="table-warning">
+              {% endif %}
+
               <td>
                 <p class="text-left font-weight-bold">{{ book.book_info['title'] }}</p>
                 <p class="text-left font-italic">{{ book.book_info['authors'] }}</p>
