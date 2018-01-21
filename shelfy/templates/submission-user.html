@@ -77,10 +77,10 @@
           <tbody>
             {% for book in books %}
             <tr>
-              <th scope="row">
+              <td>
                 <p class="font-weight-bold">{{ book.book_info['title'] }}</p>
-                <p class="font-italic">{{ book.book_info['title'] }}</p>
-              </th>
+                <p class="font-italic">{{ book.book_info['authors'] }}</p>
+              </td>
               <td name="price_row">{{ book.formatted_price }}</td>
               <td name="checkbox">
                 <div class="form-check">
