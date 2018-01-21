@@ -78,8 +78,8 @@
             {% for book in books %}
             <tr>
               <td>
-                <p class="font-weight-bold">{{ book.book_info['title'] }}</p>
-                <p class="font-italic">{{ book.book_info['authors'] }}</p>
+                <p class="text-left font-weight-bold">{{ book.book_info['title'] }}</p>
+                <p class="text-left font-italic">{{ book.book_info['authors'] }}</p>
               </td>
               <td name="price_row">{{ book.formatted_price }}</td>
               <td name="checkbox">
