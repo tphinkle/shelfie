@@ -1,7 +1,7 @@
 
 // recalculate the table sum
 function recalculate_total_price(){
-  console.log($(this).parent().prop('className'));
+  console.log($(this).parent().prop('nodeName'));
 }
 
 $(document).ready(function() {
