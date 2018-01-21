@@ -8,6 +8,7 @@ function recalculate_total_price(obj){
   });
 }
 
+
 $(document).ready(function() {
 
   console.log('page loaded');
