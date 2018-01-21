@@ -20,7 +20,7 @@ function recalculate_total_price(){
       // If selected, update the total price
       console.log('this one is checked');
       total_price += price_to_float($(this).children('td[name="price_row"]').text());
-  //}
+  }
 
   });
 
