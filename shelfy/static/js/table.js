@@ -3,6 +3,7 @@
 function recalculate_total_price(obj){
   $('#cost_table > tbody  > tr').not(":first").each(function() {
     console.log('asdf');
+    console.log($(this).children('td[name="price_row"]').val());
   });
 }
 
