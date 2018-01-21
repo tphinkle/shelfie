@@ -1,8 +1,8 @@
 
 // recalculate the table sum
-//function recalculate_total_price(){
-//  console.log('asdf');
-//}
+function recalculate_total_price(){
+  console.log('asdf');
+}
 
 $(document).ready(function() {
 
