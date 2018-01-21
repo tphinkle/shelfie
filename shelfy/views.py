@@ -37,7 +37,7 @@ def submission_user(submission_id):
     proc_img_file_path = format_file_path_for_routing(server.get_processed_image_path_from_submission_id(submission_id))
     books = server.load_pickle_from_submission_id(submission_id)
 
-    return flask.render_template('submission-user.html', rawimgfilepath = proc_img_file_path, books = books)
+    return flask.render_template('submission-user.html', rawimgfilepath = raw_img_file_path, procimgfilepath = proc_img_file_path, books = books)
 
 
 @views.route('/', methods=['GET', 'POST'])
