@@ -316,7 +316,7 @@ def generate_processed_image(books, raw_file_path, save_path = None):
     for book in books:
 
         # Get a random color to plot for the bounding box
-        color = np.random.rand(3)*.5 + .5
+        color = np.random.rand(3)*.85 + .15
 
 
 
