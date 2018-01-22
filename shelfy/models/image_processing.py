@@ -232,6 +232,31 @@ def upsample(img, upsample_factor, debug = False):
 
     return proc_img
 
+def get_lines_from_img(img, debug = False):
+    '''
+    Finds the equations for all of the lines in a binary image,
+    and returns as a list of Line objects (see above class definition)
+    '''
+
+    lines = []
+    for unique_value in unique_values:
+        line = np.where(img == unique_value)
+        xs = line[1]
+        ys = line[0]
+
+
+        m, b, r, p, std = scipy.stats.linregress(xs,ys)
+        center = [np.mean(xs), np.mean(ys)]
+
+        line = Line(m, b, center)
+        lines.append(line)
+
+    # Sort the lines by their center x positions
+    lines.sort(key = lambda line: line.center[0])
+
+    return lines
+
+
 
 
 
@@ -248,33 +273,26 @@ def get_book_lines(img, debug = False):
     # Convert to gs
     proc_img = np.mean(img[:,:], axis = 2).astype(np.uint8)
 
-
     # Down sample
     num_downsamples = 3
     proc_img = downsample(proc_img, num_downsamples, debug = debug)
 
-
     # Sobel x
     proc_img = sobel_x_squared(proc_img, debug = debug)
 
-
     # Standardize
     proc_img = standardize(proc_img, debug = debug)
-
 
     # Digitize
     num_levels = 4
     proc_img = digitize(proc_img, num_levels, debug = debug)
 
-
     # Binarize
     proc_img = binarize(proc_img, debug = debug)
-
 
     # Horizontal erosion and subtraction
     structure_length = 5
     proc_img = erode_subtract(proc_img, structure_length, debug = debug)
-
 
     # Vertical erode
     structure_length = 200
@@ -286,49 +304,31 @@ def get_book_lines(img, debug = False):
     iterations = 3
     proc_img = vertical_dilate(proc_img, structure_length, iterations, debug = debug)
 
-
     # Connected components
     proc_img, levels = connected_components(proc_img, debug = debug)
-
 
     # Remove short clusters
     proc_img = remove_short_clusters(proc_img, levels, debug = debug)
 
-
     # Re-binarize
     proc_img = binarize(proc_img, debug = debug)
-
 
     # Dilate
     structure_length = 3
     proc_img = dilate(proc_img, structure_length, debug = debug)
 
-
     # Up sample
     upsample_factor = 2**num_downsamples
     proc_img = upsample(proc_img, debug = debug)
-
-
 
     # Connected components
     proc_img, unique_values = connected_components(proc_img, debug = debug)
 
     # Lines
-    lines = []
-    for unique_value in unique_values:
-        line = np.where(proc_img == unique_value)
-        xs = line[1]
-        ys = line[0]
+    lines = get_lines(proc_img, debug = False)
 
 
-        m, b, r, p, std = scipy.stats.linregress(xs,ys)
-        center = [np.mean(xs), np.mean(ys)]
-
-        line = Line(m, b, center)
-        lines.append(line)
-
-
-
+    # Plot the result
     if debug:
         new_img = np.empty((img.shape[0], img.shape[1], 3))
         new_img[:,:,0] = img
