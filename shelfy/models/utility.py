@@ -1,10 +1,13 @@
-# Imports
+# Python standard library
 import datetime
 import io
 import os
 import pickle
 import sys
 import time
+
+# Scientific computing
+import cv2
 
 # Google cloud vision
 from google.cloud import vision
@@ -53,7 +56,7 @@ def full_pipeline(img_path):
     words = [book_functions.Word.from_google_text(text) for text in texts[1:]]
 
     # Get lines
-    raw_img = csv.imread(img_path)
+    raw_img = cv2.imread(img_path)
     lines = image_processing.get_book_lines(raw_img, debug = False)
 
     # Group the words into spines (using lines)
