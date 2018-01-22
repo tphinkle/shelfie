@@ -3,6 +3,7 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.ndimage
+import scipy.stats
 
 class Line(object):
     '''
