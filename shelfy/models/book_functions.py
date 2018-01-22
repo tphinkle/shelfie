@@ -452,6 +452,7 @@ def get_spines_from_words_lines(words, lines):
         for j in range(len(lines)):
             if words[i].bounding_box.center[0] < lines[j].center[0]:
                 blocks[j-1].append(i)
+                break
 
     # Combine words in same block into a spine
     spines = []
