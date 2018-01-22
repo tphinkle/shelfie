@@ -10,6 +10,22 @@ from shelfy.models import book_functions, scraper, server, utility
 views = flask.Blueprint('views', __name__)
 
 
+'''
+
+import flask
+views = flask.Blueprint('views', __name__)
+@views.route('/'):
+def index():
+    return flask.render_template('index.html')
+
+@views.route('/submissions')
+def submissions():
+    return flask.render_template('submissions')
+'''
+
+
+
+
 def format_file_path_for_routing(file_path):
     file_path = file_path.replace(shelfy.SHELFY_BASE_PATH, '')
     return file_path
@@ -40,6 +56,9 @@ def submission_user(submission_id):
     return flask.render_template('submission-user.html', rawimgfilepath = raw_img_file_path, procimgfilepath = proc_img_file_path, books = books)
 
 
+
+
+
 @views.route('/', methods=['GET', 'POST'])
 def index():
     '''
@@ -50,6 +69,9 @@ def index():
         POST: After the submit/query/request button is hit, the file will be saved
         to the server and the user will be redirected to the uploads page
     '''
+
+
+
 
     # Get method type
     method = flask.request.method

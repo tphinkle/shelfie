@@ -456,7 +456,8 @@ def get_spines_from_words_lines(words, lines):
     # Combine words in same block into a spine
     spines = []
     for block in blocks:
-        spines += get_spines_from_words(words, yc_tolerance = 100, theta_tolerance = np.pi)
+        block_words = [words[i] for i in block]
+        spines += get_spines_from_words(block_words, yc_tolerance = 100, theta_tolerance = np.pi)
 
     return spines
 
