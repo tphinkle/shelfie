@@ -457,6 +457,8 @@ def get_spines_from_words_lines(words, lines):
     spines = []
     for block in blocks:
         block_words = [words[i] for i in block]
+        print('block!')
+        print([block_word.string for block_word in block_words])
         spines += get_spines_from_words(block_words, yc_tolerance = 100, theta_tolerance = np.pi)
 
     return spines
