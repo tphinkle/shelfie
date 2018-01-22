@@ -158,6 +158,9 @@ class Word(object):
         return Word(string, bounding_box)
 
 
+
+
+
 class Spine(object):
     '''
     Simple struct that holds the list of words on the same spine.
@@ -180,6 +183,10 @@ class Spine(object):
         for word in self.words:
             sentence += word.string + ' '
         self.sentence = sentence
+
+
+
+
 
 
 class Book(object):
@@ -423,7 +430,7 @@ def plot_annotated_image_google(img, texts):
 
 
 
-def get_spines_from_words_lines(words, img):
+def get_spines_from_words_lines(words, lines):
     '''
     Matches words that belong on the same spine into a 'Spine' object
     Algorithm explanation:
@@ -435,129 +442,23 @@ def get_spines_from_words_lines(words, img):
         be within the threshold
     '''
 
-    file_directory = '/home/prestonh/Desktop/Programming/datasci/insight/projects/shelfy/shelfy/data/shelves/insight_4/'
-    file_name = 'insight_4.jpg'
-    file_path = file_directory + file_name
+    # Sort lines by x-position
+    lines.sort(key = lambda line: line.center[0])
 
-    img = cv2.imread(file_path)
+    # Loop over words
+    blocks = [[] for i in range(len(lines) + 1)
+    for i in range(len(words)):
 
+        for j in range(len(lines)):
+            if words[i].bounding_box.center[0] < lines[j].center[0]:
+                blocks[j-1].append(i)
 
+    # Combine words in same block into a spine
+    spines = []
+    for block in blocks:
+        spines += get_spines_from_words(words, yc_tolerance = 100, theta_tolerance = np.pi)
 
-
-    debug = True
-
-    # Copy
-    proc_img = np.mean(img[:,:], axis = 2).astype(np.uint8)
-
-
-    # Down sample
-    num_downsamples = 3
-    for i in range(num_downsamples):
-        proc_img = scipy.ndimage.interpolation.zoom(proc_img,.5)
-
-
-
-    ## Sobel x
-    proc_img = cv2.Sobel(proc_img, cv2.CV_8UC1, 1, 0, ksize = -1)**2.
-
-
-
-    # Standardize
-    proc_img = (proc_img - np.min(proc_img))/np.max(proc_img)
-
-
-    # Digitize
-    img_max = np.max(proc_img)
-    img_min = np.min(proc_img)
-    num_levels = 4
-    bins = [1.*i*(img_max-img_min)/num_levels for i in range(0, num_levels)]
-    proc_img = np.digitize(proc_img, bins)
-
-
-    # Binarize
-    proc_img[proc_img == np.min(proc_img)] = 0
-    proc_img[proc_img != 0] = 1
-
-
-    # Horizontal erosion and subtraction
-    for i in range(1):
-        structure_length = 5*(i+1)
-        #structure = np.ones((3,3))*structure_length
-        structure = np.ones((3,3))*structure_length
-        old_proc_img = np.copy(proc_img)
-        proc_img = proc_img - scipy.ndimage.morphology.binary_erosion(proc_img, structure, 1)
-
-    # Vertical open close
-    for i in range(1):
-        structure_length = 200
-        #structure = np.array([[0,1,0],[0,1,0],[0,1,0]])*structure_length
-        structure = np.array([[0,1,0],[0,1,0],[0,1,0]])*structure_length
-        proc_img = scipy.ndimage.morphology.binary_erosion(proc_img, structure, 3)
-
-    # Vertical open
-    for i in range(1):
-        structure_length = 3
-        #structure = np.array([[0,1,0],[0,1,0],[0,1,0]])*structure_length
-        structure = np.array([[0,1,0],[0,1,0],[0,1,0]])*structure_length
-        proc_img = scipy.ndimage.morphology.binary_dilation(proc_img, structure, 3)
-
-
-
-    # Connected components
-    proc_img, unique_values = scipy.ndimage.label(proc_img, structure = np.ones((3,3)))
-
-    unique_values = list(range(unique_values))
-
-    # Remove clusters too small
-    drop_values = []
-    threshold = proc_img.shape[0]*.35
-    for unique_value in unique_values:
-        bright_pixels = np.where(proc_img == unique_value)
-        ptp = np.ptp(bright_pixels[0])
-
-
-
-        if(ptp < threshold):
-            drop_values.append(unique_value)
-
-    for drop_value in drop_values:
-        proc_img[proc_img == drop_value] = 0
-
-
-    # Re-binarize
-    proc_img[proc_img != 0] = 1
-
-
-    # Horizontal dilate
-    for i in range(1):
-        structure_length = 3
-        #structure = np.array([[0,1,0],[0,1,0],[0,1,0]])*structure_length
-        structure = np.array([[1,1,1],[1,1,1],[1,1,1]])*structure_length
-        proc_img = scipy.ndimage.morphology.binary_dilation(proc_img, structure, 1)
-
-
-    # Up sample
-    proc_img = proc_img.repeat(8, axis = 0).repeat(8, axis = 1)
-
-
-    # Connected components
-    proc_img, unique_values = scipy.ndimage.label(proc_img, structure = np.ones((3,3)))
-    unique_values = list(range(unique_values))
-
-    # Lines
-    ms = []
-    bs = []
-    for unique_value in unique_values:
-        line = np.where(proc_img == unique_value)
-        xs = line[1]
-        ys = line[0]
-
-
-        m, b, r, p, std = scipy.stats.linregress(xs,ys)
-        ms.append(m)
-        bs.append(b)
-
-    # Sort lines from left to right
+    return spines
 
 
 
@@ -567,7 +468,11 @@ def get_spines_from_words_lines(words, img):
 
 
 
-def get_spines_from_words(words):
+
+
+
+
+def get_spines_from_words(words, yc_tolerance = 25, theta_tolerance = np.pi/6.):
     '''
     Matches words that belong on the same spine into a 'Spine' object
     Algorithm explanation:
@@ -592,8 +497,6 @@ def get_spines_from_words(words):
     ycs = []
     thetas = []
 
-    yc_tolerance = 25.
-    theta_tolerance = np.pi/6.
 
     matched_words = []
     for i, special_word in enumerate(words):

@@ -13,8 +13,10 @@ from google.cloud.vision import types
 # Shelfy
 import shelfy
 from shelfy.models import book_functions
+from shelfy.models import image_processing
 from shelfy.models import scraper
 from shelfy.models import similarity
+
 
 
 
@@ -41,6 +43,8 @@ def full_pipeline(img_path):
         content = img_file.read()
     img_bin = types.Image(content=content)
 
+
+
     # Query the image on google cloud vision API
     response = client.document_text_detection(image=img_bin)
     texts = response.text_annotations
@@ -48,8 +52,12 @@ def full_pipeline(img_path):
     # Create word objects from the google word objects
     words = [book_functions.Word.from_google_text(text) for text in texts[1:]]
 
-    # Group the words into spines
-    spines = book_functions.get_spines_from_words_lines(words)
+    # Get lines
+    raw_img = csv.imread(img_path)
+    lines = image_processing.get_book_lines(raw_img, debug = False)
+
+    # Group the words into spines (using lines)
+    spines = book_functions.get_spines_from_words_lines(words, lines)
 
     # Run the scraping pipeline for each spine
     books = []

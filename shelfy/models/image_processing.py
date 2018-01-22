@@ -1,4 +1,8 @@
-
+# Imports
+import cv2
+import matplotlib.pyplot as plt
+import numpy as np
+import scipy.ndimage
 
 class Line(object):
     '''
@@ -20,24 +24,57 @@ class Line(object):
         self.center = center
 
 
-    def y(x):
+    def y(self, x):
         '''
         Returns the y-value of the line at position x.
         If the line is vertical (i.e., slope is close to infinity), the y-value
-        will be returned as np.inf
+        will be returned as None
         '''
 
+        # Line is vertical
         if self.m > self.vertical_threshold:
-            return
+            return None
 
+        else:
+            return self.m*x + self.b
+
+
+    def x(self, y):
+        '''
+        Returns the x-value of the line at posiion y.
+        If the line is vertical (i.e., slope is close to infinity), will always
+        return the center point of the line
+        '''
+
+        # Line is vertical
+        if self.m > self.vertical_threshold:
+            return self.center[0]
+
+        # Line is not vertical
+        else:
+            return (y - self.b)/self.m
+
+
+
+
+
+def plot_img(img, show = True):
+
+    fig = plt.figure(figsize = (16,12))
+    plt.imshow(img, cmap = 'gray', interpolation = 'none')
+
+    if show:
+        plt.show()
 
 def downsample(img, num_downsamples, debug = False):
     '''
     Downsamples an image by 50% num_downsamples times.
     This effectively reduces image size and resolution.
     '''
+
+    proc_img = np.copy(img)
     for i in range(num_downsamples):
-        proc_img = scipy.ndimage.interpolation.zoom(img,.5)
+        proc_img = scipy.ndimage.interpolation.zoom(proc_img,.5)
 
         if debug:
             print('downsample', i)
@@ -63,7 +100,7 @@ def standardize(img, debug = False):
     Standardizes the image via img = (img - min/(max-min), where max and min
     are the maxima and minima pixel intensities present in the image
     '''
-    proc_img = (img - np.min(img))/(np.max(img) - np.min(img))
+    proc_img = (img - np.min(img))/(np.max(img))
 
     if debug:
         print('standardize')
@@ -112,7 +149,9 @@ def erode_subtract(img, structure_length, debug = False):
     horizontally-thick elements.
     '''
 
-    structure = np.ones((3,3))*structure_length
+    #structure = np.ones((3,3))*structure_length
+    structure = np.array(([0,0,0],[1,1,1],[0,0,0]))*structure_length
+    proc_img = np.copy(img)
 
     proc_img = img - scipy.ndimage.morphology.binary_erosion(img, structure, 1)
 
@@ -151,7 +190,7 @@ def vertical_dilate(img, structure_length, iterations, debug = False):
     proc_img = scipy.ndimage.morphology.binary_dilation(img, structure, iterations)
 
     if debug:
-        print('morpho dilate')
+        print('vertical dilate')
         plot_img(proc_img, show = True)
 
     return proc_img
@@ -163,15 +202,15 @@ def connected_components(img, debug = False):
     Returns the processed image, and the values of the unique components.
 
     '''
-    proc_img, unique_values = scipy.ndimage.label(img, structure = np.ones((3,3)))
-    unique_values = list(range(unique_values))
+    proc_img, levels = scipy.ndimage.label(img, structure = np.ones((3,3)))
+    levels = list(range(1, levels + 1))
 
 
     if debug:
-        print('find connected components')
+        print('find connected components, levels = ', levels)
         plot_img(proc_img, show = True)
 
-    return proc_img, unique_values
+    return proc_img, levels
 
 
 def remove_short_clusters(img, levels, debug = False):
@@ -189,7 +228,7 @@ def remove_short_clusters(img, levels, debug = False):
         ptp = np.ptp(bright_pixels[0])
 
         if(ptp < threshold):
-            drop_values.append(unique_value)
+            drop_values.append(level)
 
         for drop_value in drop_values:
             img[img == drop_value] = 0
@@ -232,23 +271,31 @@ def upsample(img, upsample_factor, debug = False):
 
     return proc_img
 
-def get_lines_from_img(img, debug = False):
+def get_lines_from_img(img, levels, debug = False):
     '''
     Finds the equations for all of the lines in a binary image,
-    and returns as a list of Line objects (see above class definition)
+    and returns as a list of Line objects (see above class definition).
     '''
 
     lines = []
-    for unique_value in unique_values:
-        line = np.where(img == unique_value)
+    for level in levels:
+        line = np.where(img == level)
         xs = line[1]
         ys = line[0]
-
-
-        m, b, r, p, std = scipy.stats.linregress(xs,ys)
         center = [np.mean(xs), np.mean(ys)]
 
-        line = Line(m, b, center)
+        print('std ratio', np.std(ys)/np.std(xs))
+
+        # Line is vertical
+        if (np.std(ys)/np.std(xs) > 20):
+            line = Line(1000, 0, center)
+
+        # Line is not vertical
+        else:
+            m, b, r, p, std = scipy.stats.linregress(xs,ys)
+            line = Line(m, b, center)
+
+
         lines.append(line)
 
     # Sort the lines by their center x positions
@@ -290,9 +337,9 @@ def get_book_lines(img, debug = False):
     # Binarize
     proc_img = binarize(proc_img, debug = debug)
 
-    # Horizontal erosion and subtraction
-    structure_length = 5
-    proc_img = erode_subtract(proc_img, structure_length, debug = debug)
+    # Erode subtract
+    #structure_length = 5
+    #proc_img = erode_subtract(proc_img, structure_length, debug = debug)
 
     # Vertical erode
     structure_length = 200
@@ -300,8 +347,8 @@ def get_book_lines(img, debug = False):
     proc_img = vertical_erode(proc_img, structure_length, iterations, debug = debug)
 
     # Vertical dilate
-    structure_length = 3
-    iterations = 3
+    structure_length = 50
+    iterations = 5
     proc_img = vertical_dilate(proc_img, structure_length, iterations, debug = debug)
 
     # Connected components
@@ -319,25 +366,37 @@ def get_book_lines(img, debug = False):
 
     # Up sample
     upsample_factor = 2**num_downsamples
-    proc_img = upsample(proc_img, debug = debug)
+    proc_img = upsample(proc_img, upsample_factor, debug = debug)
 
     # Connected components
-    proc_img, unique_values = connected_components(proc_img, debug = debug)
+    proc_img, levels = connected_components(proc_img, debug = debug)
+
 
     # Lines
-    lines = get_lines(proc_img, debug = False)
-
+    lines = get_lines_from_img(proc_img, levels, debug = False)
 
     # Plot the result
     if debug:
-        new_img = np.empty((img.shape[0], img.shape[1], 3))
-        new_img[:,:,0] = img
-        new_img[:,:,1] = img
-        new_img[:,:,2] = img
 
-        new_img[proc_img != 0,:] = [0,255,128]
+        new_img = np.copy(img[:,:,::-1])
+
+        #new_img[proc_img != 0,:] = [0,255,128]
 
         plot_img(new_img, show = False)
+        for line in lines:
+            y0 = 0
+            y1 = np.shape(img)[0]
+
+            x0 = line.x(y0)
+            x1 = line.x(y1)
+
+            plt.plot([x0, x1], [y0, y1], color = 'yellow', lw = 3)
+
+
+        plt.xticks([])
+        plt.yticks([])
+        plt.savefig('proc_img.png', bbox_inches = 'tight', dpi = 300)
+
         plt.show()
 
     return lines
