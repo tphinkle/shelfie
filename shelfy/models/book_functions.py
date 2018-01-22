@@ -446,7 +446,7 @@ def get_spines_from_words_lines(words, lines):
     lines.sort(key = lambda line: line.center[0])
 
     # Loop over words
-    blocks = [[] for i in range(len(lines) + 1)
+    blocks = [[] for i in range(len(lines) + 1)]
     for i in range(len(words)):
 
         for j in range(len(lines)):
