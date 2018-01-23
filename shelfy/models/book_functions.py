@@ -293,7 +293,7 @@ class Book(object):
             self.formatted_price = '$0.00'
         else:
             self.price = float(price)
-            self.formatted_price = '$' + str(round(self.price/100., 2))
+            self.formatted_price = '$' + "{0:.2f}".format(self.price)
 
 
 

@@ -107,7 +107,7 @@ def sobel_x_squared(img, debug = False):
     Calculates the sobel_x transformation (x-gradient) squared.
     '''
 
-    proc_img = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize = -1)**2.
+    proc_img = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize = 15)**2.
 
     if debug:
         print('sobel x')
@@ -120,7 +120,7 @@ def standardize(img, debug = False):
     Standardizes the image via img = (img - min/(max-min), where max and min
     are the maxima and minima pixel intensities present in the image
     '''
-    proc_img = (img - np.min(img))/(np.max(img))
+    proc_img = (img - np.min(img))/(np.max(img)-np.min(img))
 
     if debug:
         print('standardize')
@@ -168,7 +168,7 @@ def binarize_alt(img, debug = False):
     Final image has pixel intensities [0,1].
     '''
 
-    img[img < .025] = 0
+    img[img < .1] = 0
     img[img != 0] = 1
 
 
@@ -399,7 +399,7 @@ def get_lines_from_img(img, levels, debug = False):
 
 
 
-def get_book_lines(img, debug = False):
+def get_book_lines(img, spaces = ['h'], debug = False):
     '''
     Given an image, performs a number of image processing techniques to render
     the processed image down into a series of lines that represent the edges
@@ -407,18 +407,19 @@ def get_book_lines(img, debug = False):
     The lines are returned as a list of Line objects (see above).
     Repeats iterations times.
     '''
+    
 
     # Convert to HSV
     proc_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     # Convert to gs
     #proc_img = np.mean(img[:,:], axis = 2)#.astype(np.uint8)
-    proc_img = img[:,:,0]#.astype(np.uint8)
+    proc_img = img[:,:,1]#.astype(np.uint8)
 
 
 
     # Gaussian blur
-    sigma = 7
+    sigma = 3
     proc_img = gaussian_blur(proc_img, sigma = sigma, debug = debug)
 
     # Sobel x
