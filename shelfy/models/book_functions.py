@@ -288,13 +288,15 @@ class Book(object):
 
     def set_price(self, price):
 
+        print('PRICE = !!!!!!!!!!!!',price)
+
         # Price was not calculated
         if price == None:
             self.price = 0
             self.formatted_price = '$0.00'
         else:
             self.price = float(price)
-            self.formatted_price = '$' + "{0:.2f}".format(self.price)
+            self.formatted_price = '$' + "{0:.2f}".format(self.price/100.)
 
 
 
