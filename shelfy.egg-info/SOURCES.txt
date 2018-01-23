@@ -1,5 +1,5 @@
 shelfy/__init__.py
-shelfy/shelfy.py
+shelfy/app.py
 shelfy/views.py
 shelfy.egg-info/PKG-INFO
 shelfy.egg-info/SOURCES.txt

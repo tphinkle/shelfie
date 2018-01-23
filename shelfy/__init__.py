@@ -1,3 +1,10 @@
+# Imports
+import os
+
+# Base path for project
+SHELFY_BASE_PATH = os.path.dirname(__file__)
+
+
 '''# Imports
 import flask
 import os

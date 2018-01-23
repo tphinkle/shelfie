@@ -1,31 +1,21 @@
-from shelfy import app
-
-import flask
+# Imports
 import os
-from werkzeug.utils import secure_filename
-import shelfy
 import sys
-sys.path.append(shelfy.SHELFY_BASE_PATH + '/models')
-#from shelfy.models import book_functions, scraper, server, utility
-import book_functions, scraper, server, utility
 
 
-views = flask.Blueprint('views', __name__)
-
-
-'''
 
 import flask
+from werkzeug.utils import secure_filename
+
+
+import shelfy
+import shelfy.app
+from shelfy.models import book_functions, scraper, server, utility
+
+
+
+# Define views
 views = flask.Blueprint('views', __name__)
-@views.route('/'):
-def index():
-    return flask.render_template('index.html')
-
-@views.route('/submissions')
-def submissions():
-    return flask.render_template('submissions')
-'''
-
 
 
 

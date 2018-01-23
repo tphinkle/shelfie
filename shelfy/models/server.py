@@ -13,8 +13,7 @@ import matplotlib.pyplot as plt
 
 # Shelfy
 import shelfy
-sys.path.append(shelfy.SHELFY_BASE_PATH + '/models')
-import book_functions
+from shelfy.models import book_functions
 
 # Google cloud visionfrom google.cloud import vision
 from google.cloud import vision

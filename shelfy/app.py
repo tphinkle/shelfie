@@ -11,14 +11,6 @@ import sys
 import shelfy
 
 
-# Flask location
-
-
-# Base path for project
-SHELFY_BASE_PATH = os.path.dirname(__file__)
-
-
-
 # Configure app
 app = flask.Flask(__name__)
 
@@ -34,14 +26,9 @@ USERNAME = 'admin',
 PASSWORD = 'default'
 ))
 
-#import shelfy
-#app = shelfy.app
-
-
 
 # Register view blueprints
-#sys.path.append('/models')
-import views
+import shelfy.views
 app.register_blueprint(shelfy.views.views)
 
 
