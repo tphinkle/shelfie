@@ -314,7 +314,7 @@ def generate_processed_image(books, raw_file_path, save_path = None):
 
 
     plt.imshow(img)
-
+    '''
     for book in books:
 
         # Get a random color to plot for the bounding box
@@ -330,9 +330,9 @@ def generate_processed_image(books, raw_file_path, save_path = None):
             plt.plot([bb.xs[1], bb.xs[2]], [bb.ys[1], bb.ys[2]], lw = 3, c = color)
             plt.plot([bb.xs[2], bb.xs[3]], [bb.ys[2], bb.ys[3]], lw = 3, c = color)
             plt.plot([bb.xs[3], bb.xs[0]], [bb.ys[3], bb.ys[0]], lw = 3, c = color)
-
+    '''
     plt.xlim(0, img.shape[1])
-    plt.xlim(img.shape[0], 1)
+    plt.ylim(img.shape[0], 0)
 
 
     # Cosmetic options
