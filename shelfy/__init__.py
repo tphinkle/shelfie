@@ -1,4 +1,4 @@
-# Imports
+'''# Imports
 import flask
 import os
 from werkzeug.utils import secure_filename    # Needed for image upload
@@ -25,7 +25,7 @@ app.config.update(dict(
 SECRET_KEY = 'key',
 USERNAME = 'admin',
 PASSWORD = 'default'
-))
+))'''
 
 
 

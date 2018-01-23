@@ -63,9 +63,28 @@ def plot_img(img, show = True):
 
     fig = plt.figure(figsize = (16,12))
     plt.imshow(img, cmap = 'gray', interpolation = 'none')
-
+    plt.xticks([])
+    plt.yticks([])
     if show:
         plt.show()
+
+def gaussian_blur(img, sigma, debug = False):
+    '''
+    Blurs the image with a gaussian kernel of length sigma.
+    This is usually done before line detection is performed.
+    '''
+
+    proc_img = scipy.ndimage.filters.gaussian_filter(img, sigma = (sigma, sigma))
+
+
+    if debug:
+        print('gaussian blur')
+        plot_img(proc_img, show = True)
+
+    return proc_img
+
+
+
 
 def downsample(img, num_downsamples, debug = False):
     '''
@@ -88,7 +107,7 @@ def sobel_x_squared(img, debug = False):
     Calculates the sobel_x transformation (x-gradient) squared.
     '''
 
-    proc_img = cv2.Sobel(img, cv2.CV_8UC1, 1, 0, ksize = -1)**2.
+    proc_img = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize = -1)**2.
 
     if debug:
         print('sobel x')
@@ -133,6 +152,23 @@ def binarize(img, debug = False):
     '''
 
     img[img == np.min(img)] = 0
+    img[img != 0] = 1
+
+
+    if debug:
+        print('binarize')
+        plot_img(img, show = True)
+
+    return img
+
+def binarize_alt(img, debug = False):
+    '''
+    Binarizes an image by setting intensity of any pixel value with intensity
+    not equal to zero to equal one.
+    Final image has pixel intensities [0,1].
+    '''
+
+    img[img < .025] = 0
     img[img != 0] = 1
 
 
@@ -196,6 +232,41 @@ def vertical_dilate(img, structure_length, iterations, debug = False):
 
     return proc_img
 
+def horizontal_erode(img, structure_length, iterations, debug = False):
+    '''
+    Erodes the image with a horizontal structure element of length structure_length.
+    Used to prevent lines that are close horizontally from clustering
+    '''
+
+
+
+    structure = np.array([[0,0,0],[0,1,1],[0,0,0]])*structure_length
+    proc_img = scipy.ndimage.morphology.binary_erosion(img, structure, iterations)
+
+    if debug:
+        print('horizontal erode')
+        plot_img(proc_img, show = True)
+
+    return proc_img
+
+def horizontal_erode_dilate(img, structure_length, iterations, debug = False):
+    '''
+    Erodes the image with a horizontal structure element of length structure_length.
+    Used to prevent lines that are close horizontally from clustering
+    '''
+
+
+
+    structure = np.array([[0,0,0],[0,1,1],[0,0,0]])*structure_length
+    proc_img = scipy.ndimage.morphology.binary_erosion(img, structure, iterations)
+    proc_img = scipy.ndimage.morphology.binary_dilation(proc_img, structure, iterations)
+
+    if debug:
+        print('horizontal erode/dilate')
+        plot_img(proc_img, show = True)
+
+    return proc_img
+
 def connected_components(img, debug = False):
     '''
     Finds all connected components in a binary image and assigns all connections
@@ -214,28 +285,44 @@ def connected_components(img, debug = False):
     return proc_img, levels
 
 
-def remove_short_clusters(img, levels, debug = False):
+def remove_short_clusters(img, levels, threshold_fraction, debug = False):
     '''
     Given an image that has been labeled with connected components (see above),
     calculates the vertical height of each component and filters those that
     are too short.
+    The threshold should be set as a fraction of the longest line present in the
+    image.
     This is used to remove short vertical lines.
+
     '''
 
     drop_values = []
-    threshold = img.shape[0]*.35
+    ptps = []
+
+    # Calculate peak-to-peak height of line
     for level in levels:
         bright_pixels = np.where(img == level)
         ptp = np.ptp(bright_pixels[0])
+        ptps.append(ptp)
 
-        if(ptp < threshold):
-            drop_values.append(level)
 
-        for drop_value in drop_values:
-            img[img == drop_value] = 0
+    # Determine which lines to drop
+    threshold = np.max(ptps)/2.
+    for i in range(len(ptps)):
+        if ptps[i] < threshold:
+            drop_values.append(levels[i])
+
+
+    # Drop the lines
+    for drop_value in drop_values:
+        img[img == drop_value] = 0
+
+
 
     if debug:
         print('remove short clusters')
+        plt.hist(ptps, bins = 25)
+        plt.show()
         plot_img(img, show = True)
 
     return img
@@ -285,10 +372,13 @@ def get_lines_from_img(img, levels, debug = False):
         ys = line[0]
         center = [np.mean(xs), np.mean(ys)]
 
-        print('std ratio', np.std(ys)/np.std(xs))
+        #print('std ratio', np.std(ys)/np.std(xs))
+        spread = (np.max(ys) - np.min(ys))/(np.max(xs) - np.min(xs))
+        print('spread', spread)
 
         # Line is vertical
-        if (np.std(ys)/np.std(xs) > 20):
+        #if (np.std(ys)/np.std(xs) > 10):
+        if spread > 10:
             line = Line(1000, 0, center)
 
         # Line is not vertical
@@ -305,6 +395,137 @@ def get_lines_from_img(img, levels, debug = False):
     return lines
 
 
+
+
+
+
+def get_book_lines(img, debug = False):
+    '''
+    Given an image, performs a number of image processing techniques to render
+    the processed image down into a series of lines that represent the edges
+    of spines in the image.
+    The lines are returned as a list of Line objects (see above).
+    Repeats iterations times.
+    '''
+
+    # Convert to HSV
+    proc_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+    # Convert to gs
+    #proc_img = np.mean(img[:,:], axis = 2)#.astype(np.uint8)
+    proc_img = img[:,:,0]#.astype(np.uint8)
+
+
+
+    # Gaussian blur
+    sigma = 7
+    proc_img = gaussian_blur(proc_img, sigma = sigma, debug = debug)
+
+    # Sobel x
+    proc_img = sobel_x_squared(proc_img, debug = debug)
+
+    # Down sample
+    num_downsamples = 3
+    proc_img = downsample(proc_img, num_downsamples, debug = debug)
+
+
+
+    # Standardize
+    proc_img = standardize(proc_img, debug = debug)
+
+    # Digitize
+    #num_levels = 4
+    #proc_img = digitize(proc_img, num_levels, debug = debug)
+
+    plt.hist(proc_img.flatten(), bins = 100)
+    plt.show()
+
+    # Binarize
+    proc_img = binarize_alt(proc_img, debug = debug)
+
+
+
+    # Vertical erode
+    structure_length = 200
+    iterations = 5
+    proc_img = vertical_erode(proc_img, structure_length, iterations, debug = debug)
+
+    # Erode subtract
+    #structure_length = 5
+    #proc_img = erode_subtract(proc_img, structure_length, debug = debug)
+
+    # Horizontal erode
+    #structure_length = 1
+    #iterations = 1
+    #proc_img = horizontal_erode(proc_img, structure_length, iterations, debug = debug)
+
+    # Vertical dilate
+    structure_length = 500
+    iterations = 10
+    proc_img = vertical_dilate(proc_img, structure_length, iterations, debug = debug)
+
+    # Connected components
+    proc_img, levels = connected_components(proc_img, debug = debug)
+
+    # Remove short clusters
+    threshold_fraction = 0.10
+    proc_img = remove_short_clusters(proc_img, levels, threshold_fraction, debug = debug)
+
+    # Re-binarize
+    proc_img = binarize(proc_img, debug = debug)
+
+    # Dilate
+    #structure_length = 3
+    #proc_img = dilate(proc_img, structure_length, debug = debug)
+
+    # Up sample
+    upsample_factor = 2**num_downsamples
+    proc_img = upsample(proc_img, upsample_factor, debug = debug)
+
+    # Connected components
+    proc_img, levels = connected_components(proc_img, debug = debug)
+
+
+    # Lines
+    lines = get_lines_from_img(proc_img, levels, debug = False)
+
+    # Plot the result
+    if debug:
+
+        new_img = np.copy(img[:,:,::-1])
+
+        #new_img[proc_img != 0,:] = [0,255,128]
+
+        plot_img(new_img, show = False)
+        for line in lines:
+            y0 = 0
+            y1 = np.shape(img)[0]
+
+            x0 = line.x(y0)
+            x1 = line.x(y1)
+
+            plt.plot([x0, x1], [y0, y1], color = 'yellow', lw = 3)
+
+        plt.xlim(0, img.shape[1])
+        plt.ylim(img.shape[0], 0)
+        plt.xticks([])
+        plt.yticks([])
+        plt.savefig('proc_img.png', bbox_inches = 'tight', dpi = 300)
+
+        plt.show()
+
+    return lines
+
+
+
+
+
+
+
+
+
+"""
+Current working pipeline---don't delete or change this!!!!
 
 
 
@@ -339,8 +560,8 @@ def get_book_lines(img, debug = False):
     proc_img = binarize(proc_img, debug = debug)
 
     # Erode subtract
-    #structure_length = 5
-    #proc_img = erode_subtract(proc_img, structure_length, debug = debug)
+    structure_length = 5
+    proc_img = erode_subtract(proc_img, structure_length, debug = debug)
 
     # Vertical erode
     structure_length = 200
@@ -356,14 +577,15 @@ def get_book_lines(img, debug = False):
     proc_img, levels = connected_components(proc_img, debug = debug)
 
     # Remove short clusters
-    proc_img = remove_short_clusters(proc_img, levels, debug = debug)
+    threshold_fraction = 0.10
+    proc_img = remove_short_clusters(proc_img, levels, threshold_fraction, debug = debug)
 
     # Re-binarize
     proc_img = binarize(proc_img, debug = debug)
 
     # Dilate
-    structure_length = 3
-    proc_img = dilate(proc_img, structure_length, debug = debug)
+    #structure_length = 3
+    #proc_img = dilate(proc_img, structure_length, debug = debug)
 
     # Up sample
     upsample_factor = 2**num_downsamples
@@ -393,7 +615,8 @@ def get_book_lines(img, debug = False):
 
             plt.plot([x0, x1], [y0, y1], color = 'yellow', lw = 3)
 
-
+        plt.xlim(0, img.shape[1])
+        plt.ylim(img.shape[0], 0)
         plt.xticks([])
         plt.yticks([])
         plt.savefig('proc_img.png', bbox_inches = 'tight', dpi = 300)
@@ -401,3 +624,4 @@ def get_book_lines(img, debug = False):
         plt.show()
 
     return lines
+"""
