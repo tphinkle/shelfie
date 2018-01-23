@@ -295,8 +295,8 @@ class Book(object):
             self.price = 0
             self.formatted_price = '$0.00'
         else:
-            self.price = float(price)
-            self.formatted_price = '$' + "{0:.2f}".format(self.price/100.)
+            self.price = float(price)/100.
+            self.formatted_price = '$' + "{0:.2f}".format(self.price)
 
 
 
