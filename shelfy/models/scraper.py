@@ -60,6 +60,9 @@ def get_google_search_url_from_query(search_query):
     return url
 
 def is_isbn10(isbn10, debug = False):
+    '''
+    Checks if the input isbn10 is a legitimate isbn10 identifier number
+    '''
 
     is_isbn = False
 
