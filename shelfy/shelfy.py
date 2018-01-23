@@ -7,7 +7,7 @@ flask run (or, through compile.sh)
 import flask
 import os
 from werkzeug.utils import secure_filename    # Needed for image upload
-
+import sys
 
 # Flask location
 
@@ -38,6 +38,7 @@ PASSWORD = 'default'
 
 
 # Register view blueprints
+sys.path.append('/models')
 import shelfy.views
 app.register_blueprint(shelfy.views.views)
 
