@@ -15,7 +15,7 @@ from google.cloud.vision import types
 
 # Shelfy
 import shelfy
-sys.path.append(SHELFY_BASE_PATH + '/models')
+sys.path.append(shelfy.SHELFY_BASE_PATH + '/models')
 import book_functions
 import image_processing
 import scraper
