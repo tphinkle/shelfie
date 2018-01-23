@@ -4,7 +4,9 @@ import flask
 import os
 from werkzeug.utils import secure_filename
 import shelfy
-from shelfy.models import book_functions, scraper, server, utility
+sys.path.append('../models/')
+#from shelfy.models import book_functions, scraper, server, utility
+import book_functions, scraper, server, utility
 
 
 views = flask.Blueprint('views', __name__)
