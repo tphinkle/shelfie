@@ -1,6 +1,3 @@
-
-
-
 # Colors
 histogram_fc = [0,0,0]
 

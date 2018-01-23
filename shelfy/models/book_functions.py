@@ -288,7 +288,6 @@ class Book(object):
 
     def set_price(self, price):
 
-        print('PRICE = !!!!!!!!!!!!',price)
 
         # Price was not calculated
         if price == None:
@@ -332,12 +331,17 @@ def generate_processed_image(books, raw_file_path, save_path = None):
             plt.plot([bb.xs[2], bb.xs[3]], [bb.ys[2], bb.ys[3]], lw = 3, c = color)
             plt.plot([bb.xs[3], bb.xs[0]], [bb.ys[3], bb.ys[0]], lw = 3, c = color)
 
+    plt.xlim(0, img.shape[1])
+    plt.xlim(img.shape[0], 1)
+
 
     # Cosmetic options
     plt.xticks([])
     plt.yticks([])
     plt.gca().set_frame_on(False)
     plt.axis('off')
+
+
 
     # Save the figure
     if save_path != None:
