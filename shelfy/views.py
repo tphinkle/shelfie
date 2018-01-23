@@ -4,7 +4,8 @@ import flask
 import os
 from werkzeug.utils import secure_filename
 import shelfy
-sys.path.append('../models/')
+import sys
+sys.path.append(shelfy.SHELFY_BASE_PATH + '/models')
 #from shelfy.models import book_functions, scraper, server, utility
 import book_functions, scraper, server, utility
 
