@@ -8,6 +8,8 @@ import flask
 import os
 from werkzeug.utils import secure_filename    # Needed for image upload
 import sys
+import shelfy
+
 
 # Flask location
 
@@ -38,8 +40,8 @@ PASSWORD = 'default'
 
 
 # Register view blueprints
-sys.path.append('/models')
-import shelfy.views
+#sys.path.append('/models')
+import views
 app.register_blueprint(shelfy.views.views)
 
 
