@@ -107,10 +107,38 @@ def sobel_x_squared(img, debug = False):
     Calculates the sobel_x transformation (x-gradient) squared.
     '''
 
-    proc_img = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize = 15)**2.
+    proc_img = cv2.Sobel(img, cv2.CV_8U, 1, 0, ksize = -1)**2.
 
     if debug:
         print('sobel x')
+        plot_img(proc_img)
+
+    return proc_img
+
+def sobel_y_squared(img, debug = False):
+    '''
+    Calculates the sobel_x transformation (y-gradient) squared.
+    '''
+
+    proc_img = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize = -1)**2.
+
+    if debug:
+        print('sobel x')
+        plot_img(proc_img)
+
+    return proc_img
+
+
+def laplace_squared(img, debug = False):
+    '''
+    '''
+    # Laplacian (sqrt)
+    sobel_x_img = sobel_x_squared(img)
+    sobel_y_img = sobel_y_squared(img)
+    proc_img = (sobel_x_img + sobel_y_img)
+
+    if debug:
+        print('laplace squared')
         plot_img(proc_img)
 
     return proc_img
@@ -151,7 +179,7 @@ def binarize(img, debug = False):
     Final image has pixel intensities [0,1].
     '''
 
-    img[img == np.min(img)] = 0
+    img[img < np.max(img)] = 0
     img[img != 0] = 1
 
 
@@ -161,14 +189,14 @@ def binarize(img, debug = False):
 
     return img
 
-def binarize_alt(img, debug = False):
+def binarize_alt(img, frac, debug = False):
     '''
     Binarizes an image by setting intensity of any pixel value with intensity
     not equal to zero to equal one.
     Final image has pixel intensities [0,1].
     '''
 
-    img[img < .1] = 0
+    img[img < frac] = 0
     img[img != 0] = 1
 
 
@@ -194,6 +222,23 @@ def erode_subtract(img, structure_length, debug = False):
 
     if debug:
         print('erode subtract')
+        plot_img(proc_img, show = True)
+
+    return proc_img
+
+def erode(img, structure_length, iterations, debug = False):
+    '''
+    Erodes the image with a vertical structure element of length structure_length.
+    Used to get rid of lines that are primarily horizontal.
+    '''
+
+
+
+    structure = np.array([[1,1,1],[1,1,1],[1,1,1]])*structure_length
+    proc_img = scipy.ndimage.morphology.binary_erosion(img, structure, iterations)
+
+    if debug:
+        print('vertical erode')
         plot_img(proc_img, show = True)
 
     return proc_img
@@ -228,6 +273,23 @@ def vertical_dilate(img, structure_length, iterations, debug = False):
 
     if debug:
         print('vertical dilate')
+        plot_img(proc_img, show = True)
+
+    return proc_img
+
+def dilate(img, structure_length, iterations, debug = False):
+    '''
+    Dilates an image in the vertical direction using a vertical structure element
+    of scale structure_length.
+    This is used to connect lines that are close by vertically.
+    Repeats iterations times.
+    '''
+
+    structure = np.array([[1,1,1],[1,1,1],[1,1,1]])*structure_length
+    proc_img = scipy.ndimage.morphology.binary_dilation(img, structure, iterations)
+
+    if debug:
+        print('dilate')
         plot_img(proc_img, show = True)
 
     return proc_img
@@ -327,21 +389,6 @@ def remove_short_clusters(img, levels, threshold_fraction, debug = False):
 
     return img
 
-def dilate(img, structure_length, debug = False):
-    '''
-    Dilates the image once using a structuring element with length
-    structure_length
-    '''
-
-    structure_length = 3
-    structure = np.array([[1,1,1],[1,1,1],[1,1,1]])*structure_length
-    proc_img = scipy.ndimage.morphology.binary_dilation(img, structure, 1)
-
-    if debug:
-        print('dilate')
-        plot_img(proc_img, show = True)
-
-    return proc_img
 
 def upsample(img, upsample_factor, debug = False):
     '''
@@ -355,6 +402,19 @@ def upsample(img, upsample_factor, debug = False):
 
     if debug:
         print('upsample')
+        plot_img(proc_img, show = True)
+
+    return proc_img
+
+def invert(img, debug = False):
+    '''
+    Inverts a binary image
+    '''
+
+    proc_img = 1-img
+
+    if debug:
+        print('invert')
         plot_img(proc_img, show = True)
 
     return proc_img
@@ -407,28 +467,21 @@ def get_book_lines(img, spaces = ['h'], debug = False):
     The lines are returned as a list of Line objects (see above).
     Repeats iterations times.
     '''
-    
+
 
     # Convert to HSV
-    proc_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    #proc_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     # Convert to gs
-    #proc_img = np.mean(img[:,:], axis = 2)#.astype(np.uint8)
-    proc_img = img[:,:,1]#.astype(np.uint8)
+    proc_img = np.mean(img[:,:], axis = 2).astype(np.uint8)
+    #proc_img = img[:,:,0]#.astype(np.uint8)
 
-
-
-    # Gaussian blur
-    sigma = 3
-    proc_img = gaussian_blur(proc_img, sigma = sigma, debug = debug)
+    # Down sample
+    num_downsamples = 4
+    proc_img = downsample(proc_img, num_downsamples, debug = debug)
 
     # Sobel x
     proc_img = sobel_x_squared(proc_img, debug = debug)
-
-    # Down sample
-    num_downsamples = 3
-    proc_img = downsample(proc_img, num_downsamples, debug = debug)
-
 
 
     # Standardize
@@ -438,32 +491,24 @@ def get_book_lines(img, spaces = ['h'], debug = False):
     #num_levels = 4
     #proc_img = digitize(proc_img, num_levels, debug = debug)
 
-    plt.hist(proc_img.flatten(), bins = 100)
-    plt.show()
+    #plt.hist(proc_img.flatten(), bins = 100)
+    #plt.show()
 
     # Binarize
-    proc_img = binarize_alt(proc_img, debug = debug)
+    proc_img = binarize(proc_img, debug = debug)
 
 
 
     # Vertical erode
     structure_length = 200
-    iterations = 5
+    iterations = 3
     proc_img = vertical_erode(proc_img, structure_length, iterations, debug = debug)
-
-    # Erode subtract
-    #structure_length = 5
-    #proc_img = erode_subtract(proc_img, structure_length, debug = debug)
-
-    # Horizontal erode
-    #structure_length = 1
-    #iterations = 1
-    #proc_img = horizontal_erode(proc_img, structure_length, iterations, debug = debug)
 
     # Vertical dilate
     structure_length = 500
-    iterations = 10
+    iterations = 3
     proc_img = vertical_dilate(proc_img, structure_length, iterations, debug = debug)
+
 
     # Connected components
     proc_img, levels = connected_components(proc_img, debug = debug)

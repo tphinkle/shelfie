@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 
 
 import shelfy
-import shelfy.app
+import shelfy.main
 from shelfy.models import book_functions, scraper, server, utility
 
 
