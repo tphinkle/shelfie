@@ -8,8 +8,8 @@ import flask
 from werkzeug.utils import secure_filename
 
 
-import shelfy
-import shelfy.main
+
+from shelfy import main
 from shelfy.models import book_functions, scraper, server, utility
 
 
