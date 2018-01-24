@@ -16,7 +16,8 @@ import hashlib
 import base64
 
 # Program specific
-import shelfy
+sys.path.append('..')
+import main
 
 
 

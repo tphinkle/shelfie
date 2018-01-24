@@ -12,6 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Shelfy
+sys.path.append('..')
 import shelfy
 from shelfy.models import book_functions
 
