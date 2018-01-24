@@ -10,7 +10,7 @@ from werkzeug.utils import secure_filename
 
 
 import main
-sys.path.append('models')
+sys.path.append(main.SHELFY_BASE_PATH + '/views')
 import book_functions, scraper, server, utility
 
 
