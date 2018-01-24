@@ -23,8 +23,3 @@ SECRET_KEY = 'key',
 USERNAME = 'admin',
 PASSWORD = 'default'
 ))
-
-
-# Register view blueprints
-import shelfy.views
-app.register_blueprint(shelfy.views.views)
