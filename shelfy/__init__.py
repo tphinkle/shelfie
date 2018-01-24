@@ -3,6 +3,8 @@ import os
 
 import flask
 
+from shelfy import *
+
 # Base path for project
 SHELFY_BASE_PATH = os.path.dirname(__file__)
 
