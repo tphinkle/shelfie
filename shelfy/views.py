@@ -9,8 +9,9 @@ from werkzeug.utils import secure_filename
 
 
 
-from .. import main
-from shelfy.models import book_functions, scraper, server, utility
+import main
+
+#from shelfy.models import book_functions, scraper, server, utility
 
 
 
