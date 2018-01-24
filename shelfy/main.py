@@ -7,7 +7,7 @@ flask run (or, through compile.sh)
 
 # Imports
 import flask
-from __init__ import app, SHELFY_BASE_PATH
+import __init__#app, SHELFY_BASE_PATH
 import os
 from werkzeug.utils import secure_filename    # Needed for image upload
 import sys
@@ -16,11 +16,11 @@ import sys
 
 
 # Register view blueprints
-sys.path.append(SHELFY_BASE_PATH)
+sys.path.append(__init__.SHELFY_BASE_PATH)
 import views
-app.register_blueprint(views.views)
+__init__.app.register_blueprint(views.views)
 
 
 
 if __name__ == '__main__':
-    app.run()
+    __init__.app.run()
