@@ -8,7 +8,7 @@ import flask
 import os
 from werkzeug.utils import secure_filename    # Needed for image upload
 import sys
-import shelfy
+
 
 
 
@@ -17,4 +17,4 @@ import shelfy
 
 
 if __name__ == 'main':
-    shelfy.app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=80)
