@@ -1,0 +1,7 @@
+# Start nginx
+sudo service nginx start
+
+# Stop nginx
+sudo service nginx stop
+
+status, restart

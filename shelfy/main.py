@@ -17,11 +17,10 @@ import sys
 
 # Register view blueprints
 sys.path.append(SHELFY_BASE_PATH)
-sys.path.append(SHELFY_BASE_PATH)
 import views
 app.register_blueprint(views.views)
 
 
 
-if __name__ == 'main':
-    app.run(host='0.0.0.0', port=80)
+if __name__ == '__main__':
+    app.run()
