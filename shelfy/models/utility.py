@@ -14,10 +14,11 @@ from google.cloud import vision
 from google.cloud.vision import types
 
 # Shelfy
-from shelfy.models import book_functions
-from shelfy.models import image_processing
-from shelfy.models import scraper
-from shelfy.models import similarity
+
+import book_functions
+import image_processing
+import scraper
+import similarity
 
 
 
