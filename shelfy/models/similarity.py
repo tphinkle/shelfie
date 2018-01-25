@@ -71,14 +71,16 @@ def preprocess_words(words):
         - Remove all non-alphanumeric characters
         - Lowercase all letters
     '''
+
+
+    processed_words = words
+
     # Lower case
-    processed_words = words.lower()
+    processed_words = [word.lower() for word in processed_words]
 
     # Strip non-alphanumeric
-    processed_words = ''.join(ch for ch in processed_words if (ch.isalnum() or (ch == ' ')))
+    processed_words = [''.join(ch for ch in word if (ch.isalnum() or (ch == ' '))) for word in processed_words]
 
-    # Turn into list
-    processed_words = processed_words.split(' ')
 
     # Remove non-strings
     processed_words = [word for word in processed_words if word != '']
