@@ -37,7 +37,7 @@ class SQLHandle(object):
             SQLHandle.connect_to_database()
 
         SQLHandle.cursor.execute(command)
-        results = SQLHandle.cursor.fetchall()
+        results = SQLHandle.cursor.fetchall()[0]
 
         return results
 
