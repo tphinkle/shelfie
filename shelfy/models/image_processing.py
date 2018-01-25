@@ -236,6 +236,19 @@ def erode_subtract(img, structure_length, debug = False):
     return proc_img
 
 
+def horizontal_dilate(img, structure_length, iterations, debug = False):
+    structure = np.array(([0,0,0],[1,1,1],[0,0,0]))*structure_length
+    proc_img = np.copy(img)
+
+    proc_img = scipy.ndimage.morphology.binary_dilation(img, structure, iterations)
+
+    if debug:
+        print('horizontal dilate subtract')
+        plot_img(proc_img, show = True)
+
+    return proc_img
+
+
 def horizontal_dilate_subtract(img, structure_length, iterations, debug = False):
     '''
     Erodes an image using an isotropic structure kernel with scale structure_length,
@@ -519,7 +532,7 @@ def get_lines_from_img(img, levels, debug = False):
         # Line is vertical
         #if (np.std(ys)/np.std(xs) > 10):
         if spread > 10:
-            line = Line(1000, 0, center)
+            line = Line(1000, 0, center, min_x, max_x, min_y, max_y)
 
         # Line is not vertical
         else:
@@ -680,7 +693,7 @@ def get_book_lines(img, spaces = ['h'], debug = False):
     #plt.show()
 
     # Binarize
-    cutoff = np.max(proc_img)/10.
+    cutoff = np.max(proc_img)/12.
     proc_img = binarize(proc_img, cutoff, debug = debug)
 
     # Horizontal erode
@@ -689,14 +702,14 @@ def get_book_lines(img, spaces = ['h'], debug = False):
     #proc_img = horizontal_erode(proc_img, structure_length, iterations, debug = debug)
 
 
-    # Horizaontal dilate subtract
-    structure_length = 1
-    iterations = 1
-    proc_img = horizontal_dilate_subtract(proc_img, structure_length, iterations, debug = debug)
+    # Horizaontal dilate
+    #structure_length = 1
+    #iterations = 1
+    #proc_img = horizontal_dilate(proc_img, structure_length, iterations, debug = debug)
 
     # Vertical erode
     structure_length = 200
-    iterations = 3
+    iterations = 6
     proc_img = vertical_erode(proc_img, structure_length, iterations, debug = debug)
 
 
@@ -738,19 +751,19 @@ def get_book_lines(img, spaces = ['h'], debug = False):
     # Plot the result
     if debug:
 
-        new_img = np.copy(img[:,:,::-1])
+        new_img = np.copy(img)
 
         #new_img[proc_img != 0,:] = [0,255,128]
 
         plot_img(new_img, show = False)
         for line in lines:
-            y0 = 0
-            y1 = np.shape(img)[0]
+            y0 = line.min_y
+            y1 = line.max_y
 
             x0 = line.x(y0)
             x1 = line.x(y1)
 
-            plt.plot([x0, x1], [y0, y1], color = 'yellow', lw = 3)
+            plt.plot([x0, x1], [y0, y1], color = np.array([0,90,255])/255., lw = 6)
 
         plt.xlim(0, img.shape[1])
         plt.ylim(img.shape[0], 0)

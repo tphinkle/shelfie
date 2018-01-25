@@ -55,10 +55,10 @@ def full_pipeline(img_path):
 
     # Create word objects from the google word objects
     words = [book_functions.Word.from_google_text(text) for text in texts[1:]]
-    
+
     # Get lines
     raw_img = cv2.imread(img_path)
-    shelf_lines = image_processing.get_book_shelf_lines(raw_img, debug = False)
+    #shelf_lines = image_processing.get_book_shelf_lines(raw_img, debug = False)
     spine_lines = image_processing.get_book_lines(raw_img, debug = False)
 
     # Group the words into spines (using lines)

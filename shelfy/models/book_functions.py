@@ -497,6 +497,8 @@ def get_spines_from_words_lines_shelves(words, lines):
                 blocks[j-1].append(i)
                 break
 
+    
+
     # Combine words in same block into a spine
     spines = []
     for block in blocks:
