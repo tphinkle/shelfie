@@ -31,9 +31,6 @@ def get_idf(word):
     # Get the idf
     idf = 1./total_counts
 
-    print(idf)
-
-
 
     return idf
 
@@ -88,7 +85,6 @@ def preprocess_words(words):
     processed_words = [word for word in processed_words if word != '']
 
 
-    print(processed_words)
     return processed_words
 
 

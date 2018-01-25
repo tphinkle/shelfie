@@ -34,7 +34,7 @@ class SQLHandle(object):
         '''
 
         if SQLHandle.con == None:
-            self.connect_to_database()
+            SQLHandle.connect_to_database()
 
         SQLHandle.cursor.execute(command)
         results = SQLHandle.cursor.fetch_all()
