@@ -24,7 +24,7 @@ def get_idf(word):
     # Get the total counts of the word across works, editions, authors, publishers
     total_counts = 0
     for table_name in ['works_counts', 'editions_counts', 'authors_counts', 'publishers_counts']:
-        word, counts = sql_handle.SQLHandle.execute_postgresql_select(command, (table_name, word)))
+        word, counts = sql_handle.SQLHandle.execute_postgresql_select(command, (table_name, word))
         total_counts += counts
 
 
