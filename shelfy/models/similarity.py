@@ -18,18 +18,22 @@ def get_idf(word):
 
 
     # Set the command
-    command = ''' SELECT words, count FROM %s WHERE words=%s; '''
+    command = ''' SELECT (words, count) FROM {} WHERE words='{}'; '''
 
 
     # Get the total counts of the word across works, editions, authors, publishers
     total_counts = 0
     for table_name in ['works_counts', 'editions_counts', 'authors_counts', 'publishers_counts']:
-        word, counts = sql_handle.SQLHandle.execute_postgresql_select(command, (table_name, word))
+        temp_command = command.format(table_name, word)
+        print(temp_command)
+        word, counts = sql_handle.SQLHandle.execute_postgresql_select(command.format(table_name, word))
         total_counts += counts
 
 
     # Get the idf
     idf = 1./total_counts
+
+
 
 
     return idf
@@ -117,6 +121,9 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
 
     total_similarity = 0
 
+    MIN_SIMILARITY = 0
+    MAX_SIMILARITY = 100000
+
 
 
     # Loop over all tokens (words found on spine)
@@ -135,19 +142,17 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
             temp_similarities.append(1./(1+distance/scale_factor))
 
 
-        # Get the highest scoring pair, return
-        try:
-            # Get the similarity
-            similarity = np.max(temp_similarities)
 
-            # Get the idf of the word
-            word = book_words[np.argmax(np.array(temp_similarities))]
-            idf = get_idf(max_token)
+        # Get the similarity
+        similarity = np.max(temp_similarities)
 
-            similarity = max_similarity*idf
+        # Get the idf of the word
+        best_word = book_words[np.argmax(np.array(temp_similarities))]
+        idf = get_idf(best_word)
 
-        except:
-            similarity =  MIN_SIMILARITY
+
+        similarity = similarity*idf
+
 
         # Get the inverse document frequency of the token
 
@@ -155,8 +160,6 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
         total_similarity += similarity
 
     return total_similarity
-
-
 
 
 def single_token_levenshtein(tokens, book_words):
