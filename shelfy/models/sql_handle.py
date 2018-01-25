@@ -47,7 +47,8 @@ class SQLHandle(object):
         '''
 
         # Create the engine
-        SQLHandle.engine = create_engine( 'postgresql://{}:{}@{}:{}/{}'.format(username, password, host, port, db_name) )
+        SQLHandle.engine = create_engine( 'postgresql://{}:{}@{}:{}/{}'.format(SQLHandle.username,\
+         SQLHandle.password, SQLHandle.host, SQLHandle.port, SQLHandle.db_name) )
 
         # Create connection and cursor object to insert info into db
         SQLHandle.con = psycopg2.connect(database = SQLHandle.db_name,\
