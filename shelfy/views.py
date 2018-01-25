@@ -21,7 +21,7 @@ views = flask.Blueprint('views', __name__)
 
 
 def format_file_path_for_routing(file_path):
-    file_path = file_path.replace(shelfy.SHELFY_BASE_PATH, '')
+    file_path = file_path.replace(main.SHELFY_BASE_PATH, '')
     return file_path
 
 @views.route('/submission/<submission_id>/admin', methods=['GET'])
