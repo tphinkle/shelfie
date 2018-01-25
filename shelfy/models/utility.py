@@ -14,7 +14,8 @@ from google.cloud import vision
 from google.cloud.vision import types
 
 # Shelfy
-
+sys.path.append('..')
+import main
 import book_functions
 import image_processing
 import scraper
@@ -183,7 +184,7 @@ def unpickle_all_books():
 
 
 
-    submissions_base_path = shelfy.SHELFY_BASE_PATH + '/static/submissions/'
+    submissions_base_path = main.SHELFY_BASE_PATH + '/static/submissions/'
 
     submissions = [dir for dir in os.listdir(submissions_base_path)]
 

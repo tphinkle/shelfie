@@ -1,2 +1,12 @@
+# Random commands
+
+# Gunicorn
+Run app:
+
+~/anaconda3/bin/gunicorn main:app --timeout 120
+
+
+# SQL
+
 select "word", COUNT("word") from works_words group by "word"
  order by "word";
