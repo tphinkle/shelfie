@@ -86,8 +86,8 @@ def preprocess_words(words):
     processed_words = [word for word in processed_words if word != '']
 
 
-
-    return processed_book_words
+    print(processed_words)
+    return processed_words
 
 
 
