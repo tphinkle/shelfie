@@ -55,9 +55,8 @@ def calculate_book_score(book):
 
 
     # Preprocess the variables
-    book_info = preprocess_book_info(book_info)
-
-    tokens = preprocess_book_tokens(tokens)
+    book_info = preprocess_words(book_info)
+    tokens = preprocess_words(tokens)
 
     # Calculate similarity score
     #similarity = single_token_levenshtein(tokens, info)
@@ -66,7 +65,7 @@ def calculate_book_score(book):
     return similarity
 
 
-def preprocess_book_info(book_info):
+def preprocess_words(words):
     '''
     Preprocesses the book words that have been created by the
     get_book_words_from_book_info() function
@@ -74,25 +73,6 @@ def preprocess_book_info(book_info):
         - Remove all non-alphanumeric characters
         - Lowercase all letters
     '''
-
-    title = book_info['title']
-    authors = ''.join([author for author in book_info['authors']])
-    publisher = book_info['publisher']
-
-    if title == 'NONE':
-        print('title none')
-        title = ''
-
-    if authors == 'NONE':
-        authors = ''
-
-    if publisher == 'NONE':
-        publisher = ''
-
-
-    book_words = title + ' ' + authors + ' ' + publisher
-
-
     # Lower case
     processed_book_words = book_words.lower()
 
