@@ -9,11 +9,10 @@ matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
 
-
-
 # Google cloud
 from google.cloud import vision
 from google.cloud.vision import types
+
 
 
 

@@ -49,11 +49,14 @@ def calculate_book_score(book):
     '''
 
     # Get book variables
-    book_info = book.book_info
-    tokens = [word.string for word in book.spine.words]
+    book_info = book.format_raw_book_info_to_words_list()
+    tokens = book.format_raw_spine_words_to_words_list()
+
+
 
     # Preprocess the variables
     book_info = preprocess_book_info(book_info)
+
     tokens = preprocess_book_tokens(tokens)
 
     # Calculate similarity score
