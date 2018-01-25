@@ -5,6 +5,8 @@ import numpy as np
 import scipy.ndimage
 import scipy.stats
 
+
+
 class Line(object):
     '''
     Simple class that holds the information related to a line;
@@ -107,7 +109,7 @@ def sobel_x_squared(img, debug = False):
     Calculates the sobel_x transformation (x-gradient) squared.
     '''
 
-    proc_img = cv2.Sobel(img, cv2.CV_8U, 1, 0, ksize = -1)**2.
+    proc_img = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize = -1)**2.
 
     if debug:
         print('sobel x')
@@ -135,7 +137,7 @@ def laplace_squared(img, debug = False):
     # Laplacian (sqrt)
     sobel_x_img = sobel_x_squared(img)
     sobel_y_img = sobel_y_squared(img)
-    proc_img = (sobel_x_img + sobel_y_img)
+    proc_img = (sobel_x_img**2. + sobel_y_img**2.)**.5
 
     if debug:
         print('laplace squared')
@@ -172,15 +174,15 @@ def digitize(img, num_levels, debug = False):
 
     return proc_img
 
-def binarize(img, debug = False):
+def binarize(img, cutoff, debug = False):
     '''
     Binarizes an image by setting intensity of any pixel value with intensity
     not equal to zero to equal one.
     Final image has pixel intensities [0,1].
     '''
 
-    img[img < np.max(img)] = 0
-    img[img != 0] = 1
+    img[img > cutoff] = 1
+    img[img <= cutoff] = 0
 
 
     if debug:
@@ -347,7 +349,7 @@ def connected_components(img, debug = False):
     return proc_img, levels
 
 
-def remove_short_clusters(img, levels, threshold_fraction, debug = False):
+def remove_short_clusters_vertical(img, levels, threshold_fraction, debug = False):
     '''
     Given an image that has been labeled with connected components (see above),
     calculates the vertical height of each component and filters those that
@@ -388,6 +390,51 @@ def remove_short_clusters(img, levels, threshold_fraction, debug = False):
         plot_img(img, show = True)
 
     return img
+
+
+
+def remove_short_clusters_horizontal(img, levels, threshold_fraction, debug = False):
+    '''
+    Given an image that has been labeled with connected components (see above),
+    calculates the vertical height of each component and filters those that
+    are too short.
+    The threshold should be set as a fraction of the longest line present in the
+    image.
+    This is used to remove short vertical lines.
+
+    '''
+
+    drop_values = []
+    ptps = []
+
+    # Calculate peak-to-peak height of line
+    for level in levels:
+        bright_pixels = np.where(img == level)
+        ptp = np.ptp(bright_pixels[1])
+        ptps.append(ptp)
+
+
+    # Determine which lines to drop
+    threshold = np.max(ptps)/2.
+    for i in range(len(ptps)):
+        if ptps[i] < threshold:
+            drop_values.append(levels[i])
+
+
+    # Drop the lines
+    for drop_value in drop_values:
+        img[img == drop_value] = 0
+
+
+
+    if debug:
+        print('remove short clusters')
+        plt.hist(ptps, bins = 25)
+        plt.show()
+        plot_img(img, show = True)
+
+    return img
+
 
 
 def upsample(img, upsample_factor, debug = False):
@@ -456,6 +503,101 @@ def get_lines_from_img(img, levels, debug = False):
 
 
 
+def get_shelves(img, debug = False):
+    # Convert to HSV
+    #proc_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    proc_img = np.mean(img, axis = 2)#**2. + (proc_img[:,:,2])**2.)**.5#+proc_img[:,:,2]**2.)**.5
+
+    # Convert to gs
+    #proc_img = np.mean(img[:,:], axis = 2).astype(np.uint8)
+    #proc_img = img[:,:,0]#.astype(np.uint8)
+
+    # Blur
+    sigma = 3
+    proc_img = gaussian_blur(proc_img, sigma = sigma, debug = debug)
+
+    # Down sample
+    num_downsamples = 3
+    proc_img = downsample(proc_img, num_downsamples, debug = debug)
+
+    # Sobel y
+    proc_img = laplace_squared(proc_img, debug = debug)
+
+
+    # Standardize
+    proc_img = standardize(proc_img, debug = debug)
+
+    # Digitize
+    #num_levels = 4
+    #proc_img = digitize(proc_img, num_levels, debug = debug)
+
+    #plt.hist(proc_img.flatten(), bins = 100)
+    #plt.show()
+
+    # Binarize
+    cutoff = np.max(proc_img)/500.
+    proc_img = binarize(proc_img, cutoff, debug = debug)
+
+
+    #Vertical dilate
+    structure_length = 200
+    iterations = 1
+    proc_img = vertical_dilate(proc_img, structure_length, iterations, debug = debug)
+
+
+
+    # Horizontal erode
+    structure_length = 200
+    iterations = 50
+    proc_img = horizontal_erode(proc_img, structure_length, iterations, debug = debug)
+
+
+    # Connected components
+    proc_img, levels = connected_components(proc_img, debug = debug)
+
+    # Remove short clusters
+    threshold_fraction = 0.10
+    proc_img = remove_short_clusters_horizontal(proc_img, levels, threshold_fraction, debug = debug)
+
+    # Up sample
+    upsample_factor = 2**num_downsamples
+    proc_img = upsample(proc_img, upsample_factor, debug = debug)
+
+    # Connected components
+    proc_img, levels = connected_components(proc_img, debug = debug)
+
+
+    # Lines
+    lines = get_lines_from_img(proc_img, levels, debug = False)
+
+
+
+    # Plot the result
+    if debug:
+
+        new_img = np.copy(img[:,:,::-1])
+
+        #new_img[proc_img != 0,:] = [0,255,128]
+
+        plot_img(new_img, show = False)
+        for line in lines:
+            y0 = 0
+            y1 = np.shape(img)[0]
+
+            x0 = line.x(y0)
+            x1 = line.x(y1)
+
+            plt.plot([x0, x1], [y0, y1], color = 'yellow', lw = 3)
+
+        plt.xlim(0, img.shape[1])
+        plt.ylim(img.shape[0], 0)
+        plt.xticks([])
+        plt.yticks([])
+        plt.savefig('proc_img.png', bbox_inches = 'tight', dpi = 300)
+
+        plt.show()
+
+    return lines
 
 
 
@@ -471,17 +613,23 @@ def get_book_lines(img, spaces = ['h'], debug = False):
 
     # Convert to HSV
     #proc_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    proc_img = np.mean(img, axis = 2)#**2. + (proc_img[:,:,2])**2.)**.5#+proc_img[:,:,2]**2.)**.5
 
     # Convert to gs
-    proc_img = np.mean(img[:,:], axis = 2).astype(np.uint8)
+    #proc_img = np.mean(img[:,:], axis = 2).astype(np.uint8)
     #proc_img = img[:,:,0]#.astype(np.uint8)
 
     # Down sample
-    num_downsamples = 4
+    num_downsamples = 0
     proc_img = downsample(proc_img, num_downsamples, debug = debug)
 
+    # Blur
+    sigma = 3
+    proc_img = gaussian_blur(proc_img, sigma = sigma, debug = debug)
+
+
     # Sobel x
-    proc_img = sobel_x_squared(proc_img, debug = debug)
+    proc_img = laplace_squared(proc_img, debug = debug)
 
 
     # Standardize
@@ -495,30 +643,32 @@ def get_book_lines(img, spaces = ['h'], debug = False):
     #plt.show()
 
     # Binarize
-    proc_img = binarize(proc_img, debug = debug)
+    cutoff = np.max(proc_img)/10000.
+    proc_img = binarize(proc_img, cutoff, debug = debug)
 
 
 
     # Vertical erode
     structure_length = 200
-    iterations = 3
+    iterations = 100
     proc_img = vertical_erode(proc_img, structure_length, iterations, debug = debug)
 
+    '''
     # Vertical dilate
     structure_length = 500
-    iterations = 3
+    iterations = 200
     proc_img = vertical_dilate(proc_img, structure_length, iterations, debug = debug)
-
+    '''
 
     # Connected components
     proc_img, levels = connected_components(proc_img, debug = debug)
 
     # Remove short clusters
     threshold_fraction = 0.10
-    proc_img = remove_short_clusters(proc_img, levels, threshold_fraction, debug = debug)
+    proc_img = remove_short_clusters_vertical(proc_img, levels, threshold_fraction, debug = debug)
 
     # Re-binarize
-    proc_img = binarize(proc_img, debug = debug)
+    #proc_img = binarize(proc_img, debug = debug)
 
     # Dilate
     #structure_length = 3
@@ -566,7 +716,121 @@ def get_book_lines(img, spaces = ['h'], debug = False):
 
 
 
+"""
+VERY GOOD RESULTS!
+def get_book_lines(img, spaces = ['h'], debug = False):
+    '''
+    Given an image, performs a number of image processing techniques to render
+    the processed image down into a series of lines that represent the edges
+    of spines in the image.
+    The lines are returned as a list of Line objects (see above).
+    Repeats iterations times.
+    '''
 
+
+    # Convert to HSV
+    proc_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+    proc_img = ((proc_img[:,:,1])**2. + (proc_img[:,:,2])**2.)**.5#+proc_img[:,:,2]**2.)**.5
+
+    # Convert to gs
+    #proc_img = np.mean(img[:,:], axis = 2).astype(np.uint8)
+    #proc_img = img[:,:,0]#.astype(np.uint8)
+
+    # Down sample
+    num_downsamples = 0
+    proc_img = downsample(proc_img, num_downsamples, debug = debug)
+
+    # Blur
+    sigma = 3
+    proc_img = gaussian_blur(proc_img, sigma = sigma, debug = debug)
+
+
+    # Sobel x
+    proc_img = sobel_x_squared(proc_img, debug = debug)
+
+
+    # Standardize
+    proc_img = standardize(proc_img, debug = debug)
+
+    # Digitize
+    #num_levels = 4
+    #proc_img = digitize(proc_img, num_levels, debug = debug)
+
+    #plt.hist(proc_img.flatten(), bins = 100)
+    #plt.show()
+
+    # Binarize
+    cutoff = np.max(proc_img)/100.
+    proc_img = binarize(proc_img, cutoff, debug = debug)
+
+
+
+    # Vertical erode
+    structure_length = 200
+    iterations = 50
+    proc_img = vertical_erode(proc_img, structure_length, iterations, debug = debug)
+
+    '''
+    # Vertical dilate
+    structure_length = 500
+    iterations = 200
+    proc_img = vertical_dilate(proc_img, structure_length, iterations, debug = debug)
+    '''
+
+    # Connected components
+    proc_img, levels = connected_components(proc_img, debug = debug)
+
+    # Remove short clusters
+    threshold_fraction = 0.10
+    proc_img = remove_short_clusters(proc_img, levels, threshold_fraction, debug = debug)
+
+    # Re-binarize
+    #proc_img = binarize(proc_img, debug = debug)
+
+    # Dilate
+    #structure_length = 3
+    #proc_img = dilate(proc_img, structure_length, debug = debug)
+
+    # Up sample
+    upsample_factor = 2**num_downsamples
+    proc_img = upsample(proc_img, upsample_factor, debug = debug)
+
+    # Connected components
+    proc_img, levels = connected_components(proc_img, debug = debug)
+
+
+    # Lines
+    lines = get_lines_from_img(proc_img, levels, debug = False)
+
+    # Plot the result
+    if debug:
+
+        new_img = np.copy(img[:,:,::-1])
+
+        #new_img[proc_img != 0,:] = [0,255,128]
+
+        plot_img(new_img, show = False)
+        for line in lines:
+            y0 = 0
+            y1 = np.shape(img)[0]
+
+            x0 = line.x(y0)
+            x1 = line.x(y1)
+
+            plt.plot([x0, x1], [y0, y1], color = 'yellow', lw = 3)
+
+        plt.xlim(0, img.shape[1])
+        plt.ylim(img.shape[0], 0)
+        plt.xticks([])
+        plt.yticks([])
+        plt.savefig('proc_img.png', bbox_inches = 'tight', dpi = 300)
+
+        plt.show()
+
+    return lines
+
+"""
 
 
 

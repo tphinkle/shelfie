@@ -1,0 +1,2 @@
+select "word", COUNT("word") from works_words group by "word"
+ order by "word";
