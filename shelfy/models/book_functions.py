@@ -330,7 +330,7 @@ def generate_processed_image(books, raw_file_path, save_path = None):
             plt.plot([bb.xs[1], bb.xs[2]], [bb.ys[1], bb.ys[2]], lw = 3, c = color)
             plt.plot([bb.xs[2], bb.xs[3]], [bb.ys[2], bb.ys[3]], lw = 3, c = color)
             plt.plot([bb.xs[3], bb.xs[0]], [bb.ys[3], bb.ys[0]], lw = 3, c = color)
-    
+
     plt.xlim(0, img.shape[1])
     plt.ylim(img.shape[0], 0)
 
@@ -472,6 +472,40 @@ def get_spines_from_words_lines(words, lines):
     return spines
 
 
+def get_spines_from_words_lines_shelves(words, lines):
+    '''
+    Matches words that belong on the same spine into a 'Spine' object
+    Algorithm explanation:
+        - Starts with the raw image and attempts to find all (or as many as
+        possible) of the lines that comprise the edges of the book spines
+        - Pairs of lines from left to right comprise image zones
+        - Words within a zone most likely fall on the same spine, but a threshold
+        is still applied within words in case a line is not found; the words must still
+        be within the threshold
+    '''
+
+    # Sort lines by x-position
+    lines.sort(key = lambda line: line.center[0])
+
+
+    # Loop over words
+    blocks = [[] for i in range(len(lines) + 1)]
+    for i in range(len(words)):
+
+        for j in range(len(lines)):
+            if words[i].bounding_box.center[0] < lines[j].center[0]:
+                blocks[j-1].append(i)
+                break
+
+    # Combine words in same block into a spine
+    spines = []
+    for block in blocks:
+        block_words = [words[i] for i in block]
+        print('block!')
+        print([block_word.string for block_word in block_words])
+        spines += get_spines_from_words(block_words, yc_tolerance = 100, theta_tolerance = np.pi)
+
+    return spines
 
 
 

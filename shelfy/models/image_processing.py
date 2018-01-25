@@ -15,7 +15,7 @@ class Line(object):
 
     vertical_threshold = 30
 
-    def __init__(self, m, b, center):
+    def __init__(self, m, b, center, min_x, max_x, min_y, max_y):
         '''
         m: slope
         b: y-intercept
@@ -24,7 +24,14 @@ class Line(object):
 
         self.m = m
         self.b = b
+
         self.center = center
+
+        self.min_x = min_x
+        self.max_x = max_x
+
+        self.min_y = min_y
+        self.max_y = max_y
 
 
     def y(self, x):
@@ -224,6 +231,28 @@ def erode_subtract(img, structure_length, debug = False):
 
     if debug:
         print('erode subtract')
+        plot_img(proc_img, show = True)
+
+    return proc_img
+
+
+def horizontal_dilate_subtract(img, structure_length, iterations, debug = False):
+    '''
+    Erodes an image using an isotropic structure kernel with scale structure_length,
+    and subtracts the eroded image off the original image.
+    This can be used to split thick vertical lines into two lines, or to break up
+    horizontally-thick elements.
+    '''
+
+    #structure = np.ones((3,3))*structure_length
+    structure = np.array(([0,0,0],[1,1,1],[0,0,0]))*structure_length
+    proc_img = np.copy(img)
+
+    proc_img = img - scipy.ndimage.morphology.binary_dilation(img, structure, iterations)
+    proc_img[proc_img < 0] = 1
+
+    if debug:
+        print('horizontal dilate subtract')
         plot_img(proc_img, show = True)
 
     return proc_img
@@ -479,9 +508,13 @@ def get_lines_from_img(img, levels, debug = False):
         ys = line[0]
         center = [np.mean(xs), np.mean(ys)]
 
+        min_x = np.min(xs)
+        max_x = np.max(xs)
+        min_y = np.min(ys)
+        max_y = np.max(ys)
+
         #print('std ratio', np.std(ys)/np.std(xs))
         spread = (np.max(ys) - np.min(ys))/(np.max(xs) - np.min(xs))
-        print('spread', spread)
 
         # Line is vertical
         #if (np.std(ys)/np.std(xs) > 10):
@@ -491,7 +524,7 @@ def get_lines_from_img(img, levels, debug = False):
         # Line is not vertical
         else:
             m, b, r, p, std = scipy.stats.linregress(xs,ys)
-            line = Line(m, b, center)
+            line = Line(m, b, center, min_x, max_x, min_y, max_y)
 
 
         lines.append(line)
@@ -503,7 +536,7 @@ def get_lines_from_img(img, levels, debug = False):
 
 
 
-def get_shelves(img, debug = False):
+def get_shelf_lines(img, debug = False):
     # Convert to HSV
     #proc_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     proc_img = np.mean(img, axis = 2)#**2. + (proc_img[:,:,2])**2.)**.5#+proc_img[:,:,2]**2.)**.5
@@ -619,17 +652,21 @@ def get_book_lines(img, spaces = ['h'], debug = False):
     #proc_img = np.mean(img[:,:], axis = 2).astype(np.uint8)
     #proc_img = img[:,:,0]#.astype(np.uint8)
 
-    # Down sample
-    num_downsamples = 0
-    proc_img = downsample(proc_img, num_downsamples, debug = debug)
-
     # Blur
     sigma = 3
     proc_img = gaussian_blur(proc_img, sigma = sigma, debug = debug)
 
-
     # Sobel x
-    proc_img = laplace_squared(proc_img, debug = debug)
+    proc_img = sobel_x_squared(proc_img, debug = debug)
+
+    # Down sample
+    num_downsamples = 3
+    proc_img = downsample(proc_img, num_downsamples, debug = debug)
+
+
+
+
+
 
 
     # Standardize
@@ -643,22 +680,35 @@ def get_book_lines(img, spaces = ['h'], debug = False):
     #plt.show()
 
     # Binarize
-    cutoff = np.max(proc_img)/10000.
+    cutoff = np.max(proc_img)/10.
     proc_img = binarize(proc_img, cutoff, debug = debug)
 
+    # Horizontal erode
+    #structure_length = 1
+    #iterations = 1
+    #proc_img = horizontal_erode(proc_img, structure_length, iterations, debug = debug)
 
+
+    # Horizaontal dilate subtract
+    structure_length = 1
+    iterations = 1
+    proc_img = horizontal_dilate_subtract(proc_img, structure_length, iterations, debug = debug)
 
     # Vertical erode
     structure_length = 200
-    iterations = 100
+    iterations = 3
     proc_img = vertical_erode(proc_img, structure_length, iterations, debug = debug)
 
-    '''
+
+
+
     # Vertical dilate
     structure_length = 500
-    iterations = 200
+    iterations = 10
     proc_img = vertical_dilate(proc_img, structure_length, iterations, debug = debug)
-    '''
+
+
+
 
     # Connected components
     proc_img, levels = connected_components(proc_img, debug = debug)
