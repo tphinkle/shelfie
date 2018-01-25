@@ -31,6 +31,8 @@ def get_idf(word):
     # Get the idf
     idf = 1./total_counts
 
+    print(idf)
+
 
 
     return idf
