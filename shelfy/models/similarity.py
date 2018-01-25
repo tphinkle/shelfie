@@ -2,13 +2,40 @@
 import Levenshtein
 import numpy as np
 
-
+import sql_handle
 
 
 
 
 MIN_SIMILARITY = 0
 MAX_SIMILARITY = np.inf
+
+def get_idf(word):
+    '''
+    Calculates the IDF score of the word as the sum of the counts in the
+    'works', 'editions', 'authors', and 'publishers' tables
+    '''
+
+
+    # Set the command
+    command = ''' SELECT words, count FROM %s WHERE words=%s; '''
+
+
+    # Get the total counts of the word across works, editions, authors, publishers
+    total_counts = 0
+    for table_name in ['works_counts', 'editions_counts', 'authors_counts', 'publishers_counts']:
+        word, counts = sql_handle.SQLHandle.execute_postgresql_select(command, (table_name, word)))
+        total_counts += counts
+
+
+    # Get the idf
+    idf = 1./total_counts
+
+
+
+    return idf
+
+
 
 def calculate_book_score(book):
     '''
@@ -31,7 +58,7 @@ def calculate_book_score(book):
 
     # Calculate similarity score
     #similarity = single_token_levenshtein(tokens, info)
-    similarity = single_token_inverse_weighted_levenshtein_tfidf(tokens, book_info)
+    similarity = single_token_inverse_weighted_levenshtein_idf(tokens, book_info)
 
     return similarity
 
@@ -98,7 +125,7 @@ def preprocess_book_tokens(tokens):
 
 
 
-def single_token_inverse_weighted_levenshtein_tfidf(tokens, book_words):
+def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
     '''
     Does a one-sided, weighted levenshtein score calculation, scaled by the
     TF-IDF value of the word in the data set
@@ -141,13 +168,25 @@ def single_token_inverse_weighted_levenshtein_tfidf(tokens, book_words):
 
             temp_similarities.append(1./(1+distance/scale_factor))
 
+
+        # Get the highest scoring pair, return
         try:
-            max_similarity = np.max(temp_similarities)
+            # Get the similarity
+            similarity = np.max(temp_similarities)
+
+            # Get the idf of the word
+            word = book_words[np.argmax(np.array(temp_similarities))]
+            idf = get_idf(max_token)
+
+            similarity = max_similarity*idf
+
         except:
-            max_similarity =  MIN_SIMILARITY
+            similarity =  MIN_SIMILARITY
+
+        # Get the inverse document frequency of the token
 
 
-        total_similarity += max_similarity
+        total_similarity += similarity
 
     return total_similarity
 

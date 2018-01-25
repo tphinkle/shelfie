@@ -22,8 +22,6 @@ from google.cloud.vision import types
 
 
 
-
-
 def generate_unique_id_incremental():
     '''
     Generates a key for a submission
