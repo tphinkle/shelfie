@@ -59,7 +59,7 @@ def create_new_submission(file):
 
 
     # Create the main and sub folders for the submission
-    directory = main.SHELFY_BASE_PATHASE_PATH + '/static/submissions/' + id
+    directory = main.SHELFY_BASE_PATH + '/static/submissions/' + id
 
     os.makedirs(directory)
 
