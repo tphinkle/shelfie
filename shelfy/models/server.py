@@ -59,7 +59,7 @@ def create_new_submission(file):
 
 
     # Create the main and sub folders for the submission
-    directory = shelfy.main.SHELFY_BASE_PATHASE_PATH + '/static/submissions/' + id
+    directory = main.SHELFY_BASE_PATHASE_PATH + '/static/submissions/' + id
 
     os.makedirs(directory)
 
@@ -142,7 +142,7 @@ def get_info_directory_from_submission_id(submission_id):
     Returns the correct path to the info directory for submission_id
     '''
 
-    info_directory = shelfy.SHELFY_BASE_PATH + '/static/submissions/' + submission_id + '/info'
+    info_directory = main.SHELFY_BASE_PATH + '/static/submissions/' + submission_id + '/info'
 
     return info_directory
 
