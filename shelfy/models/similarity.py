@@ -52,8 +52,6 @@ def calculate_book_score(book):
     book_info = book.format_raw_book_info_to_words_list()
     tokens = book.format_raw_spine_words_to_words_list()
 
-
-
     # Preprocess the variables
     book_info = preprocess_words(book_info)
     tokens = preprocess_words(tokens)
@@ -74,37 +72,22 @@ def preprocess_words(words):
         - Lowercase all letters
     '''
     # Lower case
-    processed_book_words = book_words.lower()
+    processed_words = words.lower()
 
     # Strip non-alphanumeric
-    processed_book_words = ''.join(ch for ch in processed_book_words if (ch.isalnum() or (ch == ' ')))
+    processed_words = ''.join(ch for ch in processed_words if (ch.isalnum() or (ch == ' ')))
 
     # Turn into list
-    processed_book_words = processed_book_words.split(' ')
+    processed_words = processed_words.split(' ')
 
     # Remove non-strings
-    processed_book_words = [word for word in processed_book_words if word != '']
+    processed_words = [word for word in processed_words if word != '']
+
+
 
     return processed_book_words
 
-def preprocess_book_tokens(tokens):
 
-    # Convert list to single string
-    processed_tokens = ''.join([token + ' ' for token in tokens])
-
-    # Lower case
-    processed_tokens = processed_tokens.lower()
-
-    # Strip non-alphanumeric
-    processed_tokens = ''.join(ch for ch in processed_tokens if (ch.isalnum() or (ch == ' ')))
-
-    # Turn into list
-    processed_tokens = processed_tokens.split(' ')
-
-    # Remove non-strings
-    processed_tokens = [token for token in processed_tokens if token != '']
-
-    return processed_tokens
 
 
 
