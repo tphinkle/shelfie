@@ -166,6 +166,11 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
         idf = get_idf(best_word)
 
 
+        print('token', token)
+        print('best_word', best_word)
+        print('idf', idf)
+        print('similarity', similarity)
+
         similarity = similarity*idf
 
 
