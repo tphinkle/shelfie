@@ -39,7 +39,14 @@ def get_idf(word):
 
 
     # Get the idf
-    idf = 1./total_counts
+
+
+    # Normal case
+    if total_counts > 0:
+        idf = 1./total_counts
+
+    else:
+        idf = 100
 
 
 
