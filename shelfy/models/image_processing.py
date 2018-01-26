@@ -763,7 +763,7 @@ def get_book_lines(img, spaces = ['h'], debug = False):
             x0 = line.x(y0)
             x1 = line.x(y1)
 
-            plt.plot([x0, x1], [y0, y1], color = np.array([0,90,255])/255., lw = 6)
+            plt.plot([x0, x1], [y0, y1], color = np.array([0,169,55])/255., lw = 6)
 
         plt.xlim(0, img.shape[1])
         plt.ylim(img.shape[0], 0)
