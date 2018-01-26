@@ -6,7 +6,7 @@
 div.shelfy-background{
     color:#fff;
     text-align:center;
-    background:'/shelfy/static/img/background';
+    background:'/static/img/background.jpeg';
     background-size:cover;
     background-position:center;
     padding-top:100px;
