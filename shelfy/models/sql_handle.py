@@ -37,7 +37,10 @@ class SQLHandle(object):
             SQLHandle.connect_to_database()
 
         SQLHandle.cursor.execute(command)
-        results = SQLHandle.cursor.fetchall()[0]
+        results = SQLHandle.cursor.fetchall()
+
+        if len(results) == 0:
+            results = None
 
         return results
 

@@ -25,7 +25,16 @@ def get_idf(word):
     total_counts = 0
     for table_name in ['works_counts', 'editions_counts', 'authors_counts', 'publishers_counts']:
         temp_command = command.format(table_name, word)
-        counts = sql_handle.SQLHandle.execute_postgresql_select(command.format(table_name, word))[0]
+        result = sql_handle.SQLHandle.execute_postgresql_select(command.format(table_name, word))
+
+        # Could not find result
+        if result == None:
+            counts = 0
+
+        # Found counts
+        else:
+            counts = result[0][0]
+
         total_counts += counts
 
 
