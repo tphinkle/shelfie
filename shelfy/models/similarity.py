@@ -46,7 +46,7 @@ def get_idf(word):
         idf = 1./total_counts
 
     else:
-        idf = 100
+        idf = 1.
 
 
 
@@ -170,6 +170,7 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
         print('best_word', best_word)
         print('idf', idf)
         print('similarity', similarity)
+        print()
 
         similarity = similarity*idf
 
