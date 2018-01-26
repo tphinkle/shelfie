@@ -412,7 +412,7 @@ def save_spines(spines, file_path):
 
 
 
-def plot_annotated_image_google(img, texts):
+def plot_annotated_image_google(img, texts, show = True):
     '''
     Plots an image alongside all of the bounding boxes found by the GoogleCloudVision
     document_text_detection() function
@@ -430,7 +430,7 @@ def plot_annotated_image_google(img, texts):
         plt.plot([bb.xs[2], bb.xs[3]], [bb.ys[2], bb.ys[3]], lw = 3, c = 'r')
         plt.plot([bb.xs[3], bb.xs[0]], [bb.ys[3], bb.ys[0]], lw = 3, c = 'r')
 
-    plt.imshow(img, cmap = 'gray')
+    plt.imshow(img)
 
     plt.show()
 
