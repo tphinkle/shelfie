@@ -431,8 +431,8 @@ def plot_annotated_image_google(img, texts, show = True):
         plt.plot([bb.xs[3], bb.xs[0]], [bb.ys[3], bb.ys[0]], lw = 3, c = np.array([0,169,55])/255.)
 
     plt.imshow(img)
-
-    plt.show()
+    if show:
+        plt.show()
 
 
 
