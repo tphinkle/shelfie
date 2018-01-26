@@ -12,3 +12,8 @@ div.shelfy-background{
     padding-top:100px;
     padding-bottom:100px;
 }
+
+
+main.container-fluid{
+    background-image:'/../img/background.jpeg'
+}
