@@ -104,6 +104,7 @@ def full_pipeline(img_path):
 
         # Run through all the APIs
         book_info = {}
+        book_price = 0
 
         # Query apis for the isbn10
         if scraper.is_isbn10(isbn10, debug = True):
@@ -118,7 +119,7 @@ def full_pipeline(img_path):
         book.set_price(book_price)
 
 
-
+        '''
         # Flag book
         book.similarity = similarity.calculate_book_score(book)
         if book.similarity < 2:
@@ -128,7 +129,7 @@ def full_pipeline(img_path):
 
 
         books.append(book)
-
+        '''
 
     # Finally, return
     return books
