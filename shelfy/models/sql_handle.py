@@ -14,6 +14,7 @@ class SQLHandle(object):
     Singleton class for handling SQL db connections.
     '''
 
+    
     # Define a database name (we're using a dataset on births, so we'll call it birth_db)
     # Set your postgres username/password, and connection specifics
     username = 'postgres'

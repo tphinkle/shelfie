@@ -108,50 +108,13 @@ def full_pipeline(img_path):
         # Query apis for the isbn10
         if scraper.is_isbn10(isbn10, debug = True):
 
-
             # Try to get info from amazon products api
-            if book_info == {}:
-                book_info, book_price = scraper.query_amazon_products_api(isbn10, amazon)
-                book_info['api'] = 'amazon products'
-
-
-            '''
-            # Try to get info from amazon
-            if book_info == {}:
-                dt = last_amazon_query - time.time()
-                time.sleep(1-dt)
-                book_info = scraper.query_amazon_page(isbn10, debug = True)
-                last_amazon_query = time.time()
-
-                book_info['api'] = 'amazon'
-
-
-            # Try to get info from google API
-            if book_info == {}:
-                dt = last_google_query - time.time()
-                time.sleep(1-dt)
-                book_info = scraper.query_google_books_api(isbn10, debug = True)
-                last_google_query = time.time()
-
-                book_info['api'] = 'google'
-
-
-            # Try to get info from good reads API
-            if book_info == {}:
-                dt = last_goodreads_query - time.time()
-                time.sleep(1-dt)
-                book_info = scraper.query_goodreads_api(isbn10, debug = True)
-                last_goodreads_query = time.time()
-
-                book_info['api'] = 'goodreads'
-
-            '''
-
+            book_info, book_price = scraper.query_amazon_products_api(isbn10, amazon)
+            book_info['api'] = 'amazon products'
 
 
         # Create and store the new book object
         book = book_functions.Book(book_info, spine)
-
         book.set_price(book_price)
 
 
@@ -167,13 +130,7 @@ def full_pipeline(img_path):
         books.append(book)
 
 
-
-
-    #utility.save_books()
-
     # Finally, return
-
-
     return books
 
 
