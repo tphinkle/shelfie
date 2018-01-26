@@ -163,7 +163,7 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
 
         # Get the idf of the word
         best_word = book_words[np.argmax(np.array(temp_similarities))]
-        idf = get_idf(best_word)
+        idf = np.log(get_idf(best_word))
 
 
         print('token', token)
