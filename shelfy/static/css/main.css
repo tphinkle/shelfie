@@ -2,3 +2,13 @@
 {
     color:#ff0000 !important;
 }
+
+div.shelfy-background{
+    color:#fff;
+    text-align:center;
+    background:'/shelfy/static/img/background';
+    background-size:cover;
+    background-position:center;
+    padding-top:100px;
+    padding-bottom:100px;
+}
