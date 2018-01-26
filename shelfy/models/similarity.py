@@ -172,7 +172,7 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
         print('similarity', similarity)
         print()
 
-        similarity = similarity*1/(-np.log(idf))
+        similarity = similarity*1./(-np.log(idf))
 
 
         # Get the inverse document frequency of the token
@@ -180,7 +180,7 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
 
         total_similarity += similarity
 
-    return 1./total_similarity
+    return total_similarity
 
 
 def single_token_levenshtein(tokens, book_words):
