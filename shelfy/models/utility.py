@@ -126,10 +126,10 @@ def full_pipeline(img_path):
             book.flag = False
         else:
             book.flag = True
-
+        '''
 
         books.append(book)
-        '''
+
 
     # Finally, return
     return books
