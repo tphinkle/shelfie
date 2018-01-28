@@ -32,3 +32,11 @@ body {
   display: flex;
   align-items: center;
 }
+
+.top30{
+  margin-top:30%;
+}
+
+.bottom30{
+  margin-bottom:30%;
+}
