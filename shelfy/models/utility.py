@@ -62,7 +62,7 @@ def full_pipeline(img_path):
     lines = image_processing.get_book_lines(raw_img, debug = False)
 
     # Group the words into spines (using lines)
-    spines = book_functions.get_spines_from_words_lines(words)
+    spines = book_functions.get_spines_from_words_lines(words, lines)
 
     # Run the scraping pipeline for each spine
     books = []

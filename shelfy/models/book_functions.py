@@ -518,7 +518,7 @@ def get_spines_from_words_lines_shelves(words, lines):
 
 
 
-def get_spines_from_words_lines(words, yc_tolerance = 25, theta_tolerance = np.pi/6.):
+def get_spines_from_words(words, yc_tolerance = 25, theta_tolerance = np.pi/6.):
     '''
     Matches words that belong on the same spine into a 'Spine' object
     Algorithm explanation:
