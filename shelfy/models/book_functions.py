@@ -1,5 +1,6 @@
 # Python standard library
 import io
+import re
 
 # Scientific computing
 import cv2
