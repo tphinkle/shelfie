@@ -53,6 +53,9 @@ def full_pipeline(img_path):
     response = client.document_text_detection(image=img_bin)
     texts = response.text_annotations
 
+    # Preprocess the texts
+    texts = book_functions.preprocess_google_texts(texts)
+
     # Create word objects from the google word objects
     words = [book_functions.Word.from_google_text(text) for text in texts[1:]]
 

@@ -15,5 +15,5 @@ div.shelfy-background{
 
 
 #main.container-fluid{
-    background-image:'/static/img/background.jpeg';
+    background-image: url('../img/background.jpeg') repeat center center;
 }

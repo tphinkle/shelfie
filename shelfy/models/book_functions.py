@@ -14,6 +14,31 @@ from google.cloud import vision
 from google.cloud.vision import types
 
 
+def preprocess_google_texts(google_texts):
+
+    # Get main text description
+    proc_texts = texts[0].description
+
+    # Split on line break
+    proc_texts = proc_texts.split('\n')
+
+    # Split on space
+    proc_texts = ' '.join(proc_texts).split(' ')
+
+    # Convert to alphanumeric
+    proc_texts = [re.sub('[\W_]+', '', proc_text) for proc_text in proc_texts]
+
+    # Lowercase all letters
+    proc_texts = [proc_text.lower() for proc_text in proc_texts]
+
+    # Remove empty strings
+    proc_texts = [proc_text for proc_text in proc_texts if proc_text != '']
+
+
+
+    return proc_texts
+
+
 
 
 class BoundingBox(object):
@@ -464,8 +489,8 @@ def get_spines_from_words_lines(words, lines, yc_tolerance = 100, theta_toleranc
     spines = []
     for block in blocks:
         block_words = [words[i] for i in block]
-        print('block!')
-        print([block_word.string for block_word in block_words])
+        #print('block!')
+        #print([block_word.string for block_word in block_words])
         spines += get_spines_from_words(block_words, yc_tolerance = 100, theta_tolerance = np.pi)
 
     return spines
