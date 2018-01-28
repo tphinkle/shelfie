@@ -32,3 +32,9 @@ body {
   display: flex;
   align-items: center;
 }
+
+#main-logo {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
