@@ -17,7 +17,7 @@ from google.cloud.vision import types
 def preprocess_google_texts(google_texts):
 
     # Get main text description
-    proc_texts = texts[0].description
+    proc_texts = google_texts[0].description
 
     # Split on line break
     proc_texts = proc_texts.split('\n')
