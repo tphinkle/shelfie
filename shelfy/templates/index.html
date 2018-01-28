@@ -15,10 +15,16 @@
 
 {% block body %}
 
-<body "style=background-image: url('/static/img/background.jpeg');">
-  <div id='main' class='container-fluid'>
+<body background-image='/static/img/background.jpeg'>
 
-    <img class='center-block img-responsive' src="/static/img/shelfie-logo.png"/>
+    <div class="row">
+      <div class="col-xl-4"></div>
+
+      <div class="col-xl-4">
+    <img class='center-block img-fluid' src="/static/img/shelfie-logo.png"/ max-width=100%;>
+  </div>
+
+    <div class="col-xl-4"></div>
 
 
         <div class="row">
@@ -37,7 +43,6 @@
           </div>
 
 
-  </div>
 
 </body>
 
