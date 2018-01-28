@@ -15,34 +15,40 @@
 
 {% block body %}
 
+<!-- Background image -->
 <body background-image='/static/img/background.jpeg'>
 
+
+
+    <!-- Logo -->
     <div class="row">
-      <div class="col-xl-4"></div>
+      <div class="col-lg-4"></div>
 
-      <div class="col-xl-4">
-    <img class='center-block img-fluid' src="/static/img/shelfie-logo.png"/ max-width=100%;>
-  </div>
+      <div class="col-lg-4">
+        <img class='center-block img-fluid' src="/static/img/shelfie-logo.png"/ max-width=100%;>
+      </div>
 
-</div>
+      <div class="col-lg-4"></div>
 
-    <div class="col-xl-4"></div>
+    </div>
 
 
-        <div class="row">
-            <div class="col-xl-5 col-lg-5"></div>
 
-            <div class="col-xl-2 col-lg-2 col-sm-12">
+    <!-- Form -->
+    <div class="row">
+        <div class="col-xl-5 col-lg-5"></div>
 
-              <form action='/' method = "POST" enctype = "multipart/form-data">
-                <input type = "file" class="form-control" name = "file" />
-                <button class="btn btn-primary glyphicon glyphicon-book" type="submit">  Submit</button>
-              </form>
-            </div>
+        <div class="col-xl-2 col-lg-2 col-sm-12">
 
-            <div class="col-xl-5 col-lg-5"></div>
+          <form action='/' method = "POST" enctype = "multipart/form-data">
+            <input type = "file" class="form-control" name = "file" />
+            <button class="btn btn-primary glyphicon glyphicon-book" type="submit">  Submit</button>
+          </form>
+        </div>
 
-          </div>
+        <div class="col-xl-5 col-lg-5"></div>
+
+    </div>
 
 
 
