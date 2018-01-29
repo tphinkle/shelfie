@@ -58,3 +58,9 @@ body {
 .bottom10{
   margin-bottom:10%;
 }
+
+
+
+input[type=file] {
+    margin: 0 auto;
+}
