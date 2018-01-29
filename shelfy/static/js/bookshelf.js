@@ -15,10 +15,13 @@ load_image = function(submission_id) {
 
   // Create and draw the image
   var bookshelf_img = new Image();
-  ctx.drawImage(bookshelf_img, 0, 0);
-  ctx.fillRect(0,0,500,500);
+
   var img_path = '/static/submissions/' + submission_id + '/raw_img/raw_img.jpg';
   bookshelf_img.src = img_path;
+  bookshelf_img.onload = function(){
+    ctx.drawImage(bookshelf_img, bookshelf_img.width, bookshelf_img.height);
+  }
+
 
 }
 
