@@ -13,6 +13,8 @@ function register_new_title(book_center_x, book_center_y, book_name, book_author
   console.log(book_center_y);
   console.log(book_name);
   console.log(book_author);
+
+  return 0;
 }
 
 function load_image(submission_id) {
