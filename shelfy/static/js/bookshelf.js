@@ -11,15 +11,15 @@ load_image = function() {
 
   ctx.drawImage(bookshelf_img, 0, 0);
 
-  ctx.fillRect(0,500,500);
+  ctx.fillRect(0,0,500,500);
 
   bookshelf_img.src = '/static/submissions/'
 
 }
 
 $(document).ready(function() {
+  get_submission_id();
 
   load_image();
-  get_submission_id();
 
 });
