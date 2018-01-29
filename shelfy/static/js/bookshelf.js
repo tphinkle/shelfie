@@ -23,7 +23,9 @@ function load_image(submission_id) {
   console.log(img_path);
 
   bookshelf_img.onload = function() {
-    ctx.drawImage(bookshelf_img, bookshelf_img.width, bookshelf_img.height);
+    console.log(this.width);
+    console.log(this.height);
+    ctx.drawImage(bookshelf_img, this.width, this.height);
   }
 
   bookshelf_img.src = img_path;
