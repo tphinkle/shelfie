@@ -74,6 +74,8 @@ def full_pipeline(img_path):
 
     for spine in spines:
 
+        print([word.string for word in spine.words])
+
 
         book_info = {}
 
