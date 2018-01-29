@@ -47,7 +47,6 @@
 
 
 
-<script>register_new_title(0,0,0);</script>
 
 
 
@@ -83,7 +82,7 @@
           <tbody>
 
             {% for book in books %}
-              <script src='/static/js/'>
+              <script>
                 register_new_title({{ book.center }}, {{ book.book_info['title'] }}, {{ book.book_info['authors'] }} );
               </script>
 
