@@ -16,7 +16,10 @@ function load_image(submission_id) {
   var ctx = canvas.getContext("2d");
 
   // Create and draw the image
-  var bookshelf_img = new Image(canvas.width, canvas.height);
+  var bookshelf_img = new Image();
+
+  var img_width = bookshelf_img.naturalWidth;
+  var img_height = bookshelf_img.naturalHeight;
 
   var img_path = '/static/submissions/' + submission_id + '/raw_img/raw_img.jpg';
 
