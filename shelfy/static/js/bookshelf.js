@@ -1,4 +1,4 @@
-get_submission_id = function() {
+function get_submission_id() {
   var url = window.location.href;
   var submission_id = url.split('/')[4];
   console.log(url);
@@ -7,7 +7,7 @@ get_submission_id = function() {
   return submission_id;
 }
 
-load_image = function(submission_id) {
+function load_image(submission_id) {
 
   // Get canvas and canvas context object
   var canvas = document.getElementById('bookshelf');
