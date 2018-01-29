@@ -8,6 +8,11 @@ function get_submission_id() {
 }
 
 
+function register_new_title(book_center, book_name, book_author) {
+  console.log(book_center);
+  console.log(book_name);
+  console.log(book_author);
+}
 
 function load_image(submission_id) {
 

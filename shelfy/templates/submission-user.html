@@ -83,6 +83,10 @@
           <tbody>
 
             {% for book in books %}
+              <script>
+                register_new_title({{ book.center }}, {{ book.book_info['title'] }}, {{ book.book_info['authors'] }} );
+              </script>
+
               <tr class="table-warning">
               <td>
                 <p class="text-left font-weight-bold">{{ book.book_info['title'] }}</p>
