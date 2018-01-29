@@ -238,6 +238,10 @@ class Book(object):
         # Copy spine
         self.spine = spine
 
+        # Get center of book
+        self.center_x = spine.center_x
+        self.center_y = spine.center_y
+
 
     def format_raw_book_info_to_words_list(self):
         '''
