@@ -9,20 +9,24 @@ function get_submission_id() {
 
 
 function register_new_title(book_center_x, book_center_y, book_name, book_author) {
-  console.log(book_center_x);
-  console.log(book_center_y);
-  console.log(book_name);
-  console.log(book_author);
+  // Get canvas and canvas context object
+  var canvas = document.getElementById('bookshelf');
+  var ctx = canvas.getContext("2d");
 
-  return 0;
+  // Get book coordinates
+
+  var circle = new Path2D();
+  circle.moveTo()
+
+  //
+
+
 }
 
 function load_image(submission_id) {
 
   // Get canvas and canvas context object
   var canvas = document.getElementById('bookshelf');
-
-
   var ctx = canvas.getContext("2d");
 
   // Create and draw the image

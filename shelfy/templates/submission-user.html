@@ -19,13 +19,13 @@
 <body>
 
   <script type="text/javascript" src="/static/js/table.js"></script>
-  <script type="text/javascript" src="/static/js/bookshelf.js"></script>
+  <!-- <script type="text/javascript" src="/static/js/bookshelf.js"></script> -->
 
   <div class="container-fluid bg-1 text-center">
 
 
     <!-- IMAGES -->
-<!--
+
     <div class="row">
 
       <div class="col-lg-1"></div>
@@ -39,7 +39,7 @@
       </div>
 
       <div class="col-lg-1"></div>
-    </div> -->
+    </div>
 
 
 
@@ -50,7 +50,7 @@
 
 
 
-<canvas id="bookshelf" width="600" height="400" style="border:1px solid #000000;"></canvas>
+    <canvas id="bookshelf" width="600" height="400" style="border:1px solid #000000;"></canvas>
 
 
 
@@ -82,9 +82,9 @@
           <tbody>
 
             {% for book in books %}
-              <script type='text/javascript'>
+              <!-- <script type='text/javascript'>
                 register_new_title( "{{ book.center_x }}", "{{ book.center_y }}", "{{ book.book_info['title'] }}", "{{ book.book_info['authors'] }}" );
-              </script>
+              </script> -->
 
 
               <tr class="table-warning">
