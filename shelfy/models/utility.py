@@ -131,6 +131,9 @@ def full_pipeline(img_path):
             book.flag = True
         '''
 
+
+        print(book.book_info)
+
         books.append(book)
 
 
