@@ -88,18 +88,15 @@ def full_pipeline(img_path):
         if amazon_url != None:
             isbn10 = scraper.get_isbn10_from_amazon_url(amazon_url, debug = True)
 
-
-
         else:
             # Couldn't get isbn10 from amazon link (or there was no amazon link)
             isbn10 = None
 
+        # Check if number is an isbn10; if not, skip the rest
+        if not scraper.is_isbn10(isbn10, debug = False):
+            continue
 
 
-        # Time
-        last_amazon_query = time.time()
-        last_google_query = time.time()
-        last_goodreads_query = time.time()
 
 
         # Create amazon bottlenose object
@@ -109,12 +106,10 @@ def full_pipeline(img_path):
         book_info = {}
         book_price = 0
 
-        # Query apis for the isbn10
-        if scraper.is_isbn10(isbn10, debug = True):
 
-            # Try to get info from amazon products api
-            book_info, book_price = scraper.query_amazon_products_api(isbn10, amazon)
-            book_info['api'] = 'amazon products'
+        # Try to get info from amazon products api
+        book_info, book_price = scraper.query_amazon_products_api(isbn10, amazon)
+        book_info['api'] = 'amazon products'
 
 
         # Create and store the new book object
