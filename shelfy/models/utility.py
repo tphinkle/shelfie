@@ -127,10 +127,12 @@ def full_pipeline(img_path):
         '''
 
 
-        print(book.book_info)
 
         books.append(book)
 
+
+    # Sort books
+    books = sorted(books, key = lambda book: book.center_x)
 
     # Finally, return
     return books
