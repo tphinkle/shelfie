@@ -3,9 +3,14 @@ get_submission_id = function() {
   var submission_id = url.split('/')[4];
   console.log(url);
   console.log(submission_id);
+
+  return submission_id;
 }
 
-load_image = function() {
+load_image = function(submission_id) {
+  var img_path = '/static/submissions/' + submission_id + '/raw_img.png';
+  console.log(img_path);
+
   var canvas = document.getElementById('bookshelf');
   var ctx = canvas.getContext("2d");
 
@@ -15,13 +20,13 @@ load_image = function() {
 
   ctx.fillRect(0,0,500,500);
 
-  bookshelf_img.src = '/static/submissions/'
+  bookshelf_img.src = '/static/submissions/' + submission_id + '/raw_img.png';
 
 }
 
 $(document).ready(function() {
-  get_submission_id();
+  var submission_id = get_submission_id();
 
-  load_image();
+  load_image(submission_id);
 
 });
