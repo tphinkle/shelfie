@@ -1,6 +1,8 @@
 get_submission_id = function() {
-  url = window.location.href;
-  console.log(url);
+  var url = window.location.href;
+  var submission_id = url.split('/')[3];
+
+  console.log(submission_id);
 }
 
 load_image = function() {
