@@ -26,9 +26,14 @@ function load_image(submission_id) {
   console.log(img_path);
 
   bookshelf_img.onload = function() {
-    console.log(this.width);
-    console.log(this.height);
-    ctx.drawImage(bookshelf_img, 0, 0);
+
+    // Get dimensions of canvas
+    var canvas_height = canvas.height;
+    var canvas_width = canvas.width;
+
+    // Get scaled width of image to display
+    var width = height/this.height*width;
+    ctx.drawImage(bookshelf_img, 0, 0, canvas_width, canvas_height);
   }
 
   bookshelf_img.src = img_path;
