@@ -8,19 +8,17 @@ get_submission_id = function() {
 }
 
 load_image = function(submission_id) {
-  var img_path = '/static/submissions/' + submission_id + '/raw_img.png';
-  console.log(img_path);
 
+  // Get canvas and canvas context object
   var canvas = document.getElementById('bookshelf');
   var ctx = canvas.getContext("2d");
 
+  // Create and draw the image
   var bookshelf_img = new Image();
-
   ctx.drawImage(bookshelf_img, 0, 0);
-
   ctx.fillRect(0,0,500,500);
-
-  bookshelf_img.src = '/static/submissions/' + submission_id + '/raw_img.png';
+  var img_path = '/static/submissions/' + submission_id + '/raw_img/raw_img.jpg';
+  bookshelf_img.src = img_path;
 
 }
 
