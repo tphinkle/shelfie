@@ -377,7 +377,7 @@ def generate_processed_image(books, raw_file_path, save_path = None):
 
     # Save the figure
     if save_path != None:
-        plt.savefig(save_path, dpi = 100, bbox_inches = 'tight', pad_inches = 0)
+        plt.savefig(save_path, dpi = 300, bbox_inches = 'tight', pad_inches = 0)
 
 
     # Close the plot

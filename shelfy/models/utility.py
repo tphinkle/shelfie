@@ -59,6 +59,8 @@ def full_pipeline(img_path):
     # Create word objects from the google word objects
     words = [book_functions.Word.from_google_text(text) for text in texts[1:]]
 
+    print([word.string for word in words])
+
     # Get lines
     raw_img = cv2.imread(img_path)
 
