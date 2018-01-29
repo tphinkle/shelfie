@@ -32,7 +32,7 @@ function load_image(submission_id) {
     var canvas_width = canvas.width;
 
     // Get scaled width of image to display
-    var width = height/this.height*width;
+    var width = canvas_height/this.height*canvas_width;
     ctx.drawImage(bookshelf_img, 0, 0, canvas_width, canvas_height);
   }
 
