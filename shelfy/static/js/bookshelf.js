@@ -16,7 +16,7 @@ load_image = function(submission_id) {
   // Create and draw the image
   var bookshelf_img = new Image();
 
-  var img_path = 'static/submissions/' + submission_id + '/raw_img/raw_img.jpeg';
+  var img_path = '../static/submissions/' + submission_id + '/raw_img/raw_img.jpeg';
   bookshelf_img.src = img_path;
 
   console.log(img_path);
