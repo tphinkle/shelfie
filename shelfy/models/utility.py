@@ -50,7 +50,7 @@ def full_pipeline(img_path):
 
 
     # Query the image on google cloud vision API
-    response = client.text_detection(image=img_bin)
+    response = client.document_text_detection(image=img_bin)
     texts = response.text_annotations[1:]
 
     # Preprocess the texts
