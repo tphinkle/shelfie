@@ -11,7 +11,7 @@ get_submission_id = function() {
 }
 
 load_image = function() {
-  var canvas = $('#bookshelf')[0];
+  var canvas = document.getElementById('bookshelf');
   var ctx = canvas.getContext("2d");
 
   var bookshelf_img = new Image();
