@@ -7,6 +7,8 @@ function get_submission_id() {
   return submission_id;
 }
 
+
+
 function load_image(submission_id) {
 
   // Get canvas and canvas context object
@@ -41,6 +43,8 @@ function load_image(submission_id) {
 
 
 }
+
+
 
 $(document).ready(function() {
   var submission_id = get_submission_id();
