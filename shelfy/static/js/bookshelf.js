@@ -1,7 +1,7 @@
 get_submission_id = function() {
   var url = window.location.href;
-  var submission_id = url.split('/')[3];
-
+  var submission_id = url.split('/')[4];
+  console.log(url);
   console.log(submission_id);
 }
 
