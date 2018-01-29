@@ -197,6 +197,9 @@ class Spine(object):
 
     def __init__(self, words):
 
+        # Set center of spine
+        self.center_x = np.mean(np.array([word.bounding_box.center[0] for word in words]))
+        self.center_y = np.mean(np.array([word.bounding_box.center[1] for word in words]))
 
         # Store the ordered words
         ys = np.array([word.bounding_box.center[1] for word in words])

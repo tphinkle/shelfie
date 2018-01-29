@@ -83,7 +83,7 @@
 
             {% for book in books %}
               <script>
-                register_new_title({{ book.center }}, {{ book.book_info['title'] }}, {{ book.book_info['authors'] }} );
+                register_new_title({{ book.spine.center_x }}, {{ book.spine.center_y }}, {{ book.book_info['title'] }}, {{ book.book_info['authors'] }} );
               </script>
 
               <tr class="table-warning">
