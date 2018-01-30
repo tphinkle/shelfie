@@ -166,6 +166,7 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
         #idf = np.log(1.-get_idf(best_word))
         idf = get_idf(best_word)
 
+        print(book_words)
         print('token', token)
         print('best_word', best_word)
         print('idf', idf)
