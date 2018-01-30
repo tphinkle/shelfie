@@ -175,9 +175,11 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
 
         # Get final similarity
         if edit_similarity > .66:
-            similarity = edit_similarity*1./(-np.log(idf))
+            #similarity = edit_similarity*1./(-np.log(idf))
+            similarity = np.log(1./idf)
         else:
-            similarity = 0
+            #similarity = 0
+            similarity = 1
 
 
         print(token, best_word, edit_similarity, similarity)
@@ -186,7 +188,7 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
         # Get the inverse document frequency of the token
 
 
-        total_similarity += similarity
+        total_similarity *= similarity
 
 
 
