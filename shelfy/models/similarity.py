@@ -140,7 +140,6 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
     MAX_SIMILARITY = 100000
 
 
-    print(book_words)
     # Loop over all tokens (words found on spine)
     for i, token in enumerate(tokens):
         temp_similarities = []
@@ -166,12 +165,7 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
         #idf = np.log(1.-get_idf(best_word))
         idf = get_idf(best_word)
 
-        print('\tbook_words', book_words)
-        print('\ttoken', token)
-        print('\tbest_word', best_word)
-        print('\tidf', idf)
-        print('\tsimilarity', similarity)
-        print()
+
 
         similarity = similarity*1./(-np.log(idf))
 
@@ -181,8 +175,7 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
 
         total_similarity += similarity
 
-    print('total score:', total_similarity)
-    print('\n\n\n')
+
 
     return total_similarity
 
