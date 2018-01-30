@@ -788,7 +788,7 @@ def get_book_lines(img, angles = [0], spaces = ['h'], debug = False):
         # Un-rotate image
         proc_img = scipy.ndimage.rotate(proc_img, angle = -1*angle, reshape = False)[:img.shape[0], :img.shape[1]]
 
-        final_img += proc_img
+        final_img = final_img + proc_img
 
         '''fig = plt.figure(figsize = (16,12))
         plt.imshow(proc_img, cmap = 'gray')
