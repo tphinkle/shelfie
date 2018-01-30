@@ -176,7 +176,7 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
         # Get final similarity
         if edit_similarity > .66:
             #similarity = edit_similarity*1./(-np.log(idf))
-            similarity = np.log(1./idf)
+            similarity = (1./idf)/(138209219.)
         else:
             #similarity = 0
             similarity = 1
@@ -190,7 +190,7 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
 
 
 
-    return total_similarity
+    return np.log(total_similarity)
 
 
 def single_token_levenshtein(tokens, book_words):
