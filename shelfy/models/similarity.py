@@ -141,7 +141,7 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
         therefore suggests a strong match
     '''
 
-    total_similarity = 0
+    total_similarity = 1
 
     MIN_SIMILARITY = 0
     MAX_SIMILARITY = 100000
@@ -186,8 +186,6 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
 
 
         # Get the inverse document frequency of the token
-
-
         total_similarity *= similarity
 
 
