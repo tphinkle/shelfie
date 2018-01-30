@@ -113,7 +113,7 @@ def edit_distance(word_1, word_2):
     L_2 = len(word_2)
 
     distance = Levenshtein.distance(word_1, word_2)
-    scale_factor = np.max([word_1, word_2])
+    scale_factor = np.max([L_1, L_2])
 
     return 1./(1+distance/scale_factor)
 
