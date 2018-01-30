@@ -108,7 +108,14 @@ def preprocess_words(words):
 
 
 
+def edit_distance(word_1, word_2):
+    L_1 = len(word_1)
+    L_2 = len(word_2)
 
+    distance = Levenshtein.distance(word_1, word_2)
+    scale_factor = np.max([word_1, word_2])
+
+    return 1./(1+distance/scale_factor)
 
 def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
     '''
@@ -148,12 +155,8 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
         # actual titles, publishers, etc.)
         L_token = len(token)
         for j, book_word in enumerate(book_words):
-            L_book_word = len(book_word)
-
-            distance = Levenshtein.distance(token, book_word)
-            scale_factor = 2.*np.min([L_token, L_book_word])+np.abs(L_token-L_book_word)
-
-            temp_similarities.append(1./(1+distance/scale_factor))
+            temp_similarity = edit_distance(token, book_word)
+            temp_similarities.append(temp_similarity)
 
 
 
@@ -171,7 +174,10 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
 
 
         # Get final similarity
-        similarity = edit_similarity*1./(-np.log(idf))
+        if edit_similarity > .66:
+            similarity = edit_similarity*1./(-np.log(idf))
+        else:
+            similarity = 0
 
 
         print(token, best_word, edit_similarity, similarity)
