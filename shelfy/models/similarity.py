@@ -158,7 +158,9 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
 
 
         # Get the similarity
-        similarity = np.max(temp_similarities)
+        edit_similarity = np.max(temp_similarities)
+
+
 
         # Get the idf of the word
         best_word = book_words[np.argmax(np.array(temp_similarities))]
@@ -167,7 +169,12 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
 
 
 
-        similarity = similarity*1./(-np.log(idf))
+
+        # Get final similarity
+        similarity = edit_similarity*1./(-np.log(idf))
+
+
+        print(token, best_word, edit_similarity, similarity)
 
 
         # Get the inverse document frequency of the token
