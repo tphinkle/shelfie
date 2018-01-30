@@ -198,6 +198,40 @@ def binarize(img, cutoff, debug = False):
 
     return img
 
+
+def dynamic_binarize(img, cutoff, debug = False):
+    '''
+    Binarizes an image by setting intensity of any pixel value with intensity
+    not equal to zero to equal one.
+    Final image has pixel intensities [0,1].
+    '''
+
+    if debug:
+        print('dynamic binarize (before)')
+        plt.hist(img.flatten())
+        plt.show()
+
+    for i in range(20):
+        cutoff = i*.01
+        bright_pixel_ratio = len(np.where(img > cutoff)[0])/(img.shape[0]*img.shape[1])
+
+
+        if bright_pixel_ratio <= 0.4:
+            break
+
+    img[img > cutoff] = 1
+    img[img <= cutoff] = 0
+
+
+    if debug:
+        print('dynamic binarize')
+
+        plot_img(img, show = True)
+
+
+    return img
+
+
 def binarize_alt(img, frac, debug = False):
     '''
     Binarizes an image by setting intensity of any pixel value with intensity
@@ -647,7 +681,7 @@ def get_shelf_lines(img, debug = False):
 
 
 
-def get_book_lines(img, spaces = ['h'], debug = False):
+def get_book_lines(img, angles = [0], spaces = ['h'], debug = False):
     '''
     Given an image, performs a number of image processing techniques to render
     the processed image down into a series of lines that represent the edges
@@ -656,97 +690,124 @@ def get_book_lines(img, spaces = ['h'], debug = False):
     Repeats iterations times.
     '''
 
-
     # Convert to HSV
-    #proc_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-    proc_img = np.mean(img, axis = 2)#**2. + (proc_img[:,:,2])**2.)**.5#+proc_img[:,:,2]**2.)**.5
+    gs_img = np.mean(img, axis = 2)
+    final_img = np.zeros((gs_img.shape[0], gs_img.shape[1]))
+    lines = []
+    for angle in angles:
 
-    # Convert to gs
-    #proc_img = np.mean(img[:,:], axis = 2).astype(np.uint8)
-    #proc_img = img[:,:,0]#.astype(np.uint8)
-
-    # Blur
-    sigma = 3
-    proc_img = gaussian_blur(proc_img, sigma = sigma, debug = debug)
-
-    # Sobel x
-    proc_img = sobel_x_squared(proc_img, debug = debug)
-
-    # Down sample
-    num_downsamples = 3
-    proc_img = downsample(proc_img, num_downsamples, debug = debug)
+        # Rotate
+        proc_img = scipy.ndimage.rotate(gs_img, angle = angle, reshape = False)
 
 
 
+        # Convert to gs
+        #proc_img = np.mean(img[:,:], axis = 2).astype(np.uint8)
+        #proc_img = img[:,:,0]#.astype(np.uint8)
+
+        # Blur
+        sigma = 3
+        proc_img = gaussian_blur(proc_img, sigma = sigma, debug = debug)
+
+        # Sobel x
+        proc_img = sobel_x_squared(proc_img, debug = debug)
+
+        # Down sample
+        num_downsamples = 2
+        proc_img = downsample(proc_img, num_downsamples, debug = debug)
 
 
 
 
-    # Standardize
-    proc_img = standardize(proc_img, debug = debug)
 
-    # Digitize
-    #num_levels = 4
-    #proc_img = digitize(proc_img, num_levels, debug = debug)
 
-    #plt.hist(proc_img.flatten(), bins = 100)
+
+        # Standardize
+        proc_img = standardize(proc_img, debug = debug)
+
+        # Digitize
+        #num_levels = 4
+        #proc_img = digitize(proc_img, num_levels, debug = debug)
+
+        #plt.hist(proc_img.flatten(), bins = 100)
+        #plt.show()
+
+        # Binarize
+        cutoff = np.max(proc_img)/12.
+        proc_img = dynamic_binarize(proc_img, cutoff, debug = debug)
+
+        # Horizontal erode
+        #structure_length = 1
+        #iterations = 1
+        #proc_img = horizontal_erode(proc_img, structure_length, iterations, debug = debug)
+
+
+        # Horizaontal dilate
+        #structure_length = 1
+        #iterations = 1
+        #proc_img = horizontal_dilate(proc_img, structure_length, iterations, debug = debug)
+
+        # Vertical erode
+        structure_length = 200
+        iterations = 8
+        proc_img = vertical_erode(proc_img, structure_length, iterations, debug = debug)
+
+
+
+
+        # Vertical dilate
+        structure_length = 500
+        iterations = 10
+        proc_img = vertical_dilate(proc_img, structure_length, iterations, debug = debug)
+
+
+
+
+        # Connected components
+        proc_img, levels = connected_components(proc_img, debug = debug)
+
+        # Remove short clusters
+        threshold_fraction = 0.10
+        proc_img = remove_short_clusters_vertical(proc_img, levels, threshold_fraction, debug = debug)
+
+        # Re-binarize
+        #proc_img = binarize(proc_img, debug = debug)
+
+        # Dilate
+        #structure_length = 3
+        #proc_img = dilate(proc_img, structure_length, debug = debug)
+
+        # Up sample
+        upsample_factor = 2**num_downsamples
+        proc_img = upsample(proc_img, upsample_factor, debug = debug)
+
+        # Connected components
+        #proc_img, levels = connected_components(proc_img, debug = debug)
+
+
+        # Un-rotate image
+        proc_img = scipy.ndimage.rotate(proc_img, angle = -1*angle, reshape = False)
+
+        final_img += proc_img
+
+        '''fig = plt.figure(figsize = (16,12))
+        plt.imshow(proc_img, cmap = 'gray')
+        plt.show()'''
+
+
+    # Conver the final image to binary
+    final_img[final_img > 0] = 1
+
+    # Connect components label
+    final_img, levels = connected_components(final_img)
+
+    # Get the lines from the label
+    lines = get_lines_from_img(final_img, levels, debug = False)
+
+
+    #fig = plt.figure(figsize = (16,12))
+    #plt.imshow(final_img, cmap = 'gray')
     #plt.show()
-
-    # Binarize
-    cutoff = np.max(proc_img)/12.
-    proc_img = binarize(proc_img, cutoff, debug = debug)
-
-    # Horizontal erode
-    #structure_length = 1
-    #iterations = 1
-    #proc_img = horizontal_erode(proc_img, structure_length, iterations, debug = debug)
-
-
-    # Horizaontal dilate
-    #structure_length = 1
-    #iterations = 1
-    #proc_img = horizontal_dilate(proc_img, structure_length, iterations, debug = debug)
-
-    # Vertical erode
-    structure_length = 200
-    iterations = 6
-    proc_img = vertical_erode(proc_img, structure_length, iterations, debug = debug)
-
-
-
-
-    # Vertical dilate
-    structure_length = 500
-    iterations = 10
-    proc_img = vertical_dilate(proc_img, structure_length, iterations, debug = debug)
-
-
-
-
-    # Connected components
-    proc_img, levels = connected_components(proc_img, debug = debug)
-
-    # Remove short clusters
-    threshold_fraction = 0.10
-    proc_img = remove_short_clusters_vertical(proc_img, levels, threshold_fraction, debug = debug)
-
-    # Re-binarize
-    #proc_img = binarize(proc_img, debug = debug)
-
-    # Dilate
-    #structure_length = 3
-    #proc_img = dilate(proc_img, structure_length, debug = debug)
-
-    # Up sample
-    upsample_factor = 2**num_downsamples
-    proc_img = upsample(proc_img, upsample_factor, debug = debug)
-
-    # Connected components
-    proc_img, levels = connected_components(proc_img, debug = debug)
-
-
-    # Lines
-    lines = get_lines_from_img(proc_img, levels, debug = False)
 
     # Plot the result
     if debug:
@@ -772,6 +833,7 @@ def get_book_lines(img, spaces = ['h'], debug = False):
         plt.savefig('proc_img.png', bbox_inches = 'tight', dpi = 300)
 
         plt.show()
+
 
     return lines
 
