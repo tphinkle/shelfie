@@ -488,7 +488,16 @@ def get_spines_from_words_lines(words, lines, yc_tolerance = 100, theta_toleranc
     blocks = [[] for i in range(len(lines) + 1)]
     for i in range(len(words)):
 
-        for j in range(len(lines)):
+        for j in range(len(lines) + 1):
+
+            # Last line---check if we are to the right of it
+            if j == len(lines):
+                if words[i].bounding_box.center[0] > lines[j].center[0]:
+                    blocks[j-1].append(i)
+                    break
+
+
+            # Not last line
             if words[i].bounding_box.center[0] < lines[j].center[0]:
                 blocks[j-1].append(i)
                 break
