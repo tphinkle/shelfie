@@ -45,7 +45,14 @@ def submission_user(submission_id):
 
     raw_img_file_path = format_file_path_for_routing(server.get_raw_image_path_from_submission_id(submission_id))
     proc_img_file_path = format_file_path_for_routing(server.get_processed_image_path_from_submission_id(submission_id))
+
+
+    # Load books
     books = server.load_pickle_from_submission_id(submission_id)
+
+    # Sort by x-position
+    books = sorted(books, key = lambda book: book.center_x)
+
 
     return flask.render_template('submission-user.html', rawimgfilepath = raw_img_file_path, procimgfilepath = proc_img_file_path, books = books)
 
