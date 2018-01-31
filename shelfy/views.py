@@ -47,6 +47,8 @@ def submission_user(submission_id):
     proc_img_file_path = format_file_path_for_routing(server.get_processed_image_path_from_submission_id(submission_id))
 
 
+    print('proc img file path!', proc_img_file_path)
+
     # Load books
     books = server.load_pickle_from_submission_id(submission_id)
 

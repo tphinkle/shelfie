@@ -115,7 +115,7 @@ def edit_distance(word_1, word_2):
     distance = Levenshtein.distance(word_1, word_2)
     scale_factor = np.max([L_1, L_2])
 
-    return 1./(1+distance/scale_factor)
+    return distance/scale_factor
 
 def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
     '''
@@ -161,12 +161,12 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
 
 
         # Get the similarity
-        edit_similarity = np.max(temp_similarities)
+        edit_similarity = np.min(temp_similarities)
 
 
 
         # Get the idf of the word
-        best_word = book_words[np.argmax(np.array(temp_similarities))]
+        best_word = book_words[np.argmin(np.array(temp_similarities))]
         #idf = np.log(1.-get_idf(best_word))
         idf = get_idf(best_word)
 
@@ -174,7 +174,7 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
 
 
         # Get final similarity
-        if edit_similarity > .66:
+        if edit_similarity < .5:
             #similarity = edit_similarity*1./(-np.log(idf))
             similarity = (1./idf)/(138209219.)
         else:
@@ -182,7 +182,7 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
             similarity = 1
 
 
-        print(token, best_word, edit_similarity, similarity)
+        #print(token, best_word, edit_similarity, similarity)
 
 
         # Get the inverse document frequency of the token
