@@ -56,7 +56,7 @@ def submission_user(submission_id):
     books = sorted(books, key = lambda book: book.center_x)
 
 
-    return flask.render_template('submission-user.html', rawimgfilepath = raw_img_file_path, procimgfilepath = proc_img_file_path, books = books)
+    return flask.render_template('submission-user.html', rawimgfilepath = raw_img_file_path, procimgfilepath = raw_img_file_path, books = books)
 
 
 
