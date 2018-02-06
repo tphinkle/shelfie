@@ -3,6 +3,10 @@
     color:#ff0000 !important;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 /*div.shelfy-background{
     color:#fff;
     text-align:center;
