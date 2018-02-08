@@ -121,14 +121,18 @@ def full_pipeline(img_path):
         book.set_price(book_price)
 
 
-        '''
+
+
+
         # Flag book
+        threshold = 35
         book.similarity = similarity.calculate_book_score(book)
-        if book.similarity < 2:
+        
+        if book.similarity < threshold:
             book.flag = False
         else:
             book.flag = True
-        '''
+
 
 
 
