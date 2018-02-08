@@ -56,7 +56,7 @@ The solution for dealing with misidentifications is to present the user with cau
 
 The book score metric I use is the negative log likelihood, which is essentially a measure of the probability of some random tokens finding a book match by chance. The score depends on both the number of words in the group and each word's rarity.
 
-![Validation results](https://raw.githubusercontent.com/tphinkle/shelfy/img/decision_boundary.png)
+![Validation results](https://raw.githubusercontent.com/tphinkle/shelfy/master/img/decision_boundary.png)
 
 The score was calculated for each book match in the validation set. Based off the validation set, I chose a decision boundary for flagging books to focus on reducing the number of false positive occurrences. In the context of this problem, a false positive occurs when a book that is not present on the shelf is not flagged by the user; this outcome is really bad for the user, because it means they might accidentally list a book that they don't own.
 
