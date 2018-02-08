@@ -190,7 +190,7 @@ def single_token_inverse_weighted_levenshtein_idf(tokens, book_words):
 
 
 
-    return np.log(total_similarity)
+    return -np.log(total_similarity)
 
 
 def single_token_levenshtein(tokens, book_words):
