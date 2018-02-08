@@ -128,6 +128,10 @@ def full_pipeline(img_path):
         threshold = 35
         book.similarity = similarity.calculate_book_score(book)
 
+
+        print('similarity', book.similarity)
+        
+
         if book.similarity < threshold:
             book.flag = True
         else:
