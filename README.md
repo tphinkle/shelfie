@@ -2,18 +2,18 @@
 
 # Shelfie---Catalogue and price your used book collection based off images shot on your smart phone camera.
 
-Shelfie is an app that uses data science to automatically price books that it finds in user submitted images of bookshelves. It was built in a little over three weeks as my demo project at [Insight data science](www.insightdatascience.com) in early 2018.
+Shelfie is an app that uses data science to automatically price books that it finds in user submitted images of bookshelves. It was built in a little over three weeks as my demo project at [Insight data science](http://www.insightdatascience.com) in early 2018.
 
 Possible use cases
-- Recent college graduates that are curious about how much $$$ they can make off their college textbooks.
-- Used book store workers that receive a large quantity of books that they want to price quickly to determine which are worth keeping.
+- Recent college graduates that are curious about how much money they can make off their college textbooks.
+- Used book store workers that receive a large quantity of books that need to be priced quickly.
 - Anyone else looking for some quick cash :)
 
-__website__: shelfie.site
+__website__: [shelfie.site](http://www.shelfie.site)
 
 # How does shelfie work?
 
-At a high level, shelfie uses some computer vision, image processing, and natural language processing to detect books found on your bookshelf. Breaking it down a little further, these are the main steps involved. A more detailed description of each step in the algorithm is presented in the following sections.
+At a high level, shelfie uses a combination of computer vision, image processing, and natural language processing to detect books in images of bookshelves. Breaking it down a little further, these are the main steps involved. A more detailed description of each step in the algorithm is presented in the following sections.
 
 shelfie's algorithm:
 - Detect all instances of text in the image
@@ -55,6 +55,8 @@ There were two main types of errors present, __non-identification__ and __miside
 The solution for dealing with misidentifications is to present the user with cautionary flags when shelfie thinks a book might be misidentified. This flagging occurs by calculating a 'score' for each book match, with matches having too low of a score flagged.
 
 The book score metric I use is the negative log likelihood, which is essentially a measure of the probability of some random tokens finding a book match by chance. The score depends on both the number of words in the group and each word's rarity.
+
+![Validation results](https://raw.githubusercontent.com/tphinkle/shelfy/img/decision_boundary.png)
 
 The score was calculated for each book match in the validation set. Based off the validation set, I chose a decision boundary for flagging books to focus on reducing the number of false positive occurrences. In the context of this problem, a false positive occurs when a book that is not present on the shelf is not flagged by the user; this outcome is really bad for the user, because it means they might accidentally list a book that they don't own.
 
