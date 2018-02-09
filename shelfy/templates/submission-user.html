@@ -105,7 +105,11 @@
 
               <td name="checkbox">
                 <div class="form-check">
-                     <input type="checkbox" class="form-check-input" id={{ book.book_info['id'] }} name="sell-checkbox" checked="checked" width="30px" height="30px">
+                  {% if book.flag == True %}
+                    <input type="checkbox" class="form-check-input" id={{ book.book_info['id'] }} name="sell-checkbox" width="30px" height="30px">
+                  {% else %}
+                    <input type="checkbox" class="form-check-input" id={{ book.book_info['id'] }} name="sell-checkbox" checked="checked" width="30px" height="30px">
+                  {% endif %}
                 </div>
               </td>
             </tr>
